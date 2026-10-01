@@ -25,61 +25,61 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
             margin: 0; padding: 0;
             display: flex; justify-content: center; align-items: center;
-            height: 100vh; overflow: hidden;
+            height: 100vh; height: 100dvh; overflow: hidden;
             background: radial-gradient(circle at 50% 0%, #064e3b 0%, #040812 70%);
         }
 
         .phone-container {
-            width: 100%; max-width: 420px; height: 100%; max-height: 850px;
+            width: 100%; max-width: 420px; height: 100%; max-height: 100vh; max-height: 100dvh;
             background: rgba(4, 8, 18, 0.95);
             display: flex; flex-direction: column; position: relative; overflow: hidden;
         }
-        @media (min-width: 421px) { .phone-container { border-radius: 36px; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 25px 60px rgba(0,0,0,0.9); } }
+        @media (min-width: 421px) { .phone-container { border-radius: 36px; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 25px 60px rgba(0,0,0,0.9); height: 850px; } }
 
         /* HEADER */
         .header {
-            padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;
             background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255,255,255,0.06); z-index: 10;
+            border-bottom: 1px solid rgba(255,255,255,0.06); z-index: 10; flex-shrink: 0;
         }
         .logo-box { display: flex; align-items: center; gap: 8px; }
         .logo-box .badge-fdj { background: linear-gradient(135deg, #10b981, #059669); color: #fff; font-weight: 900; font-size: 0.85rem; padding: 4px 10px; border-radius: 8px; box-shadow: 0 0 15px rgba(16,185,129,0.5); }
         .logo-box .logo-text { font-weight: 800; font-size: 1.1rem; color: #fff; letter-spacing: -0.5px; }
         
         .header-stats { display: flex; gap: 8px; align-items: center; }
-        .level-badge { background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); padding: 5px 10px; border-radius: 12px; font-weight: 800; font-size: 0.78rem; color: #38bdf8; }
-        .balance-badge { background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3); padding: 5px 10px; border-radius: 20px; font-weight: 900; font-size: 0.85rem; color: var(--accent-gold); display: flex; align-items: center; gap: 5px; box-shadow: 0 0 15px var(--accent-gold-glow); }
+        .level-badge { background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); padding: 4px 8px; border-radius: 12px; font-weight: 800; font-size: 0.75rem; color: #38bdf8; }
+        .balance-badge { background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3); padding: 4px 8px; border-radius: 20px; font-weight: 900; font-size: 0.8rem; color: var(--accent-gold); display: flex; align-items: center; gap: 4px; box-shadow: 0 0 15px var(--accent-gold-glow); }
 
-        .content-area { flex-grow: 1; overflow-y: auto; padding: 16px; padding-bottom: 95px; box-sizing: border-box; scroll-behavior: smooth; }
-        .screen { display: none; flex-direction: column; gap: 16px; animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .content-area { flex-grow: 1; overflow-y: auto; padding: 14px; padding-bottom: 90px; box-sizing: border-box; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+        .screen { display: none; flex-direction: column; gap: 14px; animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .screen.active { display: flex; }
         @keyframes scaleIn { from { opacity: 0; transform: scale(0.97) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 
-        /* NAV BAR */
+        /* NAV BAR FIXE CORRIGÉE POUR PETITS ÉCRANS */
         .nav-bar {
-            position: absolute; bottom: 0; left: 0; width: 100%; height: 80px;
-            background: rgba(4, 47, 46, 0.85); backdrop-filter: blur(25px);
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 72px;
+            background: rgba(4, 47, 46, 0.95); backdrop-filter: blur(25px);
             border-top: 1px solid rgba(16, 185, 129, 0.2); display: flex; justify-content: space-around;
-            align-items: center; z-index: 100; padding: 0 10px 10px 10px; box-sizing: border-box;
+            align-items: center; z-index: 100; padding: 0 6px env(safe-area-inset-bottom, 6px) 6px; box-sizing: border-box; flex-shrink: 0;
         }
         .nav-item {
             background: none; border: none; cursor: pointer; display: flex; flex-direction: column;
-            align-items: center; gap: 4px; color: rgba(255, 255, 255, 0.4); transition: all 0.3s;
-            font-size: 0.72rem; font-weight: 700; padding: 6px 10px; border-radius: 16px;
+            align-items: center; gap: 2px; color: rgba(255, 255, 255, 0.4); transition: all 0.3s;
+            font-size: 0.68rem; font-weight: 700; padding: 4px 6px; border-radius: 12px;
         }
-        .nav-item svg { width: 22px; height: 22px; fill: currentColor; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .nav-item svg { width: 20px; height: 20px; fill: currentColor; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .nav-item.active { color: var(--accent-green); }
-        .nav-item.active svg { transform: translateY(-4px) scale(1.15); filter: drop-shadow(0 4px 6px rgba(16,185,129,0.6)); }
+        .nav-item.active svg { transform: translateY(-2px) scale(1.1); filter: drop-shadow(0 4px 6px rgba(16,185,129,0.6)); }
 
         /* UI */
         .card { 
             background: var(--card-bg); backdrop-filter: blur(15px); 
-            border: 1px solid var(--glass-border); border-radius: 20px; 
-            padding: 18px; box-sizing: border-box; 
+            border: 1px solid var(--glass-border); border-radius: 18px; 
+            padding: 16px; box-sizing: border-box; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 1px 1px rgba(56, 189, 248, 0.1); 
         }
 
-        .btn { width: 100%; padding: 15px; border-radius: 16px; border: none; font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn { width: 100%; padding: 14px; border-radius: 14px; border: none; font-weight: 800; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
         .btn:active { transform: scale(0.96); }
         
         .btn-green { 
@@ -97,55 +97,53 @@
         }
         .btn-outline { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; }
 
-        input { width: 100%; padding: 15px; border-radius: 14px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 1rem; box-sizing: border-box; outline: none; margin-bottom: 12px; }
+        input { width: 100%; padding: 13px; border-radius: 12px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 0.95rem; box-sizing: border-box; outline: none; margin-bottom: 10px; }
         input:focus { border-color: var(--accent-green); background: rgba(0,0,0,0.6); box-shadow: 0 0 15px rgba(16,185,129,0.4); }
 
-        .promo-banner { background: linear-gradient(135deg, #064e3b, #0f172a); border-radius: 20px; padding: 18px; color: white; box-shadow: 0 12px 30px rgba(6,78,59,0.4); border: 1px solid rgba(16,185,129,0.3); }
-        .fomo-banner { background: linear-gradient(135deg, #b91c1c, #7f1d1d); border-radius: 14px; padding: 12px; color: white; font-size: 0.82rem; font-weight: bold; text-align: center; box-shadow: 0 6px 20px rgba(185,28,28,0.4); display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .promo-banner { background: linear-gradient(135deg, #064e3b, #0f172a); border-radius: 18px; padding: 16px; color: white; box-shadow: 0 12px 30px rgba(6,78,59,0.4); border: 1px solid rgba(16,185,129,0.3); }
+        .fomo-banner { background: linear-gradient(135deg, #b91c1c, #7f1d1d); border-radius: 12px; padding: 10px 12px; color: white; font-size: 0.78rem; font-weight: bold; text-align: center; box-shadow: 0 6px 20px rgba(185,28,28,0.4); display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         
-        .ticker-bar { background: rgba(0,0,0,0.4); border: 1px solid rgba(16,185,129,0.3); border-radius: 12px; padding: 8px 12px; font-size: 0.78rem; color: #34d399; white-space: nowrap; overflow: hidden; box-sizing: border-box; margin-bottom: 12px; }
+        .ticker-bar { background: rgba(0,0,0,0.4); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 7px 10px; font-size: 0.75rem; color: #34d399; white-space: nowrap; overflow: hidden; box-sizing: border-box; margin-bottom: 10px; }
         .ticker-content { display: inline-block; animation: tickerScroll 18s linear infinite; }
         @keyframes tickerScroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* BANDEAU DE PRÉVENTION LÉGAL DISCRET */
         .legal-disclaimer {
-            font-size: 0.65rem; color: #64748b; text-align: center; line-height: 1.3;
+            font-size: 0.62rem; color: #64748b; text-align: center; line-height: 1.3;
             background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.04);
-            padding: 8px; border-radius: 10px; margin-top: 10px;
+            padding: 7px; border-radius: 8px; margin-top: 8px;
         }
 
-        /* POPUP PRÉVENTION ACCUEIL */
         .prevention-banner-home {
             background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(239, 68, 68, 0.4);
-            border-radius: 14px; padding: 12px 14px; font-size: 0.72rem; color: #cbd5e1;
-            margin-bottom: 12px; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            display: flex; flex-direction: column; gap: 4px;
+            border-radius: 12px; padding: 10px 12px; font-size: 0.7rem; color: #cbd5e1;
+            margin-bottom: 10px; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column; gap: 3px;
         }
 
-        .auth-tabs { display: flex; margin-bottom: 15px; background: rgba(0,0,0,0.4); border-radius: 14px; padding: 4px; border: 1px solid rgba(255,255,255,0.05); }
-        .auth-tab { flex: 1; padding: 12px; text-align: center; font-size: 0.95rem; font-weight: 700; color: var(--text-muted); border-radius: 10px; cursor: pointer; transition: all 0.3s; }
+        .auth-tabs { display: flex; margin-bottom: 12px; background: rgba(0,0,0,0.4); border-radius: 12px; padding: 3px; border: 1px solid rgba(255,255,255,0.05); }
+        .auth-tab { flex: 1; padding: 10px; text-align: center; font-size: 0.9rem; font-weight: 700; color: var(--text-muted); border-radius: 9px; cursor: pointer; transition: all 0.3s; }
         .auth-tab.active { background: var(--accent-green); color: #fff; box-shadow: 0 4px 10px rgba(16,185,129,0.3); }
 
-        .games-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
-        .game-card { background: rgba(6, 78, 59, 0.25); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 20px; padding: 18px 12px; text-align: center; cursor: pointer; transition: all 0.3s; box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
-        .game-card:hover { transform: translateY(-5px); border-color: rgba(16, 185, 129, 0.6); background: rgba(16, 185, 129, 0.1); box-shadow: 0 15px 30px rgba(16,185,129,0.3); }
-        .game-card .icon { font-size: 2.8rem; margin-bottom: 10px; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6)); }
-        .game-card .title { font-size: 0.95rem; font-weight: 800; margin-bottom: 4px; }
-        .game-card .jackpot { font-size: 0.72rem; color: var(--accent-gold); font-weight: 800; background: rgba(245,158,11,0.15); padding: 3px 8px; border-radius: 8px; display: inline-block; }
+        .games-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+        .game-card { background: rgba(6, 78, 59, 0.25); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 16px; padding: 14px 10px; text-align: center; cursor: pointer; transition: all 0.3s; box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+        .game-card:hover { transform: translateY(-3px); border-color: rgba(16, 185, 129, 0.6); background: rgba(16, 185, 129, 0.1); }
+        .game-card .icon { font-size: 2.4rem; margin-bottom: 8px; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6)); }
+        .game-card .title { font-size: 0.9rem; font-weight: 800; margin-bottom: 3px; }
+        .game-card .jackpot { font-size: 0.7rem; color: var(--accent-gold); font-weight: 800; background: rgba(245,158,11,0.15); padding: 2px 6px; border-radius: 6px; display: inline-block; }
 
-        .scratch-ticket { background: linear-gradient(135deg, #064e3b, #0f172a); border-radius: 20px; padding: 20px; border: 2px solid var(--accent-green); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .scratch-grid-9 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 15px 0; }
-        .scratch-cell-9 { background: #064e3b; height: 65px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; cursor: pointer; border: 1px solid rgba(56,189,248,0.2); user-select: none; transition: all 0.2s; }
+        .scratch-ticket { background: linear-gradient(135deg, #064e3b, #0f172a); border-radius: 18px; padding: 16px; border: 2px solid var(--accent-green); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .scratch-grid-9 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 12px 0; }
+        .scratch-cell-9 { background: #064e3b; height: 58px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; cursor: pointer; border: 1px solid rgba(56,189,248,0.2); user-select: none; transition: all 0.2s; }
         .scratch-cell-9.revealed { background: #022c22; border-color: var(--accent-green); box-shadow: inset 0 0 15px rgba(16,185,129,0.3); }
 
-        .slot-cabinet { background: linear-gradient(180deg, #064e3b, #0f172a); border-radius: 24px; padding: 25px; border: 2px solid #10b981; text-align: center; }
-        .slot-window { display: flex; justify-content: center; gap: 12px; background: #020617; padding: 15px; border-radius: 16px; border: 2px inset #064e3b; margin: 20px 0; }
-        .slot-reel { width: 75px; height: 95px; background: #0f172a; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 3rem; border: 1px solid rgba(56,189,248,0.2); overflow: hidden; }
+        .slot-cabinet { background: linear-gradient(180deg, #064e3b, #0f172a); border-radius: 20px; padding: 20px; border: 2px solid #10b981; text-align: center; }
+        .slot-window { display: flex; justify-content: center; gap: 10px; background: #020617; padding: 12px; border-radius: 14px; border: 2px inset #064e3b; margin: 16px 0; }
+        .slot-reel { width: 68px; height: 85px; background: #0f172a; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 2.6rem; border: 1px solid rgba(56,189,248,0.2); overflow: hidden; }
         .slot-inner.spinning { animation: reelSpin 0.15s linear infinite; filter: blur(2px); }
-        @keyframes reelSpin { 0% { transform: translateY(-30px); } 100% { transform: translateY(30px); } }
+        @keyframes reelSpin { 0% { transform: translateY(-25px); } 100% { transform: translateY(25px); } }
 
-        .wheel-container { position: relative; width: 250px; height: 250px; margin: 20px auto; }
-        .wheel-pointer { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 2.2rem; z-index: 5; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6)); }
+        .wheel-container { position: relative; width: 220px; height: 220px; margin: 16px auto; }
+        .wheel-pointer { position: absolute; top: -16px; left: 50%; transform: translateX(-50%); font-size: 2rem; z-index: 5; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6)); }
         .wheel { 
             width: 100%; height: 100%; border-radius: 50%; border: 6px solid #064e3b; 
             background: conic-gradient(
@@ -160,53 +158,53 @@
         .wheel-sector {
             position: absolute; width: 50%; height: 50%; top: 0; left: 50%;
             transform-origin: 0% 100%; display: flex; align-items: center; justify-content: center;
-            font-size: 0.85rem; font-weight: 900; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+            font-size: 0.8rem; font-weight: 900; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.9);
         }
 
-        .chests-container { display: flex; justify-content: center; gap: 15px; margin: 25px 0; }
-        .chest { font-size: 3.8rem; cursor: pointer; transition: transform 0.2s; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); }
+        .chests-container { display: flex; justify-content: center; gap: 12px; margin: 20px 0; }
+        .chest { font-size: 3.4rem; cursor: pointer; transition: transform 0.2s; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); }
         .chest:hover { transform: scale(1.1); }
         .chest.shaking { animation: chestShake 0.4s ease-in-out infinite; }
         .chest.opened { transform: scale(1.12); filter: drop-shadow(0 0 30px var(--accent-gold-glow)); }
         @keyframes chestShake { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-10deg); } 75% { transform: rotate(10deg); } }
 
-        .win-popup { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5); background: linear-gradient(135deg, #34d399, #059669); padding: 30px; border-radius: 28px; text-align: center; color: #fff; font-weight: 900; z-index: 2000; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 20px 60px rgba(16,185,129,0.7); width: 85%; box-sizing: border-box; }
+        .win-popup { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5); background: linear-gradient(135deg, #34d399, #059669); padding: 24px; border-radius: 24px; text-align: center; color: #fff; font-weight: 900; z-index: 2000; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 20px 60px rgba(16,185,129,0.7); width: 85%; box-sizing: border-box; }
         .win-popup.show { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; }
         
-        .receipt-popup { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5); background: #f8fafc; padding: 25px; border-radius: 20px; text-align: left; color: #0f172a; font-weight: 600; z-index: 2000; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 25px 70px rgba(0,0,0,0.9); width: 90%; box-sizing: border-box; border: 4px solid #10b981; }
+        .receipt-popup { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5); background: #f8fafc; padding: 20px; border-radius: 18px; text-align: left; color: #0f172a; font-weight: 600; z-index: 2000; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 25px 70px rgba(0,0,0,0.9); width: 90%; box-sizing: border-box; border: 4px solid #10b981; }
         .receipt-popup.show { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; }
 
-        .confetti { position: absolute; width: 10px; height: 10px; z-index: 1999; pointer-events: none; animation: fall linear forwards; }
+        .confetti { position: absolute; width: 8px; height: 8px; z-index: 1999; pointer-events: none; animation: fall linear forwards; }
         @keyframes fall { to { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
 
-        .chat-container { display: flex; flex-direction: column; gap: 12px; height: 260px; overflow-y: auto; padding: 12px; background: rgba(0,0,0,0.3); border-radius: 16px; border: 1px solid rgba(56,189,248,0.2); margin-bottom: 10px; scroll-behavior: smooth; }
-        .msg { max-width: 80%; padding: 12px 16px; border-radius: 18px; font-size: 0.95rem; line-height: 1.4; animation: slideInChat 0.3s ease; }
+        .chat-container { display: flex; flex-direction: column; gap: 10px; height: 220px; overflow-y: auto; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 14px; border: 1px solid rgba(56,189,248,0.2); margin-bottom: 8px; scroll-behavior: smooth; }
+        .msg { max-width: 82%; padding: 10px 14px; border-radius: 16px; font-size: 0.9rem; line-height: 1.4; animation: slideInChat 0.3s ease; }
         .msg.bot { background: rgba(6, 78, 59, 0.8); align-self: flex-start; border-bottom-left-radius: 4px; color: #cbd5e1; }
         .msg.user { background: linear-gradient(135deg, #10b981, #059669); align-self: flex-end; border-bottom-right-radius: 4px; }
         .msg.admin-reply { background: linear-gradient(135deg, #38bdf8, #0284c7); align-self: flex-start; border-bottom-left-radius: 4px; color: #000; font-weight: bold; }
         @keyframes slideInChat { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .quick-replies { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-        .qr-btn { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4); color: #34d399; padding: 8px 12px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; }
+        .quick-replies { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+        .qr-btn { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4); color: #34d399; padding: 6px 10px; border-radius: 16px; font-size: 0.75rem; cursor: pointer; }
 
-        .mission-item { background: rgba(6, 78, 59, 0.3); border-left: 4px solid var(--accent-green); padding: 14px; border-radius: 14px; margin-bottom: 10px; font-size: 0.85rem; line-height: 1.4; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-top: 1px solid rgba(56,189,248,0.1); }
+        .mission-item { background: rgba(6, 78, 59, 0.3); border-left: 4px solid var(--accent-green); padding: 12px; border-radius: 12px; margin-bottom: 8px; font-size: 0.82rem; line-height: 1.4; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-top: 1px solid rgba(56,189,248,0.1); }
         .mission-item.selected { border: 2px solid var(--accent-green); background: rgba(16, 185, 129, 0.15); }
-        .mission-locked { text-align: center; padding: 40px 20px; background: rgba(0,0,0,0.4); border-radius: 16px; border: 1px dashed rgba(255,255,255,0.2); }
-        .mission-reward { background: rgba(16,185,129,0.2); border: 1px solid var(--accent-green); color: var(--accent-green); padding: 4px 8px; border-radius: 10px; font-weight: 900; font-size: 0.78rem; white-space: nowrap; margin-left: 10px; }
+        .mission-locked { text-align: center; padding: 30px 15px; background: rgba(0,0,0,0.4); border-radius: 14px; border: 1px dashed rgba(255,255,255,0.2); }
+        .mission-reward { background: rgba(16,185,129,0.2); border: 1px solid var(--accent-green); color: var(--accent-green); padding: 3px 7px; border-radius: 8px; font-weight: 900; font-size: 0.75rem; white-space: nowrap; margin-left: 8px; }
 
-        .tuto-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; text-align: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(5px); }
+        .tuto-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 16px; box-sizing: border-box; text-align: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(5px); }
         .tuto-overlay.show { opacity: 1; pointer-events: auto; }
-        .tuto-box { background: var(--card-bg); border: 1px solid var(--accent-green); padding: 25px; border-radius: 24px; box-shadow: 0 10px 40px rgba(16,185,129,0.4); width: 100%; max-width: 350px; }
+        .tuto-box { background: var(--card-bg); border: 1px solid var(--accent-green); padding: 20px; border-radius: 20px; box-shadow: 0 10px 40px rgba(16,185,129,0.4); width: 100%; max-width: 330px; }
         .tuto-step { display: none; }
         .tuto-step.active { display: block; }
 
-        .settings-container { display: flex; flex-direction: column; gap: 10px; }
-        .setting-item { background: rgba(6, 78, 59, 0.3); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 16px; padding: 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s; }
+        .settings-container { display: flex; flex-direction: column; gap: 8px; }
+        .setting-item { background: rgba(6, 78, 59, 0.3); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 14px; padding: 14px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s; }
         .setting-item:hover { background: rgba(6, 78, 59, 0.6); border-color: rgba(16,185,129,0.4); }
-        .setting-item-left { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 0.95rem; }
-        .setting-item-left .icon-box { width: 38px; height: 38px; border-radius: 10px; background: rgba(56, 189, 248, 0.1); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .setting-item-left { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 0.9rem; }
+        .setting-item-left .icon-box { width: 34px; height: 34px; border-radius: 9px; background: rgba(56, 189, 248, 0.1); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
         
-        .setting-item-vip { background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(15, 23, 42, 0.9)); border: 1px solid rgba(16, 185, 129, 0.5); border-radius: 16px; padding: 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2); transition: transform 0.2s; }
+        .setting-item-vip { background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(15, 23, 42, 0.9)); border: 1px solid rgba(16, 185, 129, 0.5); border-radius: 14px; padding: 14px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2); transition: transform 0.2s; }
         .setting-item-vip:hover { transform: scale(1.02); }
 
         .hidden { display: none !important; }
@@ -218,115 +216,114 @@
         
         <!-- POPUP VICTOIRE -->
         <div class="win-popup" id="win-popup">
-            <div style="font-size: 3.5rem; margin-bottom: 10px;">🎉</div>
-            <div style="font-size: 1.5rem; text-transform: uppercase;">Jackpot !</div>
-            <div id="win-amount" style="font-size: 2.5rem; color: #fff; margin: 10px 0;">+0.00 €</div>
-            <p style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 15px;">Ajouté à votre cagnotte avec succès !</p>
+            <div style="font-size: 3rem; margin-bottom: 8px;">🎉</div>
+            <div style="font-size: 1.4rem; text-transform: uppercase;">Jackpot !</div>
+            <div id="win-amount" style="font-size: 2.2rem; color: #fff; margin: 8px 0;">+0.00 €</div>
+            <p style="font-size: 0.8rem; color: #cbd5e1; margin-bottom: 12px;">Ajouté à votre cagnotte avec succès !</p>
             <button class="btn btn-green" onclick="app.fermerPopup()">Continuer à jouer 🚀</button>
         </div>
 
         <!-- FAUX REÇU OFFICIEL -->
         <div class="receipt-popup" id="receipt-popup">
-            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 12px;">
-                <span style="font-weight:900; color:#064e3b; font-size:1.1rem;">FRANÇAISE DES JEUX</span>
-                <span style="background:#10b981; color:#fff; font-size:0.7rem; padding:3px 8px; border-radius:6px;">OFFICIEL SEPA</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 10px;">
+                <span style="font-weight:900; color:#064e3b; font-size:1rem;">FRANÇAISE DES JEUX</span>
+                <span style="background:#10b981; color:#fff; font-size:0.68rem; padding:2px 6px; border-radius:6px;">OFFICIEL SEPA</span>
             </div>
-            <div style="font-size: 0.8rem; color: #64748b; line-height: 1.5; margin-bottom: 15px;">
+            <div style="font-size: 0.78rem; color: #64748b; line-height: 1.4; margin-bottom: 12px;">
                 <strong>N° de dossier :</strong> #FDJ-8942026<br>
                 <strong>Montant :</strong> 25.00 €<br>
                 <strong>Statut :</strong> <span style="color:#d97706; font-weight:bold;">EN COURS DE VALIDATION BANCAIRE</span><br>
                 <strong>Délai estimé :</strong> 7 jours ouvrés maximum.
             </div>
-            <p style="font-size: 0.75rem; color: #475569; margin-bottom: 15px; font-style:italic;">
+            <p style="font-size: 0.72rem; color: #475569; margin-bottom: 12px; font-style:italic;">
                 "Ce document atteste de la prise en charge de votre ordre de virement vers votre établissement bancaire."
             </p>
-            <button class="btn btn-green" onclick="document.getElementById('receipt-popup').classList.remove('show')" style="font-size:0.85rem; padding:12px;">Fermer et suivre le dossier</button>
+            <button class="btn btn-green" onclick="document.getElementById('receipt-popup').classList.remove('show')" style="font-size:0.82rem; padding:10px;">Fermer et suivre le dossier</button>
         </div>
 
         <!-- MODALE PASS DIAMANT VIP -->
-        <div class="modal-overlay hidden" id="modal-vip" style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:1500; display:flex; justify-content:center; align-items:center; padding:20px; box-sizing:border-box;">
-            <div class="card" style="width: 100%; max-width: 330px; text-align: center; border-color: var(--accent-green); background: linear-gradient(135deg, rgba(6,78,59,0.3), rgba(15,23,42,0.95));">
-                <div style="font-size: 3rem; margin-bottom: 10px;">💎</div>
-                <h3 style="margin-top:0; color: #34d399; font-size:1.4rem;">Pass Diamant FDJ</h3>
-                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.4;">Accédez au statut VIP pour seulement <strong style="color:#fff;">2,99 €</strong> (sans engagement) :</p>
+        <div class="modal-overlay hidden" id="modal-vip" style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:1500; display:flex; justify-content:center; align-items:center; padding:16px; box-sizing:border-box;">
+            <div class="card" style="width: 100%; max-width: 320px; text-align: center; border-color: var(--accent-green); background: linear-gradient(135deg, rgba(6,78,59,0.3), rgba(15,23,42,0.95));">
+                <div style="font-size: 2.6rem; margin-bottom: 8px;">💎</div>
+                <h3 style="margin-top:0; color: #34d399; font-size:1.3rem;">Pass Diamant FDJ</h3>
+                <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;">Accédez au statut VIP pour seulement <strong style="color:#fff;">2,99 €</strong> (sans engagement) :</p>
                 
-                <div style="text-align: left; font-size: 0.82rem; background: rgba(0,0,0,0.4); padding: 12px; border-radius: 12px; margin-bottom: 15px; display:flex; flex-direction:column; gap:6px;">
+                <div style="text-align: left; font-size: 0.8rem; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px; margin-bottom: 12px; display:flex; flex-direction:column; gap:5px;">
                     <div>⚡ <strong>Bonus x2 permanent</strong> sur tous les gains</div>
                     <div>🎁 <strong>+50 pièces gratuites</strong> offertes chaque jour</div>
                     <div>🚀 <strong>Virement prioritaire</strong> en 24h sans attente</div>
                 </div>
 
-                <button class="btn btn-green" onclick="app.ouvrirPaiementCB()" style="margin-bottom: 10px;">Payer 2,99 € par Carte 💳</button>
+                <button class="btn btn-green" onclick="app.ouvrirPaiementCB()" style="margin-bottom: 8px;">Payer 2,99 € par Carte 💳</button>
                 <button class="btn btn-outline" onclick="document.getElementById('modal-vip').classList.add('hidden')">Fermer</button>
             </div>
         </div>
 
         <!-- MODALE PAIEMENT CARTE BLEUE SÉCURISÉ -->
-        <div class="modal-overlay hidden" id="modal-cb" style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:1600; display:flex; justify-content:center; align-items:center; padding:20px; box-sizing:border-box;">
-            <div class="card" style="width: 100%; max-width: 340px; border-color: #10b981; background: #0f172a;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
-                    <span style="font-weight: 900; color: #34d399; font-size: 0.95rem;">🔒 Paiement Sécurisé 3D Secure</span>
-                    <span style="background: rgba(16,185,129,0.2); color: #10b981; font-size: 0.75rem; padding: 2px 6px; border-radius: 6px; font-weight: bold;">2,99 €</span>
+        <div class="modal-overlay hidden" id="modal-cb" style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:1600; display:flex; justify-content:center; align-items:center; padding:16px; box-sizing:border-box;">
+            <div class="card" style="width: 100%; max-width: 330px; border-color: #10b981; background: #0f172a;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;">
+                    <span style="font-weight: 900; color: #34d399; font-size: 0.9rem;">🔒 Paiement Sécurisé 3D Secure</span>
+                    <span style="background: rgba(16,185,129,0.2); color: #10b981; font-size: 0.72rem; padding: 2px 6px; border-radius: 6px; font-weight: bold;">2,99 €</span>
                 </div>
                 
-                <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Veuillez saisir les coordonnées de votre carte bancaire pour régler l'abonnement Pass Diamant FDJ.</p>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Veuillez saisir les coordonnées de votre carte bancaire pour régler l'abonnement Pass Diamant FDJ.</p>
 
-                <div style="text-align: left; margin-bottom: 8px; font-size: 0.8rem; font-weight: bold;">Numéro de carte :</div>
-                <input type="text" id="cb-num" placeholder="4970 •••• •••• ••••" maxlength="19" style="font-family: monospace; letter-spacing: 1px; margin-bottom: 10px;">
+                <div style="text-align: left; margin-bottom: 6px; font-size: 0.78rem; font-weight: bold;">Numéro de carte :</div>
+                <input type="text" id="cb-num" placeholder="4970 •••• •••• ••••" maxlength="19" style="font-family: monospace; letter-spacing: 1px; margin-bottom: 8px;">
                 
-                <div style="display: flex; gap: 10px;">
+                <div style="display: flex; gap: 8px;">
                     <div style="flex: 1;">
-                        <div style="text-align: left; margin-bottom: 8px; font-size: 0.8rem; font-weight: bold;">Expiration :</div>
-                        <input type="text" id="cb-exp" placeholder="MM/AA" maxlength="5" style="text-align: center; margin-bottom: 10px;">
+                        <div style="text-align: left; margin-bottom: 6px; font-size: 0.78rem; font-weight: bold;">Expiration :</div>
+                        <input type="text" id="cb-exp" placeholder="MM/AA" maxlength="5" style="text-align: center; margin-bottom: 8px;">
                     </div>
                     <div style="flex: 1;">
-                        <div style="text-align: left; margin-bottom: 8px; font-size: 0.8rem; font-weight: bold;">CVV / Cryptogramme :</div>
-                        <input type="password" id="cb-cvv" placeholder="•••" maxlength="4" style="text-align: center; margin-bottom: 10px;">
+                        <div style="text-align: left; margin-bottom: 6px; font-size: 0.78rem; font-weight: bold;">CVV / Cryptogramme :</div>
+                        <input type="password" id="cb-cvv" placeholder="•••" maxlength="4" style="text-align: center; margin-bottom: 8px;">
                     </div>
                 </div>
 
-                <button class="btn btn-green" onclick="app.validerPaiementCB()" style="margin-bottom: 8px; font-size: 0.85rem;">Valider et Payer 2,99 € ➔</button>
-                <button class="btn btn-outline" onclick="document.getElementById('modal-cb').classList.add('hidden')" style="font-size: 0.8rem; padding: 10px;">Annuler</button>
+                <button class="btn btn-green" onclick="app.validerPaiementCB()" style="margin-bottom: 6px; font-size: 0.82rem;">Valider et Payer 2,99 € ➔</button>
+                <button class="btn btn-outline" onclick="document.getElementById('modal-cb').classList.add('hidden')" style="font-size: 0.78rem; padding: 8px;">Annuler</button>
             </div>
         </div>
 
         <!-- MODALE PARRAINAGE -->
-        <div class="modal-overlay hidden" id="modal-parrainage" style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:1500; display:flex; justify-content:center; align-items:center; padding:20px; box-sizing:border-box;">
-            <div class="card" style="width: 100%; max-width: 330px; text-align: center;">
-                <div style="font-size: 2.5rem; margin-bottom: 10px;">🎁</div>
+        <div class="modal-overlay hidden" id="modal-parrainage" style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:1500; display:flex; justify-content:center; align-items:center; padding:16px; box-sizing:border-box;">
+            <div class="card" style="width: 100%; max-width: 320px; text-align: center;">
+                <div style="font-size: 2.2rem; margin-bottom: 8px;">🎁</div>
                 <h3 style="margin-top:0; color: var(--accent-green);">Parrainez un ami</h3>
-                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">Partagez votre lien exclusif. Recevez 10 pièces dès qu'il s'inscrit !</p>
-                <input type="text" id="ref-link" value="https://fdj-cash.fr/invite?ref=FDJ-VIP-2026" readonly style="text-align: center; font-size: 0.8rem; background: rgba(0,0,0,0.6);">
-                <button class="btn btn-green" onclick="app.vibrer([50]); alert('Lien copié dans le presse-papier !');" style="margin-bottom: 10px;">Copier le lien</button>
+                <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px;">Partagez votre lien exclusif. Recevez 10 pièces dès qu'il s'inscrit !</p>
+                <input type="text" id="ref-link" value="https://fdj-cash.fr/invite?ref=FDJ-VIP-2026" readonly style="text-align: center; font-size: 0.78rem; background: rgba(0,0,0,0.6);">
+                <button class="btn btn-green" onclick="app.vibrer([50]); alert('Lien copié dans le presse-papier !');" style="margin-bottom: 8px;">Copier le lien</button>
                 <button class="btn btn-outline" onclick="document.getElementById('modal-parrainage').classList.add('hidden')">Fermer</button>
             </div>
         </div>
 
         <!-- PARAMÈTRES DE SÉCURITÉ -->
-        <div class="modal-overlay hidden" id="modal-security" style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.88); z-index:1600; display:flex; justify-content:center; align-items:center; padding:20px; box-sizing:border-box;">
-            <div class="card" style="width: 100%; max-width: 340px; background: rgba(15,23,42,0.98); border-color: var(--accent-green);">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;">
-                    <span style="font-weight: 900; color: #34d399; font-size: 0.95rem;">🛡️ Paramètres de Sécurité</span>
-                    <button class="btn btn-outline" style="width:auto; padding:4px 8px; font-size:0.7rem;" onclick="document.getElementById('modal-security').classList.add('hidden')">✕</button>
+        <div class="modal-overlay hidden" id="modal-security" style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.88); z-index:1600; display:flex; justify-content:center; align-items:center; padding:16px; box-sizing:border-box;">
+            <div class="card" style="width: 100%; max-width: 330px; background: rgba(15,23,42,0.98); border-color: var(--accent-green);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px;">
+                    <span style="font-weight: 900; color: #34d399; font-size: 0.9rem;">🛡️ Paramètres de Sécurité</span>
+                    <button class="btn btn-outline" style="width:auto; padding:3px 6px; font-size:0.68rem;" onclick="document.getElementById('modal-security').classList.add('hidden')">✕</button>
                 </div>
                 
-                <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Chiffrement SEPA & Authentification forte actifs.</p>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Chiffrement SEPA & Authentification forte actifs.</p>
 
-                <div style="text-align: left; margin-bottom: 4px; font-size: 0.78rem; font-weight: bold;">Nom complet (Vérifié) :</div>
-                <input type="text" id="sec-nom" readonly style="background: rgba(0,0,0,0.6); color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px;">
+                <div style="text-align: left; margin-bottom: 3px; font-size: 0.75rem; font-weight: bold;">Nom complet (Vérifié) :</div>
+                <input type="text" id="sec-nom" readonly style="background: rgba(0,0,0,0.6); color: #94a3b8; font-size: 0.82rem; margin-bottom: 6px;">
 
-                <div style="text-align: left; margin-bottom: 4px; font-size: 0.78rem; font-weight: bold;">Code PIN FDJ (Sécurisé) :</div>
-                <input type="password" value="••••" readonly style="background: rgba(0,0,0,0.6); color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px; text-align: center;">
+                <div style="text-align: left; margin-bottom: 3px; font-size: 0.75rem; font-weight: bold;">Code PIN FDJ (Sécurisé) :</div>
+                <input type="password" value="••••" readonly style="background: rgba(0,0,0,0.6); color: #94a3b8; font-size: 0.82rem; margin-bottom: 6px; text-align: center;">
 
-                <div style="text-align: left; margin-bottom: 4px; font-size: 0.78rem; font-weight: bold;">Statut du compte :</div>
-                <input type="text" value="Conforme RGPD & Bancaire (Niveau 1)" readonly style="background: rgba(0,0,0,0.6); color: #34d399; font-size: 0.78rem; margin-bottom: 12px;">
+                <div style="text-align: left; margin-bottom: 3px; font-size: 0.75rem; font-weight: bold;">Statut du compte :</div>
+                <input type="text" value="Conforme RGPD & Bancaire (Niveau 1)" readonly style="background: rgba(0,0,0,0.6); color: #34d399; font-size: 0.75rem; margin-bottom: 10px;">
 
-                <!-- MESSAGE DE PRÉVENTION LÉGAL DISCRET DANS LES PARAMÈTRES -->
-                <div class="legal-disclaimer" style="margin-bottom: 15px;">
+                <div class="legal-disclaimer" style="margin-bottom: 12px;">
                     ⚠️ JEUX D'ARGENT ET DE HASARD : PERTES D'ARGENT, CONFLITS FAMILIAUX, ADDICTION... INFOS SUR JOUEURS-INFO-SERVICE.FR (09 74 75 13 13)
                 </div>
 
-                <button class="btn btn-green" onclick="alert('Paramètres de sécurité enregistrés avec succès.'); document.getElementById('modal-security').classList.add('hidden');" style="font-size:0.85rem; padding:12px;">Fermer et Enregistrer</button>
+                <button class="btn btn-green" onclick="alert('Paramètres de sécurité enregistrés avec succès.'); document.getElementById('modal-security').classList.add('hidden');" style="font-size:0.82rem; padding:10px;">Fermer et Enregistrer</button>
             </div>
         </div>
 
@@ -334,27 +331,27 @@
         <div class="tuto-overlay" id="tuto-overlay">
             <div class="tuto-box">
                 <div class="tuto-step active" id="tuto-1">
-                    <div style="font-size: 3rem; margin-bottom: 10px;">🏠</div>
-                    <h3 style="color: #fff; margin-bottom: 10px;">Bienvenue sur FDJ Cash !</h3>
-                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">Suivez votre cagnotte sur l'accueil. Atteignez 25€ pour débloquer votre virement.</p>
+                    <div style="font-size: 2.6rem; margin-bottom: 8px;">🏠</div>
+                    <h3 style="color: #fff; margin-bottom: 8px;">Bienvenue sur FDJ Cash !</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Suivez votre cagnotte sur l'accueil. Atteignez 25€ pour débloquer votre virement.</p>
                     <button class="btn btn-green" onclick="app.tutoNext(2)">Suivant ➔</button>
                 </div>
                 <div class="tuto-step" id="tuto-2">
-                    <div style="font-size: 3rem; margin-bottom: 10px;">🎰</div>
-                    <h3 style="color: #fff; margin-bottom: 10px;">Jouez et gagnez</h3>
-                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">Chaque partie jouée vous rapporte de l'XP pour monter de niveau !</p>
+                    <div style="font-size: 2.6rem; margin-bottom: 8px;">🎰</div>
+                    <h3 style="color: #fff; margin-bottom: 8px;">Jouez et gagnez</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Chaque partie jouée vous rapporte de l'XP pour monter de niveau !</p>
                     <button class="btn btn-green" onclick="app.tutoNext(3)">Suivant ➔</button>
                 </div>
                 <div class="tuto-step" id="tuto-3">
-                    <div style="font-size: 3rem; margin-bottom: 10px;">📸</div>
-                    <h3 style="color: #fff; margin-bottom: 10px;">Missions VIP</h3>
-                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">🔒 L'onglet <strong>Missions</strong> se débloquera automatiquement au <strong>Niveau 2</strong> !</p>
+                    <div style="font-size: 2.6rem; margin-bottom: 8px;">📸</div>
+                    <h3 style="color: #fff; margin-bottom: 8px;">Missions VIP</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">🔒 L'onglet <strong>Missions</strong> se débloquera automatiquement au <strong>Niveau 2</strong> !</p>
                     <button class="btn btn-green" onclick="app.tutoNext(4)">Suivant ➔</button>
                 </div>
                 <div class="tuto-step" id="tuto-4">
-                    <div style="font-size: 3rem; margin-bottom: 10px;">🎧</div>
-                    <h3 style="color: #fff; margin-bottom: 10px;">Support 24/7</h3>
-                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">Contactez le support client à tout moment depuis votre profil.</p>
+                    <div style="font-size: 2.6rem; margin-bottom: 8px;">🎧</div>
+                    <h3 style="color: #fff; margin-bottom: 8px;">Support 24/7</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Contactez le support client à tout moment depuis votre profil.</p>
                     <button class="btn btn-green" onclick="app.tutoFin()">C'est parti ! 🚀</button>
                 </div>
             </div>
@@ -377,9 +374,9 @@
             
             <!-- 1. AUTHENTIFICATION -->
             <div id="screen-auth" class="screen active">
-                <div class="card" style="margin-top: 15px; border-color: rgba(16,185,129,0.4); box-shadow: 0 15px 35px rgba(16,185,129,0.2);">
-                    <div style="text-align:center; font-size: 3.5rem; margin-bottom: 12px;">🏦</div>
-                    <h2 style="margin-top:0; color: #fff; font-size: 1.5rem; font-weight: 900; text-align:center;">Espace Joueur FDJ</h2>
+                <div class="card" style="margin-top: 10px; border-color: rgba(16,185,129,0.4); box-shadow: 0 15px 35px rgba(16,185,129,0.2);">
+                    <div style="text-align:center; font-size: 3rem; margin-bottom: 10px;">🏦</div>
+                    <h2 style="margin-top:0; color: #fff; font-size: 1.4rem; font-weight: 900; text-align:center;">Espace Joueur FDJ</h2>
                     
                     <div class="auth-tabs">
                         <div class="auth-tab active" id="tab-login" onclick="app.switchAuth('login')">Se connecter</div>
@@ -389,7 +386,7 @@
                     <div id="form-login">
                         <input type="email" id="log-email" placeholder="Adresse e-mail">
                         <input type="password" id="log-pwd" placeholder="Mot de passe">
-                        <button class="btn btn-green" onclick="app.connexion(false)" style="margin-top: 5px;">Connexion Sécurisée 🔒</button>
+                        <button class="btn btn-green" onclick="app.connexion(false)" style="margin-top: 4px;">Connexion Sécurisée 🔒</button>
                     </div>
 
                     <div id="form-register" class="hidden">
@@ -399,83 +396,77 @@
                         <input type="email" id="reg-email" placeholder="Adresse e-mail">
                         <input type="password" id="reg-pwd" placeholder="Mot de passe">
                         
-                        <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; font-size: 0.78rem; color: var(--text-muted); text-align: left;">
-                            <input type="checkbox" id="reg-cgu" style="width: 18px; height: 18px; margin: 0; cursor: pointer;">
+                        <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px; font-size: 0.75rem; color: var(--text-muted); text-align: left;">
+                            <input type="checkbox" id="reg-cgu" style="width: 16px; height: 16px; margin: 0; cursor: pointer;">
                             <label for="reg-cgu" style="cursor: pointer; line-height: 1.3;">J'atteste sur l'honneur être majeur(e) et accepter les <span style="color: #38bdf8; text-decoration: underline;">CGU et conditions de reversement SEPA</span>.</label>
                         </div>
 
-                        <button class="btn btn-green" onclick="app.connexion(true)" style="margin-top: 5px;">Créer mon compte 🚀</button>
+                        <button class="btn btn-green" onclick="app.connexion(true)" style="margin-top: 4px;">Créer mon compte 🚀</button>
                     </div>
                 </div>
             </div>
 
             <!-- 2. ACCUEIL & JEUX -->
             <div id="screen-home" class="screen">
-                <!-- MESSAGE PRÉVENTION AMOVIBLE AVEC CROIX -->
                 <div class="prevention-banner-home" id="home-prevention-banner">
-                    <div style="display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #f87171; margin-bottom: 3px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #f87171; margin-bottom: 2px;">
                         <span>⚠️ JEUX D'ARGENT & DE HASARD : DANGERS</span>
-                        <span onclick="document.getElementById('home-prevention-banner').style.display='none'" style="cursor: pointer; font-size: 1rem; color: #94a3b8; padding: 0 4px;">✕</span>
+                        <span onclick="document.getElementById('home-prevention-banner').style.display='none'" style="cursor: pointer; font-size: 0.95rem; color: #94a3b8; padding: 0 4px;">✕</span>
                     </div>
-                    <span>Pertes d'argent, conflits familiaux, addiction... Infos sur <strong style="color:#fff;">Joueurs-Info-Service.fr</strong> (09 74 75 13 13 - Appel non surtaxé).</span>
+                    <span>Pertes d'argent, conflits familiaux... Infos sur <strong style="color:#fff;">Joueurs-Info-Service.fr</strong> (09 74 75 13 13).</span>
                 </div>
 
-                <!-- BONUS x2 -->
                 <div class="fomo-banner" id="fomo-banner-box">
                     <span>⚡ BONUS x2 ACTIVÉ SUR LES GAINS !</span>
-                    <span id="fomo-timer" style="background:rgba(0,0,0,0.4); padding:3px 8px; border-radius:8px;">14:59</span>
+                    <span id="fomo-timer" style="background:rgba(0,0,0,0.4); padding:2px 6px; border-radius:6px;">14:59</span>
                 </div>
 
-                <!-- FAUX JOURNAL DES TIRAGES EN DIRECT -->
                 <div class="ticker-bar">
                     <span class="ticker-content">🔥 Thomas_75 vient de gagner 25.00 € • Manon_33 a validé son virement • Kevin_29 a tiré la Roue Journalière et gagne 30 pièces ! • </span>
                 </div>
 
                 <div class="promo-banner">
-                    <div style="font-size: 1.8rem; float: right; margin-top: 5px;">💸</div>
-                    <h4 style="font-size: 1.2rem; margin-bottom: 6px;">Jackpot Flash</h4>
-                    <p style="font-size: 0.85rem;">+ 1 500 000 € garantis aujourd'hui ! Tentez votre chance sur nos meilleurs jeux.</p>
+                    <div style="font-size: 1.6rem; float: right; margin-top: 4px;">💸</div>
+                    <h4 style="font-size: 1.1rem; margin-bottom: 4px;">Jackpot Flash</h4>
+                    <p style="font-size: 0.8rem;">+ 1 500 000 € garantis aujourd'hui ! Tentez votre chance sur nos meilleurs jeux.</p>
                 </div>
 
-                <!-- OBJECTIF DE RETRAIT -->
-                <div class="card" onclick="app.ouvrirPageRetrait()" style="background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(15,23,42,0.8)); border-color: rgba(16,185,129,0.4); padding: 18px; cursor: pointer; transition: transform 0.2s;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
-                        <h4 style="margin:0; color: #34d399; font-size:1rem; font-weight: 800;">Objectif Retrait : 25.00 € ➔</h4>
-                        <span id="current-cash" style="font-weight: 900; color: #34d399; font-size: 1.2rem;">0.00 €</span>
+                <div class="card" onclick="app.ouvrirPageRetrait()" style="background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(15,23,42,0.8)); border-color: rgba(16,185,129,0.4); padding: 15px; cursor: pointer; transition: transform 0.2s;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+                        <h4 style="margin:0; color: #34d399; font-size:0.95rem; font-weight: 800;">Objectif Retrait : 25.00 € ➔</h4>
+                        <span id="current-cash" style="font-weight: 900; color: #34d399; font-size: 1.1rem;">0.00 €</span>
                     </div>
-                    <div style="background: rgba(0,0,0,0.5); border-radius: 10px; height: 14px; overflow: hidden; position: relative;">
+                    <div style="background: rgba(0,0,0,0.5); border-radius: 8px; height: 12px; overflow: hidden; position: relative;">
                         <div id="progress-bar" style="background: linear-gradient(90deg, #10b981, #38bdf8); width: 0%; height: 100%; transition: width 0.6s;"></div>
                     </div>
                 </div>
 
-                <!-- LEADERBOARD DES GAGNEURS -->
-                <div class="card" style="padding: 14px 18px; background: rgba(6, 78, 59, 0.2); border: 1px solid rgba(16, 185, 129, 0.3);">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
-                        <h4 style="margin: 0; color: var(--accent-gold); font-size: 0.95rem; font-weight: 800;">🏆 Top Gagnants du Jour</h4>
-                        <span style="font-size: 0.7rem; background: rgba(16,185,129,0.2); color: #10b981; padding: 2px 6px; border-radius: 6px; font-weight: bold;">LIVE</span>
+                <div class="card" style="padding: 12px 16px; background: rgba(6, 78, 59, 0.2); border: 1px solid rgba(16, 185, 129, 0.3);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+                        <h4 style="margin: 0; color: var(--accent-gold); font-size: 0.9rem; font-weight: 800;">🏆 Top Gagnants du Jour</h4>
+                        <span style="font-size: 0.65rem; background: rgba(16,185,129,0.2); color: #10b981; padding: 2px 5px; border-radius: 5px; font-weight: bold;">LIVE</span>
                     </div>
-                    <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 10px;">
+                    <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.8rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 6px 10px; border-radius: 8px;">
                             <span>🥇 <strong>Thomas_75</strong> (Paris)</span>
                             <span style="color: #10b981; font-weight: 900;">+480.00 €</span>
                         </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 6px 10px; border-radius: 8px;">
                             <span>🥈 <strong>Manon_33</strong> (Bordeaux)</span>
                             <span style="color: #10b981; font-weight: 900;">+320.00 €</span>
                         </div>
                     </div>
                 </div>
 
-                <h3 style="margin: 8px 0 0 0; font-size: 1.1rem; color: #fff;">Nos Meilleurs Jeux</h3>
+                <h3 style="margin: 6px 0 0 0; font-size: 1.05rem; color: #fff;">Nos Meilleurs Jeux</h3>
                 <div class="games-grid">
                     <div class="game-card" onclick="app.changerEcran('screen-scratch')"><div class="icon">🎫</div><div class="title">Cash Express</div><div class="jackpot">Mise : 3 🪙</div></div>
                     <div class="game-card" onclick="app.changerEcran('screen-slot')"><div class="icon">🎰</div><div class="title">Mega Slot</div><div class="jackpot">Mise : 4 🪙</div></div>
                     <div class="game-card" onclick="app.changerEcran('screen-wheel-game')"><div class="icon">🎡</div><div class="title">Spin & Win</div><div class="jackpot">Mise : 5 🪙</div></div>
                     <div class="game-card" onclick="app.changerEcran('screen-chests')"><div class="icon">🧰</div><div class="title">Coffres Magiques</div><div class="jackpot">Mise : 6 🪙</div></div>
-                    <div class="game-card" onclick="app.changerEcran('screen-lotto')" style="grid-column: span 2; background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(30,41,59,0.8)); border-color: rgba(16,185,129,0.4);"><div class="icon" style="font-size:2.2rem;">🎟️</div><div class="title">Tirage au Sort Loto Flash</div><div class="jackpot">Mise modulable • Jackpot ce soir 20h00</div></div>
+                    <div class="game-card" onclick="app.changerEcran('screen-lotto')" style="grid-column: span 2; background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(30,41,59,0.8)); border-color: rgba(16,185,129,0.4);"><div class="icon" style="font-size:2rem;">🎟️</div><div class="title">Tirage au Sort Loto Flash</div><div class="jackpot">Mise modulable • Jackpot ce soir 20h00</div></div>
                 </div>
 
-                <!-- MENTION LÉGALE DISCRÈTE BAS DE PAGE ACCUEIL -->
                 <div class="legal-disclaimer">
                     Jouer comporte des risques : endettement, isolement, dépendance. Pour être aidé, appelez le 09 74 75 13 13 (appel non surtaxé).
                 </div>
@@ -483,12 +474,12 @@
 
             <!-- PAGE DÉDIÉE AU RETRAIT -->
             <div id="screen-retrait" class="screen">
-                <div><button class="btn btn-outline" style="width: auto; padding: 10px 16px; font-size: 0.85rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
+                <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
                 
-                <div class="card" style="text-align: center; padding: 25px 20px;">
-                    <div id="retrait-cadenas-icon" style="font-size: 3.5rem; margin-bottom: 10px;">🔒</div>
-                    <h3 id="retrait-page-title" style="color: #ef4444; font-size: 1.5rem; margin-bottom: 10px;">Retrait Verrouillé</h3>
-                    <p id="retrait-page-desc" style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">
+                <div class="card" style="text-align: center; padding: 20px 16px;">
+                    <div id="retrait-cadenas-icon" style="font-size: 3rem; margin-bottom: 8px;">🔒</div>
+                    <h3 id="retrait-page-title" style="color: #ef4444; font-size: 1.3rem; margin-bottom: 8px;">Retrait Verrouillé</h3>
+                    <p id="retrait-page-desc" style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 16px;">
                         Votre cagnotte n'a pas encore atteint le seuil réglementaire de <strong>25.00 €</strong>. Le virement bancaire ou PayPal est strictement bloqué en dessous de ce montant.
                     </p>
 
@@ -501,11 +492,11 @@
 
             <!-- JEU 1: GRATTAGE 9 CASES -->
             <div id="screen-scratch" class="screen">
-                <div><button class="btn btn-outline" style="width: auto; padding: 10px 16px; font-size: 0.85rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
+                <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
                 <div class="scratch-ticket">
-                    <h3 style="color: var(--accent-green); font-size: 1.4rem; margin-bottom: 5px;">🎫 Ticket 9 Cases (3 Grattages max)</h3>
-                    <p style="font-size: 0.78rem; color: var(--text-muted);">Grattez 3 cases maximum. Trouvez 3 symboles identiques pour gagner !</p>
-                    <button class="btn btn-gold" id="btn-nouveau-ticket" onclick="app.initialiserGrattage()" style="margin-top: 10px;">Acheter Ticket (3 🪙)</button>
+                    <h3 style="color: var(--accent-green); font-size: 1.3rem; margin-bottom: 4px;">🎫 Ticket 9 Cases (3 Grattages max)</h3>
+                    <p style="font-size: 0.75rem; color: var(--text-muted);">Grattez 3 cases maximum. Trouvez 3 symboles identiques pour gagner !</p>
+                    <button class="btn btn-gold" id="btn-nouveau-ticket" onclick="app.initialiserGrattage()" style="margin-top: 8px;">Acheter Ticket (3 🪙)</button>
                     
                     <div class="scratch-grid-9 hidden" id="scratch-grid-9-ui">
                         <div class="scratch-cell-9" onclick="app.gratterCase9(0)">❓</div>
@@ -519,163 +510,163 @@
                         <div class="scratch-cell-9" onclick="app.gratterCase9(8)">❓</div>
                     </div>
 
-                    <div id="scratch-attempts" style="font-size: 0.85rem; color: var(--accent-green); font-weight: bold; margin-top: 5px;"></div>
-                    <div id="scratch-result" style="font-size: 1rem; font-weight: bold; margin-top: 5px; min-height: 24px;"></div>
+                    <div id="scratch-attempts" style="font-size: 0.8rem; color: var(--accent-green); font-weight: bold; margin-top: 4px;"></div>
+                    <div id="scratch-result" style="font-size: 0.95rem; font-weight: bold; margin-top: 4px; min-height: 22px;"></div>
                 </div>
             </div>
 
             <!-- JEU 2: SLOT -->
             <div id="screen-slot" class="screen">
-                <div><button class="btn btn-outline" style="width: auto; padding: 10px 16px; font-size: 0.85rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
+                <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
                 <div class="slot-cabinet">
-                    <h3 style="color: #34d399; font-size: 1.6rem; margin-bottom: 5px;">🎰 Mega Slot Las Vegas</h3>
-                    <p style="font-size: 0.8rem; color: var(--text-muted);">Alignez 3 symboles identiques !</p>
+                    <h3 style="color: #34d399; font-size: 1.4rem; margin-bottom: 4px;">🎰 Mega Slot Las Vegas</h3>
+                    <p style="font-size: 0.78rem; color: var(--text-muted);">Alignez 3 symboles identiques !</p>
                     <div class="slot-window">
                         <div class="slot-reel"><div class="slot-inner" id="slot-1">🍒</div></div>
                         <div class="slot-reel"><div class="slot-inner" id="slot-2">💎</div></div>
                         <div class="slot-reel"><div class="slot-inner" id="slot-3">7️⃣</div></div>
                     </div>
-                    <button class="btn btn-gold" id="btn-spin" onclick="app.lancerSlot()" style="font-size: 1.1rem;">Lancer Spin (4 🪙)</button>
-                    <div id="slot-result" style="font-size: 1.1rem; font-weight: bold; margin-top: 15px; min-height: 24px;"></div>
+                    <button class="btn btn-gold" id="btn-spin" onclick="app.lancerSlot()" style="font-size: 1rem;">Lancer Spin (4 🪙)</button>
+                    <div id="slot-result" style="font-size: 1rem; font-weight: bold; margin-top: 12px; min-height: 22px;"></div>
                 </div>
             </div>
 
             <!-- JEU 3: ROUE DES JEUX -->
             <div id="screen-wheel-game" class="screen">
-                <div><button class="btn btn-outline" style="width: auto; padding: 10px 16px; font-size: 0.85rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
-                <div class="card" style="text-align: center; padding: 25px 20px;">
-                    <h3 style="color: #38bdf8; font-size: 1.5rem; margin-bottom: 5px;">🎡 Spin & Win</h3>
-                    <p style="font-size: 0.8rem; color: var(--text-muted);">Regardez les gains sur chaque case et tentez le jackpot !</p>
+                <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
+                <div class="card" style="text-align: center; padding: 20px 16px;">
+                    <h3 style="color: #38bdf8; font-size: 1.4rem; margin-bottom: 4px;">🎡 Spin & Win</h3>
+                    <p style="font-size: 0.78rem; color: var(--text-muted);">Regardez les gains sur chaque case et tentez le jackpot !</p>
                     <div class="wheel-container">
                         <div class="wheel-pointer">👇</div>
                         <div class="wheel" id="wheel-element">
-                            <div class="wheel-sector" style="transform: rotate(30deg) translate(0, -60px);">+0.50 €</div>
-                            <div class="wheel-sector" style="transform: rotate(90deg) translate(0, -60px);">+1.00 €</div>
-                            <div class="wheel-sector" style="transform: rotate(150deg) translate(0, -60px);">PERDU</div>
-                            <div class="wheel-sector" style="transform: rotate(210deg) translate(0, -60px);">+2.00 €</div>
-                            <div class="wheel-sector" style="transform: rotate(270deg) translate(0, -60px);">+0.30 €</div>
-                            <div class="wheel-sector" style="transform: rotate(330deg) translate(0, -60px);">JACKPOT</div>
+                            <div class="wheel-sector" style="transform: rotate(30deg) translate(0, -50px);">+0.50 €</div>
+                            <div class="wheel-sector" style="transform: rotate(90deg) translate(0, -50px);">+1.00 €</div>
+                            <div class="wheel-sector" style="transform: rotate(150deg) translate(0, -50px);">PERDU</div>
+                            <div class="wheel-sector" style="transform: rotate(210deg) translate(0, -50px);">+2.00 €</div>
+                            <div class="wheel-sector" style="transform: rotate(270deg) translate(0, -50px);">+0.30 €</div>
+                            <div class="wheel-sector" style="transform: rotate(330deg) translate(0, -50px);">JACKPOT</div>
                         </div>
                     </div>
-                    <button class="btn btn-gold" id="btn-spin-wheel" onclick="app.lancerRoue()" style="font-size: 1.1rem;">Tourner la Roue (5 🪙)</button>
-                    <div id="wheel-result" style="font-size: 1rem; font-weight: bold; margin-top: 15px; min-height: 24px;"></div>
+                    <button class="btn btn-gold" id="btn-spin-wheel" onclick="app.lancerRoue()" style="font-size: 1rem;">Tourner la Roue (5 🪙)</button>
+                    <div id="wheel-result" style="font-size: 0.95rem; font-weight: bold; margin-top: 12px; min-height: 22px;"></div>
                 </div>
             </div>
 
             <!-- LOTO FLASH AVEC CURSEUR DE MISE (SLIDER) -->
             <div id="screen-lotto" class="screen">
-                <div><button class="btn btn-outline" style="width: auto; padding: 10px 16px; font-size: 0.85rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
-                <div class="card" style="text-align: center; padding: 25px 20px; border-color: #10b981;">
-                    <div style="font-size: 3rem; margin-bottom: 5px;">🎟️</div>
-                    <h3 style="color: #34d399; font-size: 1.5rem; margin-bottom: 5px;">Tirage Loto Flash</h3>
-                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px;">Choisissez votre mise en glissant le curseur :</p>
+                <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
+                <div class="card" style="text-align: center; padding: 20px 16px; border-color: #10b981;">
+                    <div style="font-size: 2.6rem; margin-bottom: 4px;">🎟️</div>
+                    <h3 style="color: #34d399; font-size: 1.4rem; margin-bottom: 4px;">Tirage Loto Flash</h3>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 16px;">Choisissez votre mise en glissant le curseur :</p>
                     
-                    <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 16px; margin-bottom: 20px; border: 1px solid rgba(16,185,129,0.3);">
-                        <div style="font-size: 1.2rem; font-weight: 900; color: var(--accent-gold); margin-bottom: 8px;">
+                    <div style="background: rgba(0,0,0,0.4); padding: 12px; border-radius: 14px; margin-bottom: 16px; border: 1px solid rgba(16,185,129,0.3);">
+                        <div style="font-size: 1.1rem; font-weight: 900; color: var(--accent-gold); margin-bottom: 6px;">
                             Mise : <span id="lotto-mise-val">10</span> 🪙
                         </div>
                         <input type="range" id="lotto-slider" min="1" max="50" value="10" oninput="app.mettreAJourSliderLotto(this.value)" style="width: 100%; cursor: pointer; accent-color: var(--accent-gold);">
-                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">
                             <span>1 🪙</span>
                             <span>25 🪙</span>
                             <span>50 🪙</span>
                         </div>
-                        <div id="lotto-gain-potentiel" style="font-size: 0.85rem; color: #34d399; font-weight: bold; margin-top: 12px;">Gain potentiel estimé : +5.00 €</div>
+                        <div id="lotto-gain-potentiel" style="font-size: 0.8rem; color: #34d399; font-weight: bold; margin-top: 10px;">Gain potentiel estimé : +5.00 €</div>
                     </div>
 
-                    <button class="btn btn-green" id="btn-lotto" onclick="app.lancerLoto()" style="font-size: 1.1rem;">Valider ma Grille 🎟️</button>
-                    <div id="lotto-result" style="font-size: 0.9rem; font-weight: bold; margin-top: 15px; min-height: 24px; line-height: 1.4;"></div>
+                    <button class="btn btn-green" id="btn-lotto" onclick="app.lancerLoto()" style="font-size: 1rem;">Valider ma Grille 🎟️</button>
+                    <div id="lotto-result" style="font-size: 0.85rem; font-weight: bold; margin-top: 12px; min-height: 22px; line-height: 1.3;"></div>
                 </div>
             </div>
 
             <!-- JEU 4: COFFRES -->
             <div id="screen-chests" class="screen">
-                <div><button class="btn btn-outline" style="width: auto; padding: 10px 16px; font-size: 0.85rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
-                <div class="card" style="text-align: center; padding: 25px 20px; border-color: #38bdf8;">
-                    <h3 style="color: #38bdf8; font-size: 1.5rem; margin-bottom: 5px;">🧰 Coffres Magiques</h3>
-                    <p style="font-size: 0.8rem; color: var(--text-muted);">Choisissez un coffre pour découvrir votre gain.</p>
+                <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
+                <div class="card" style="text-align: center; padding: 20px 16px; border-color: #38bdf8;">
+                    <h3 style="color: #38bdf8; font-size: 1.4rem; margin-bottom: 4px;">🧰 Coffres Magiques</h3>
+                    <p style="font-size: 0.78rem; color: var(--text-muted);">Choisissez un coffre pour découvrir votre gain.</p>
                     <div class="chests-container" id="chests-ui">
                         <div class="chest" onclick="app.ouvrirCoffre(0)">📦</div>
                         <div class="chest" onclick="app.ouvrirCoffre(1)">📦</div>
                         <div class="chest" onclick="app.ouvrirCoffre(2)">📦</div>
                     </div>
                     <button class="btn btn-gold hidden" id="btn-new-chests" onclick="app.resetCoffres()">Rejouer (6 🪙)</button>
-                    <div id="chest-result" style="font-size: 1rem; font-weight: bold; margin-top: 15px; min-height: 24px;"></div>
+                    <div id="chest-result" style="font-size: 0.95rem; font-weight: bold; margin-top: 12px; min-height: 22px;"></div>
                 </div>
             </div>
 
             <!-- ROUE JOURNALIÈRE -->
             <div id="screen-daily-wheel" class="screen">
-                <div class="card" style="text-align: center; padding: 25px 20px; border-color: var(--accent-gold);">
-                    <h3 style="color: var(--accent-gold); font-size: 1.5rem; margin-bottom: 5px;">🎁 Roue Journalière Gratuite</h3>
-                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Tournez la roue une fois par jour pour gagner jusqu'à 50 pièces !</p>
+                <div class="card" style="text-align: center; padding: 20px 16px; border-color: var(--accent-gold);">
+                    <h3 style="color: var(--accent-gold); font-size: 1.4rem; margin-bottom: 4px;">🎁 Roue Journalière Gratuite</h3>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px;">Tournez la roue une fois par jour pour gagner jusqu'à 50 pièces !</p>
                     <div class="wheel-container">
                         <div class="wheel-pointer">👇</div>
                         <div class="wheel" id="daily-wheel-element">
-                            <div class="wheel-sector" style="transform: rotate(30deg) translate(0, -60px);">+10 🪙</div>
-                            <div class="wheel-sector" style="transform: rotate(90deg) translate(0, -60px);">+25 🪙</div>
-                            <div class="wheel-sector" style="transform: rotate(150deg) translate(0, -60px);">+5 🪙</div>
-                            <div class="wheel-sector" style="transform: rotate(210deg) translate(0, -60px);">+50 🪙</div>
-                            <div class="wheel-sector" style="transform: rotate(270deg) translate(0, -60px);">+15 🪙</div>
-                            <div class="wheel-sector" style="transform: rotate(330deg) translate(0, -60px);">+20 🪙</div>
+                            <div class="wheel-sector" style="transform: rotate(30deg) translate(0, -50px);">+10 🪙</div>
+                            <div class="wheel-sector" style="transform: rotate(90deg) translate(0, -50px);">+25 🪙</div>
+                            <div class="wheel-sector" style="transform: rotate(150deg) translate(0, -50px);">+5 🪙</div>
+                            <div class="wheel-sector" style="transform: rotate(210deg) translate(0, -50px);">+50 🪙</div>
+                            <div class="wheel-sector" style="transform: rotate(270deg) translate(0, -50px);">+15 🪙</div>
+                            <div class="wheel-sector" style="transform: rotate(330deg) translate(0, -50px);">+20 🪙</div>
                         </div>
                     </div>
-                    <button class="btn btn-gold" id="btn-spin-daily" onclick="app.lancerRoueJournaliere()" style="font-size: 1.1rem;">Tourner Gratuitement 🎁</button>
-                    <div id="daily-wheel-timer" style="font-size: 0.85rem; color: var(--accent-gold); font-weight: bold; margin-top: 10px;"></div>
+                    <button class="btn btn-gold" id="btn-spin-daily" onclick="app.lancerRoueJournaliere()" style="font-size: 1rem;">Tourner Gratuitement 🎁</button>
+                    <div id="daily-wheel-timer" style="font-size: 0.8rem; color: var(--accent-gold); font-weight: bold; margin-top: 8px;"></div>
                 </div>
             </div>
 
             <!-- 3. DÉFIS PHOTOS -->
             <div id="screen-defis" class="screen">
                 <div class="promo-banner" style="background: linear-gradient(135deg, #064e3b, #042f2e);">
-                    <h4 style="display:flex; align-items:center; justify-content:space-between;">Missions VIP Dynamiques <span>💸</span></h4>
-                    <p>Réalisez ces missions. Chaque défi validé disparaît et est remplacé par une nouvelle mission équivalente !</p>
+                    <h4 style="display:flex; align-items:center; justify-content:space-between; margin-top:0;">Missions VIP Dynamiques <span>💸</span></h4>
+                    <p style="margin-bottom:0; font-size: 0.82rem;">Réalisez ces missions. Chaque défi validé disparaît et est remplacé par une nouvelle mission !</p>
                 </div>
                 
                 <div id="defi-locked" class="mission-locked">
-                    <div style="font-size: 3rem; margin-bottom: 10px;">🔒</div>
-                    <h3 style="color: #fff; margin-bottom: 10px;">Accès Restreint</h3>
-                    <p style="font-size: 0.9rem; color: var(--text-muted);">Atteignez le <strong>Niveau 2</strong> en jouant aux mini-jeux de l'accueil pour débloquer ces missions !</p>
+                    <div style="font-size: 2.6rem; margin-bottom: 8px;">🔒</div>
+                    <h3 style="color: #fff; margin-bottom: 8px;">Accès Restreint</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Atteignez le <strong>Niveau 2</strong> en jouant aux mini-jeux pour débloquer ces missions !</p>
                 </div>
 
                 <div id="defi-unlocked" class="card hidden">
-                    <h4 style="margin: 0 0 10px 0; color: #34d399; font-size: 1.1rem;">Missions disponibles :</h4>
+                    <h4 style="margin: 0 0 8px 0; color: #34d399; font-size: 1.05rem;">Missions disponibles :</h4>
                     
                     <div id="missions-dynamic-container"></div>
 
-                    <input type="file" accept="image/*" id="defi-file-input" style="padding: 12px; margin-top:10px;">
+                    <input type="file" accept="image/*" id="defi-file-input" style="padding: 10px; margin-top:8px;">
                     <button class="btn btn-green" id="btn-soumettre-defi" onclick="app.soumettreDefi()">Envoyer pour validation</button>
-                    <div id="defi-cooldown-msg" style="text-align: center; font-size: 0.85rem; color: var(--accent-green); margin-top: 10px; font-weight: bold;"></div>
+                    <div id="defi-cooldown-msg" style="text-align: center; font-size: 0.8rem; color: var(--accent-green); margin-top: 8px; font-weight: bold;"></div>
                 </div>
             </div>
 
             <!-- SUPPORT CHAT -->
             <div id="screen-support" class="screen">
-                <div><button class="btn btn-outline" style="width: auto; padding: 10px 16px; font-size: 0.85rem;" onclick="app.changerEcran('screen-compte', document.getElementById('nav-compte'))">⬅ Retour</button></div>
-                <div class="card" style="padding: 15px;">
-                    <h3 style="margin: 0 0 15px 0; display:flex; align-items:center; gap:8px;"><span style="font-size:1.5rem;">🎧</span> Support FDJ</h3>
+                <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-compte', document.getElementById('nav-compte'))">⬅ Retour</button></div>
+                <div class="card" style="padding: 14px;">
+                    <h3 style="margin: 0 0 12px 0; display:flex; align-items:center; gap:8px;"><span style="font-size:1.4rem;">🎧</span> Support FDJ</h3>
                     <div class="chat-container" id="chat-box">
-                        <div class="msg bot">Bonjour <strong><span id="chat-user-name">Joueur</span></strong>. Service client FDJ. Veuillez formuler votre demande de manière claire.</div>
+                        <div class="msg bot">Bonjour <strong><span id="chat-user-name">Joueur</span></strong>. Service client FDJ. Veuillez formuler votre demande.</div>
                     </div>
-                    <div id="typing-indicator" style="font-size: 0.75rem; color: #34d399; margin-bottom: 8px; font-style: italic; display: none;">Sarah (Support) écrit...</div>
+                    <div id="typing-indicator" style="font-size: 0.72rem; color: #34d399; margin-bottom: 6px; font-style: italic; display: none;">Sarah (Support) écrit...</div>
                     <div class="quick-replies">
                         <button class="qr-btn" onclick="app.envoyerMessageRapide('Pourquoi mon virement est bloqué ?')">Virement bloqué ?</button>
                         <button class="qr-btn" onclick="app.demanderAgentFDJ()">Demander un agent FDJ 👤</button>
                     </div>
-                    <div style="display:flex; gap:8px;">
+                    <div style="display:flex; gap:6px;">
                         <input type="text" id="chat-input" placeholder="Écrire un message..." style="margin:0;">
-                        <button class="btn btn-green" style="width: 65px; border-radius: 12px; padding: 0;" onclick="app.envoyerMessageManuel()">➤</button>
+                        <button class="btn btn-green" style="width: 58px; border-radius: 10px; padding: 0;" onclick="app.envoyerMessageManuel()">➤</button>
                     </div>
                 </div>
             </div>
 
             <!-- 4. MON COMPTE -->
             <div id="screen-compte" class="screen">
-                <div class="card" style="text-align: center; padding: 22px; position: relative;">
-                    <div style="position: absolute; top: 15px; right: 15px; background: rgba(16,185,129,0.2); color: #10b981; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; border: 1px solid rgba(16,185,129,0.4);">Vérifié ✔</div>
-                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #064e3b, #10b981); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 12px auto; box-shadow: 0 8px 20px rgba(16,185,129,0.4);">👤</div>
-                    <h3 id="profile-name" style="margin: 0 0 4px 0; font-size: 1.3rem; font-weight: 900;">Nom du Joueur</h3>
-                    <p id="profile-email" style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">email@domaine.com</p>
+                <div class="card" style="text-align: center; padding: 18px; position: relative;">
+                    <div style="position: absolute; top: 12px; right: 12px; background: rgba(16,185,129,0.2); color: #10b981; padding: 3px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: bold; border: 1px solid rgba(16,185,129,0.4);">Vérifié ✔</div>
+                    <div style="width: 70px; height: 70px; background: linear-gradient(135deg, #064e3b, #10b981); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 10px auto; box-shadow: 0 8px 20px rgba(16,185,129,0.4);">👤</div>
+                    <h3 id="profile-name" style="margin: 0 0 3px 0; font-size: 1.2rem; font-weight: 900;">Nom du Joueur</h3>
+                    <p id="profile-email" style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">email@domaine.com</p>
                 </div>
 
                 <div class="settings-container">
@@ -684,11 +675,11 @@
                         <div class="setting-item-left">
                             <div class="icon-box" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">💎</div>
                             <div>
-                                <div style="color: #34d399; font-weight: 800; font-size: 0.95rem;">Pass Diamant VIP</div>
-                                <div style="font-size: 0.75rem; color: var(--text-muted);">Passer au niveau supérieur</div>
+                                <div style="color: #34d399; font-weight: 800; font-size: 0.9rem;">Pass Diamant VIP</div>
+                                <div style="font-size: 0.72rem; color: var(--text-muted);">Passer au niveau supérieur</div>
                             </div>
                         </div>
-                        <div style="background: #34d399; color: #000; font-weight: 900; font-size: 0.78rem; padding: 6px 12px; border-radius: 10px; box-shadow: 0 4px 12px rgba(16,185,129,0.4);">2,99 €</div>
+                        <div style="background: #34d399; color: #000; font-weight: 900; font-size: 0.75rem; padding: 5px 10px; border-radius: 8px; box-shadow: 0 4px 12px rgba(16,185,129,0.4);">2,99 €</div>
                     </div>
 
                     <div class="setting-item" onclick="app.changerEcran('screen-support')">
@@ -725,16 +716,15 @@
                 </div>
             </div>
 
-            <!-- 5. ESPACE ADMIN MASTER (AVEC MODE DE TRI AVANCÉ) -->
+            <!-- 5. ESPACE ADMIN MASTER -->
             <div id="screen-admin" class="screen">
                 <div class="card" style="border-color: #ef4444; background: linear-gradient(180deg, rgba(239,68,68,0.15), rgba(0,0,0,0));">
-                    <h3 style="margin:0 0 8px 0; color: #ef4444; font-size: 1.4rem;">👑 Console Master (Admin)</h3>
-                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Gestion permanente et fiable des profils.</p>
+                    <h3 style="margin:0 0 6px 0; color: #ef4444; font-size: 1.3rem;">👑 Console Master (Admin)</h3>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Gestion permanente et fiable des profils.</p>
                     
-                    <!-- BARRE DE TRI DES UTILISATEURS -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                        <h4 style="color: #f87171; margin: 0; font-size: 0.9rem;">👥 Utilisateurs Enregistrés :</h4>
-                        <select id="admin-sort-select" onchange="app.changerModeTri(this.value)" style="background: rgba(0,0,0,0.6); color: #38bdf8; border: 1px solid rgba(56,189,248,0.3); border-radius: 8px; padding: 4px 8px; font-size: 0.75rem; outline: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <h4 style="color: #f87171; margin: 0; font-size: 0.85rem;">👥 Utilisateurs :</h4>
+                        <select id="admin-sort-select" onchange="app.changerModeTri(this.value)" style="background: rgba(0,0,0,0.6); color: #38bdf8; border: 1px solid rgba(56,189,248,0.3); border-radius: 6px; padding: 3px 6px; font-size: 0.72rem; outline: none;">
                             <option value="recent">Tri : Récents</option>
                             <option value="cash-desc">Tri : Cash (Max ➔ Min)</option>
                             <option value="coins-desc">Tri : Pièces (Max ➔ Min)</option>
@@ -742,17 +732,16 @@
                         </select>
                     </div>
 
-                    <div id="admin-users-list" style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 12px; max-height: 180px; overflow-y: auto; margin-bottom: 15px;">
-                        <p style="font-size: 0.8rem; color: var(--text-muted);">Aucun utilisateur.</p>
+                    <div id="admin-users-list" style="background: rgba(0,0,0,0.4); padding: 8px; border-radius: 10px; max-height: 160px; overflow-y: auto; margin-bottom: 12px;">
+                        <p style="font-size: 0.78rem; color: var(--text-muted);">Aucun utilisateur.</p>
                     </div>
 
-                    <!-- DÉTAILS DU PROFIL SÉLECTIONNÉ -->
-                    <div id="admin-user-detail-card" class="hidden" style="background: rgba(15,23,42,0.95); padding: 15px; border-radius: 16px; border: 1px solid var(--accent-gold); margin-bottom: 15px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                            <h4 id="adm-det-name" style="margin:0; color:var(--accent-gold); font-size:1rem;">Nom</h4>
-                            <button class="btn btn-outline" style="width:auto; padding:4px 8px; font-size:0.7rem;" onclick="app.fermerAdminDetail()">Fermer ✕</button>
+                    <div id="admin-user-detail-card" class="hidden" style="background: rgba(15,23,42,0.95); padding: 12px; border-radius: 14px; border: 1px solid var(--accent-gold); margin-bottom: 12px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <h4 id="adm-det-name" style="margin:0; color:var(--accent-gold); font-size:0.95rem;">Nom</h4>
+                            <button class="btn btn-outline" style="width:auto; padding:3px 6px; font-size:0.68rem;" onclick="app.fermerAdminDetail()">Fermer ✕</button>
                         </div>
-                        <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; display:flex; flex-direction:column; gap:4px;">
+                        <div style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; display:flex; flex-direction:column; gap:3px;">
                             <div>📧 E-mail : <strong id="adm-det-email" style="color:#fff;">-</strong></div>
                             <div>🕒 Connexion : <strong id="adm-det-login-time" style="color:#fff;">-</strong></div>
                             <div>⏳ Temps passé : <strong id="adm-det-session-time" style="color:#38bdf8;">0 min</strong></div>
@@ -760,30 +749,29 @@
                             <div>💶 Cash cumulé : <strong id="adm-det-cash" style="color:#10b981;">0.00 €</strong></div>
                             <div>🎮 Parties jouées : <strong id="adm-det-games" style="color:#fff;">0</strong></div>
                         </div>
-                        <button class="btn btn-green" onclick="app.supprimerUtilisateurAdmin()" style="margin-top:12px; font-size:0.75rem; padding:8px; background:linear-gradient(135deg, #ef4444, #b91c1c);">Supprimer ce profil</button>
+                        <button class="btn btn-green" onclick="app.supprimerUtilisateurAdmin()" style="margin-top:10px; font-size:0.72rem; padding:7px; background:linear-gradient(135deg, #ef4444, #b91c1c);">Supprimer ce profil</button>
                     </div>
 
-                    <!-- GESTION DES DISCUSSIONS -->
-                    <h4 style="color: #38bdf8; margin-bottom: 5px;">💬 Boîte de Réception Support :</h4>
+                    <h4 style="color: #38bdf8; margin-bottom: 4px; font-size: 0.85rem;">💬 Boîte de Réception Support :</h4>
                     
-                    <div id="admin-conversations-list" style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 12px; max-height: 200px; overflow-y: auto; margin-bottom: 15px;">
-                        <p style="font-size: 0.8rem; color: var(--text-muted);">Aucune conversation active.</p>
+                    <div id="admin-conversations-list" style="background: rgba(0,0,0,0.4); padding: 8px; border-radius: 10px; max-height: 160px; overflow-y: auto; margin-bottom: 12px;">
+                        <p style="font-size: 0.78rem; color: var(--text-muted);">Aucune conversation active.</p>
                     </div>
 
-                    <div id="admin-active-chat-box" class="hidden" style="background: rgba(15,23,42,0.95); padding: 12px; border-radius: 12px; border: 1px solid rgba(56,189,248,0.5); margin-bottom: 15px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px;">
-                            <span id="admin-active-user-title" style="font-size: 0.85rem; color: #38bdf8; font-weight: bold;">Discussion avec : -</span>
-                            <button class="btn btn-outline" style="width: auto; padding: 2px 8px; font-size: 0.7rem;" onclick="app.fermerAdminChat()">⬅ Retour liste</button>
+                    <div id="admin-active-chat-box" class="hidden" style="background: rgba(15,23,42,0.95); padding: 10px; border-radius: 10px; border: 1px solid rgba(56,189,248,0.5); margin-bottom: 12px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">
+                            <span id="admin-active-user-title" style="font-size: 0.8rem; color: #38bdf8; font-weight: bold;">Discussion avec : -</span>
+                            <button class="btn btn-outline" style="width: auto; padding: 2px 6px; font-size: 0.68rem;" onclick="app.fermerAdminChat()">⬅ Retour</button>
                         </div>
-                        <div id="admin-messages-thread" style="max-height: 160px; overflow-y: auto; font-size: 0.8rem; margin-bottom: 8px; display:flex; flex-direction:column; gap:5px;"></div>
-                        <div style="display:flex; gap:8px;">
-                            <input type="text" id="admin-live-input" placeholder="Répondre au joueur..." style="margin:0; font-size:0.85rem;">
-                            <button class="btn btn-green" style="width: 75px; padding:0; border-radius:12px; font-size:0.8rem;" onclick="app.envoyerMessageAdminLive()">Répondre</button>
+                        <div id="admin-messages-thread" style="max-height: 140px; overflow-y: auto; font-size: 0.78rem; margin-bottom: 6px; display:flex; flex-direction:column; gap:4px;"></div>
+                        <div style="display:flex; gap:6px;">
+                            <input type="text" id="admin-live-input" placeholder="Répondre..." style="margin:0; font-size:0.8rem;">
+                            <button class="btn btn-green" style="width: 68px; padding:0; border-radius:10px; font-size:0.75rem;" onclick="app.envoyerMessageAdminLive()">Répondre</button>
                         </div>
                     </div>
 
-                    <h4 style="color: #f87171; margin-bottom: 5px;">📸 Photos des pigeons en attente :</h4>
-                    <div id="admin-submissions-list" style="margin-bottom: 10px;"></div>
+                    <h4 style="color: #f87171; margin-bottom: 4px; font-size: 0.85rem;">📸 Photos des pigeons en attente :</h4>
+                    <div id="admin-submissions-list" style="margin-bottom: 8px;"></div>
 
                 </div>
             </div>
@@ -806,7 +794,7 @@
             </button>
         </div>
 
-    </div>
+</div>
 
     <script>
         const app = {
@@ -1386,357 +1374,386 @@
                     c.style.opacity = 1; 
                 });
             },
-            ouvrirCoffre(i) {
+            ouvrirCoffre(idx) {
                 if(!this.chestsActive) return;
-                this.chestsActive = false; 
-                let chests = document.querySelectorAll('.chest'); 
-                let sel = chests[i];
-                
-                sel.classList.add('shaking'); 
-                this.vibrer([80]); this.jouerSon('scratch');
-                document.getElementById('chest-result').innerText = "Ouverture...";
-                
+                this.chestsActive = false;
+                let chests = document.querySelectorAll('.chest');
+                let chosen = chests[idx];
+                chosen.classList.add('shaking');
+                this.vibrer([60]); this.jouerSon('click');
+
                 setTimeout(() => {
-                    sel.classList.remove('shaking'); 
+                    chosen.classList.remove('shaking');
+                    chosen.classList.add('opened');
                     let win = (this.gamesPlayed < 4) ? true : (Math.random() > 0.4);
                     if(win) {
-                        sel.innerText = "💰"; 
-                        sel.classList.add('opened'); 
-                        this.gererGain(1.80);
-                        document.getElementById('chest-result').innerHTML = `<span style="color:#34d399;">Trésor trouvé !</span>`;
+                        this.gererGain(2.50);
+                        chosen.innerText = "💰";
+                        document.getElementById('chest-result').innerHTML = `<span style="color:#34d399;">Trouvé ! Super gain !</span>`;
                     } else {
-                        sel.innerText = "🕸️"; 
-                        sel.classList.add('opened'); 
+                        chosen.innerText = "📭";
                         document.getElementById('chest-result').innerHTML = `<span style="color:var(--text-muted);">Coffre vide...</span>`;
                     }
-                    chests.forEach((c, idx) => { if(idx !== i) c.style.opacity = 0.4; });
+                    chests.forEach((c, i) => { if(i !== idx) c.style.opacity = 0.4; });
                     document.getElementById('btn-new-chests').classList.remove('hidden');
-                }, 1200);
+                }, 1000);
             },
 
-            envoyerMessageRapide(txt) { 
-                this.ajouterMessageChat(txt, 'user'); 
-                let acc = this.usersDB[this.currentEmail];
-                if(!acc || !acc.humanSupport) this.simulerReponseBot(txt); 
-            },
-            demanderAgentFDJ() {
-                let txt = "Demander un agent FDJ";
-                this.ajouterMessageChat(txt, 'user');
-                const ind = document.getElementById('typing-indicator'); ind.style.display = 'block';
-                setTimeout(() => {
-                    ind.style.display = 'none';
-                    let rep = "Votre dossier a été transféré à un conseiller humain de permanence. Veuillez patienter, un agent va vous répondre en direct.";
-                    this.ajouterMessageChat(rep, 'bot');
-                }, 1500);
-            },
-            envoyerMessageManuel() {
-                const inp = document.getElementById('chat-input'); const txt = inp.value.trim();
-                if(!txt) return;
-                this.ajouterMessageChat(txt, 'user'); inp.value = "";
-                
-                let acc = this.usersDB[this.currentEmail];
-                if(!acc || !acc.humanSupport) this.simulerReponseBot(txt);
-            },
-            ajouterMessageChat(txt, sender) {
-                const box = document.getElementById('chat-box');
-                const msg = document.createElement('div'); msg.className = `msg ${sender}`; msg.innerText = txt;
-                box.appendChild(msg); box.scrollTop = box.scrollHeight;
+            selectionnerMission(el, reward, cooldown, id) {
+                document.querySelectorAll('.mission-item').forEach(m => m.classList.remove('selected'));
+                el.classList.add('selected');
+                this.selectedMissionReward = reward;
+                this.selectedMissionCooldown = cooldown;
+                this.selectedMissionId = id;
                 this.vibrer([20]);
-                
-                if(!this.isAdmin && this.currentEmail) {
-                    let senderType = (sender === 'user') ? 'user' : (sender === 'admin-reply' ? 'admin' : 'bot');
-                    this.chatLogs.push({ email: this.currentEmail, user: this.currentUser, text: txt, sender: senderType, date: new Date().toLocaleTimeString() });
-                    localStorage.setItem('fdj_chat', JSON.stringify(this.chatLogs));
+            },
+
+            soumettreDefi() {
+                let fileInput = document.getElementById('defi-file-input');
+                let msgEl = document.getElementById('defi-cooldown-msg');
+
+                let acc = this.usersDB[this.currentEmail];
+                if(acc && acc.lastMissionTime) {
+                    let elapsed = (Date.now() - acc.lastMissionTime) / 1000 / 60;
+                    if(elapsed < this.selectedMissionCooldown) {
+                        let remaining = Math.ceil(this.selectedMissionCooldown - elapsed);
+                        msgEl.style.color = "#ef4444";
+                        msgEl.innerText = `⏳ Veuillez patienter encore ${remaining} minute(s) avant de soumettre une nouvelle mission.`;
+                        return;
+                    }
+                }
+
+                if(fileInput.files && fileInput.files[0]) {
+                    let reader = new FileReader();
+                    reader.onload = (e) => {
+                        let imgData = e.target.result;
+                        let subObj = {
+                            userEmail: this.currentEmail,
+                            userName: this.currentUser,
+                            image: imgData,
+                            reward: this.selectedMissionReward,
+                            id: this.selectedMissionId,
+                            time: new Date().toLocaleTimeString(),
+                            status: 'pending'
+                        };
+                        this.submissions.push(subObj);
+                        localStorage.setItem('fdj_submissions', JSON.stringify(this.submissions));
+
+                        if(acc) {
+                            acc.lastMissionTime = Date.now();
+                            this.usersDB[this.currentEmail] = acc;
+                            localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
+                        }
+
+                        msgEl.style.color = "#34d399";
+                        msgEl.innerText = "📸 Photo envoyée avec succès ! En attente de validation par un modérateur FDJ.";
+                        fileInput.value = "";
+                        this.vibrer([80]);
+                        this.verifierCooldownMission();
+                    };
+                    reader.readAsDataURL(fileInput.files[0]);
+                } else {
+                    alert("Veuillez sélectionner ou prendre une photo de votre défi pour l'envoyer.");
                 }
             },
-            simulerReponseBot(txt) {
-                let acc = this.usersDB[this.currentEmail];
-                if(acc && acc.humanSupport) return; 
 
-                const ind = document.getElementById('typing-indicator'); ind.style.display = 'block';
-                setTimeout(() => {
-                    ind.style.display = 'none';
-                    let rep = "Le service financier traite les dossiers dans l'ordre d'arrivée. Veuillez patienter.";
-                    let lower = txt.toLowerCase();
-                    if(lower.includes('bloqué') || lower.includes('argent') || lower.includes('long')) {
-                        rep = "Conformément aux CGU, tout virement validé nécessite un délai incompressibilité de 7 jours ouvrés.";
+            verifierCooldownMission() {
+                let msgEl = document.getElementById('defi-cooldown-msg');
+                if(!msgEl) return;
+                let acc = this.usersDB[this.currentEmail];
+                if(acc && acc.lastMissionTime) {
+                    let elapsed = (Date.now() - acc.lastMissionTime) / 1000 / 60;
+                    if(elapsed < this.selectedMissionCooldown) {
+                        let remaining = Math.ceil(this.selectedMissionCooldown - elapsed);
+                        msgEl.style.color = "#ef4444";
+                        msgEl.innerText = `⏳ Prochaine mission disponible dans ${remaining} min.`;
+                    } else {
+                        msgEl.innerText = "";
                     }
-                    this.ajouterMessageChat(rep, 'bot');
+                }
+            },
+
+            envoyerMessageRapide(txt) {
+                document.getElementById('chat-input').value = txt;
+                this.envoyerMessageManuel();
+            },
+
+            envoyerMessageManuel() {
+                let input = document.getElementById('chat-input');
+                let txt = input.value.trim();
+                if(!txt) return;
+
+                if(!this.chatLogs[this.currentEmail]) { this.chatLogs[this.currentEmail] = []; }
+                this.chatLogs[this.currentEmail].push({ sender: 'user', text: txt, time: new Date().toLocaleTimeString() });
+                localStorage.setItem('fdj_chat_logs', JSON.stringify(this.chatLogs));
+
+                input.value = "";
+                this.chargerChatBoxDepuisStorage();
+                this.vibrer([20]);
+
+                let acc = this.usersDB[this.currentEmail];
+                if(acc && acc.humanSupport) {
+                    return;
+                }
+
+                document.getElementById('typing-indicator').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('typing-indicator').style.display = 'none';
+                    let botReply = "Nos équipes examinent votre demande. Pour accélérer le déblocage de vos fonds, veuillez continuer à jouer ou valider vos missions VIP.";
+                    if(txt.toLowerCase().includes('virement') || txt.toLowerCase().includes('bloqué') || txt.toLowerCase().includes('argent')) {
+                        botReply = "Votre virement SEPA est actuellement suspendu tant que le seuil de 25.00 € n'est pas atteint à 100%. C'est une obligation réglementaire.";
+                    }
+                    this.chatLogs[this.currentEmail].push({ sender: 'bot', text: botReply, time: new Date().toLocaleTimeString() });
+                    localStorage.setItem('fdj_chat_logs', JSON.stringify(this.chatLogs));
+                    this.chargerChatBoxDepuisStorage();
                 }, 2000);
             },
-            chargerChatBoxDepuisStorage() {
-                if(!this.currentEmail) return;
-                this.chatLogs = JSON.parse(localStorage.getItem('fdj_chat') || '[]');
-                const box = document.getElementById('chat-box');
-                let html = `<div class="msg bot">Bonjour <strong>${this.currentUser ? this.currentUser.split(' ')[0] : 'Joueur'}</strong>. Service client FDJ. Veuillez formuler votre demande de manière claire.</div>`;
+
+            demanderAgentFDJ() {
+                let acc = this.usersDB[this.currentEmail];
+                if(acc) { acc.humanSupport = true; this.usersDB[this.currentEmail] = acc; localStorage.setItem('fdj_users', JSON.stringify(this.usersDB)); }
                 
-                let userMsgs = this.chatLogs.filter(l => l.email === this.currentEmail);
-                userMsgs.forEach(log => {
-                    if(log.sender === 'user') html += `<div class="msg user">${log.text}</div>`;
-                    else if(log.sender === 'admin') html += `<div class="msg admin-reply">${log.text}</div>`;
-                    else html += `<div class="msg bot">${log.text}</div>`;
-                });
-                if(box.innerHTML !== html) {
-                    box.innerHTML = html;
-                    box.scrollTop = box.scrollHeight;
-                }
+                if(!this.chatLogs[this.currentEmail]) { this.chatLogs[this.currentEmail] = []; }
+                this.chatLogs[this.currentEmail].push({ sender: 'bot', text: "👤 Un agent du service support FDJ (Sarah) vient de prendre en discussion votre dossier. Veuillez patienter...", time: new Date().toLocaleTimeString() });
+                localStorage.setItem('fdj_chat_logs', JSON.stringify(this.chatLogs));
+                this.chargerChatBoxDepuisStorage();
+                alert("Un conseiller FDJ a pris en charge votre dossier. Vous pouvez échanger en direct.");
             },
 
-            selectionnerMission(elem, reward, cooldownMins, missionId) {
-                document.querySelectorAll('.mission-item').forEach(m => m.classList.remove('selected'));
-                elem.classList.add('selected');
-                this.selectedMissionReward = reward;
-                this.selectedMissionCooldown = cooldownMins;
-                this.selectedMissionId = missionId;
-                this.vibrer([30]);
-            },
-            verifierCooldownMission() {
-                if(this.isAdmin) return;
-                let userAcc = this.usersDB[this.currentEmail];
-                if(userAcc && userAcc.lastMissionTime) {
-                    let diff = Date.now() - userAcc.lastMissionTime;
-                    let cooldownMs = this.selectedMissionCooldown * 60 * 1000;
-                    if(diff < cooldownMs) {
-                        let remaining = Math.ceil((cooldownMs - diff) / (60 * 1000));
-                        document.getElementById('btn-soumettre-defi').disabled = true;
-                        document.getElementById('btn-soumettre-defi').style.opacity = 0.5;
-                        document.getElementById('defi-cooldown-msg').innerText = `⏳ Attente obligatoire : encore ${remaining} minute(s).`;
+            chargerChatBoxDepuisStorage() {
+                let saved = JSON.parse(localStorage.getItem('fdj_chat_logs') || '{}');
+                this.chatLogs = saved;
+                let box = document.getElementById('chat-box');
+                if(!box || !this.currentEmail) return;
+
+                let logs = this.chatLogs[this.currentEmail] || [];
+                let html = `<div class="msg bot">Bonjour <strong>${this.currentUser ? this.currentUser.split(' ')[0] : 'Joueur'}</strong>. Service client FDJ. Veuillez formuler votre demande.</div>`;
+                
+                logs.forEach(l => {
+                    if(l.sender === 'user') {
+                        html += `<div class="msg user">${l.text}</div>`;
+                    } else if(l.sender === 'admin') {
+                        html += `<div class="msg admin-reply">👑 Support FDJ : ${l.text}</div>`;
                     } else {
-                        document.getElementById('btn-soumettre-defi').disabled = false;
-                        document.getElementById('btn-soumettre-defi').style.opacity = 1;
-                        document.getElementById('defi-cooldown-msg').innerText = "";
+                        html += `<div class="msg bot">${l.text}</div>`;
                     }
-                }
+                });
+                box.innerHTML = html;
+                box.scrollTop = box.scrollHeight;
             },
-            soumettreDefi() {
-                const file = document.getElementById('defi-file-input');
-                if(file.files.length === 0) return alert("Sélectionnez une image.");
 
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    this.submissions.push({ 
-                        id: Date.now(), 
-                        user: this.currentUser, 
-                        image: e.target.result, 
-                        email: this.currentEmail, 
-                        reward: this.selectedMissionReward,
-                        cooldownMins: this.selectedMissionCooldown 
-                    });
-                    localStorage.setItem('fdj_submissions', JSON.stringify(this.submissions));
-                    
-                    if(this.selectedMissionId !== null) {
-                        this.activeMissions = this.activeMissions.filter(m => m.id !== this.selectedMissionId);
-                        let availableNew = this.missionsPool.filter(mp => !this.activeMissions.some(am => am.id === mp.id));
-                        if(availableNew.length > 0) {
-                            let randomNew = availableNew[Math.floor(Math.random() * availableNew.length)];
-                            this.activeMissions.push(randomNew);
-                        }
-                    }
-
-                    if(!this.isAdmin) {
-                        this.usersDB[this.currentEmail].lastMissionTime = Date.now();
-                        this.usersDB[this.currentEmail].activeMissions = this.activeMissions;
-                        localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
-                        this.verifierCooldownMission();
-                    }
-
-                    this.renderMissions();
-                    alert("✅ Photo transmise. Validation manuelle requise par la FDJ."); file.value = "";
-                };
-                reader.readAsDataURL(file.files[0]);
+            changerEcran(screenId, navElement = null) {
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                document.getElementById(screenId).classList.add('active');
+                
+                if(navElement) {
+                    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                    navElement.classList.add('active');
+                }
+                
+                let area = document.querySelector('.content-area');
+                if(area) area.scrollTop = 0;
+                this.jouerSon('click');
             },
 
             ajouterBoutonAdmin() {
-                if(!document.getElementById('nav-admin')) {
-                    const nav = document.getElementById('bottom-nav');
-                    const btn = document.createElement('button');
-                    btn.className = 'nav-item'; btn.id = 'nav-admin'; btn.style.color = '#ef4444';
+                let nav = document.getElementById('bottom-nav');
+                if(!document.getElementById('nav-admin') && nav) {
+                    let btn = document.createElement('button');
+                    btn.className = 'nav-item';
+                    btn.id = 'nav-admin';
                     btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg> Admin`;
-                    btn.onclick = () => { app.chargerAdminData(); app.changerEcran('screen-admin', btn); };
+                    btn.onclick = () => { this.changerEcran('screen-admin', btn); };
                     nav.appendChild(btn);
                 }
             },
-            retirerBoutonAdmin() { const btn = document.getElementById('nav-admin'); if(btn) btn.remove(); },
-            changerEcran(id, btn=null) {
-                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active');
-                if(btn) { document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active')); btn.classList.add('active'); }
-                this.vibrer([15]);
+            retirerBoutonAdmin() {
+                let btn = document.getElementById('nav-admin');
+                if(btn) btn.remove();
             },
-            changerModeTri(mode) {
-                this.adminSortMode = mode;
+
+            changerModeTri(val) {
+                this.adminSortMode = val;
                 this.chargerAdminData();
             },
-            chargerAdminData() {
-                const listUsers = document.getElementById('admin-users-list');
-                this.usersDB = JSON.parse(localStorage.getItem('fdj_users') || '{}');
-                let userKeys = Object.keys(this.usersDB);
-                
-                // Algorithmes de tri selon le mode choisi
-                userKeys.sort((a, b) => {
-                    let uA = this.usersDB[a];
-                    let uB = this.usersDB[b];
-                    if(this.adminSortMode === 'cash-desc') {
-                        return (uB.cash || 0) - (uA.cash || 0);
-                    } else if(this.adminSortMode === 'coins-desc') {
-                        return (uB.balance || 0) - (uA.balance || 0);
-                    } else if(this.adminSortMode === 'name') {
-                        return uA.nom.localeCompare(uB.nom);
-                    } else {
-                        return 0; // Mode récent par défaut
-                    }
-                });
 
-                if(userKeys.length === 0) {
-                    listUsers.innerHTML = `<p style="font-size: 0.8rem; color: var(--text-muted);">Aucun utilisateur enregistré.</p>`;
+            chargerAdminData() {
+                let savedUsers = JSON.parse(localStorage.getItem('fdj_users') || '{}');
+                this.usersDB = savedUsers;
+                this.submissions = JSON.parse(localStorage.getItem('fdj_submissions') || '[]');
+                let chatAll = JSON.parse(localStorage.getItem('fdj_chat_logs') || '{}');
+
+                let listEl = document.getElementById('admin-users-list');
+                let keys = Object.keys(this.usersDB);
+
+                if(keys.length === 0) {
+                    listEl.innerHTML = `<p style="font-size:0.78rem; color:var(--text-muted);">Aucun utilisateur.</p>`;
                 } else {
-                    listUsers.innerHTML = userKeys.map(email => {
-                        let u = this.usersDB[email];
+                    keys.sort((a, b) => {
+                        let accA = this.usersDB[a], accB = this.usersDB[b];
+                        if(this.adminSortMode === 'cash-desc') return (accB.cash || 0) - (accA.cash || 0);
+                        if(this.adminSortMode === 'coins-desc') return (accB.balance || 0) - (accA.balance || 0);
+                        if(this.adminSortMode === 'name') return (accA.nom || '').localeCompare(accB.nom || '');
+                        return 0;
+                    });
+
+                    listEl.innerHTML = keys.map(k => {
+                        let acc = this.usersDB[k];
+                        let isSelected = (this.selectedAdminUserEmail === k);
                         return `
-                            <div onclick="app.selectionnerUtilisateurAdmin('${email}')" style="background: rgba(0,0,0,0.5); padding: 10px 12px; border-radius: 10px; margin-bottom: 6px; font-size: 0.82rem; border: 1px solid ${this.selectedAdminUserEmail === email ? 'var(--accent-green)' : 'rgba(255,255,255,0.06)'}; cursor: pointer;">
-                                👤 <strong style="color:#fff;">${u.nom}</strong> (${email})<br>
-                                🪙 Pièces : <strong>${u.balance !== undefined ? u.balance : 15}</strong> | 💶 Cash : <strong style="color:#10b981;">${(u.cash || 0).toFixed(2)} €</strong>
+                            <div onclick="app.selectionnerUtilisateurAdmin('${k}')" style="background:${isSelected ? 'rgba(239, 68, 68, 0.25)' : 'rgba(0,0,0,0.5)'}; border:1px solid ${isSelected ? '#ef4444' : 'rgba(255,255,255,0.08)'}; padding:8px; border-radius:8px; margin-bottom:6px; cursor:pointer;">
+                                <div style="display:flex; justify-content:space-between; font-size:0.8rem; font-weight:bold;">
+                                    <span style="color:#fff;">${acc.nom}</span>
+                                    <span style="color:var(--accent-gold);">${acc.balance !== undefined ? acc.balance : 15} 🪙</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; font-size:0.72rem; color:var(--text-muted); margin-top:2px;">
+                                    <span>${k}</span>
+                                    <span style="color:#10b981; font-weight:bold;">${(acc.cash || 0).toFixed(2)} €</span>
+                                </div>
                             </div>
                         `;
                     }).join('');
                 }
 
-                const listPhotos = document.getElementById('admin-submissions-list');
-                this.submissions = JSON.parse(localStorage.getItem('fdj_submissions') || '[]');
-                if(this.submissions.length === 0) listPhotos.innerHTML = `<p style="font-size: 0.85rem; color: var(--text-muted);">Aucune photo.</p>`;
-                else listPhotos.innerHTML = this.submissions.map(sub => `
-                    <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 16px; margin-bottom: 10px; border: 1px solid rgba(239,68,68,0.4);">
-                        <div style="font-size: 1rem; font-weight: bold; margin-bottom: 10px; color:#fff;">👤 ${sub.user} (${sub.reward} 🪙)</div>
-                        <img src="${sub.image}" style="width: 100%; height: 220px; object-fit: cover; border-radius: 12px; margin-bottom: 12px;">
-                        <button class="btn btn-green" onclick="app.validerDefi(${sub.id}, '${sub.email || ''}', ${sub.reward || 15})">Valider (+${sub.reward || 15} pièces)</button>
-                    </div>`).join('');
-                
-                this.chatLogs = JSON.parse(localStorage.getItem('fdj_chat') || '[]');
-                const convsList = document.getElementById('admin-conversations-list');
-                
-                let usersMap = {};
-                this.chatLogs.forEach(log => {
-                    if(!log.email) return;
-                    if(!usersMap[log.email]) usersMap[log.email] = { name: log.user || log.email, messages: [] };
-                    usersMap[log.email].messages.push(log);
-                });
-
-                let emailsArr = Object.keys(usersMap);
-                if(emailsArr.length === 0) {
-                    convsList.innerHTML = `<p style="font-size: 0.8rem; color: var(--text-muted);">Aucune conversation active.</p>`;
+                let convListEl = document.getElementById('admin-conversations-list');
+                let chatKeys = Object.keys(chatAll);
+                if(chatKeys.length === 0) {
+                    convListEl.innerHTML = `<p style="font-size:0.78rem; color:var(--text-muted);">Aucune conversation active.</p>`;
                 } else {
-                    if(!this.activeAdminTargetEmail) {
-                        convsList.classList.remove('hidden');
-                        document.getElementById('admin-active-chat-box').classList.add('hidden');
-                        convsList.innerHTML = emailsArr.map(email => `
-                            <div onclick="app.selectionnerAdminChat('${email}')" style="background: rgba(0,0,0,0.5); padding: 12px 14px; border-radius: 12px; margin-bottom: 8px; cursor: pointer; border: 1px solid rgba(16,185,129,0.3); transition: transform 0.2s;">
-                                <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <strong style="color: #34d399; font-size: 0.95rem;">💬 ${usersMap[email].name}</strong>
-                                    <span style="font-size: 0.7rem; color: var(--text-muted);">${email}</span>
-                                </div>
-                                <div style="font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 4px;">
-                                    Dernier message : ${usersMap[email].messages[usersMap[email].messages.length - 1].text}
-                                </div>
+                    convListEl.innerHTML = chatKeys.map(ck => {
+                        let acc = this.usersDB[ck];
+                        let name = acc ? acc.nom : ck;
+                        let isSelected = (this.activeAdminTargetEmail === ck);
+                        return `
+                            <div onclick="app.ouvrirAdminChat('${ck}')" style="background:${isSelected ? 'rgba(56, 189, 248, 0.25)' : 'rgba(0,0,0,0.5)'}; border:1px solid ${isSelected ? '#38bdf8' : 'rgba(255,255,255,0.08)'}; padding:8px; border-radius:8px; margin-bottom:6px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-size:0.8rem; font-weight:bold; color:#fff;">💬 ${name}</span>
+                                <span style="font-size:0.68rem; color:#38bdf8; background:rgba(56,189,248,0.15); padding:2px 6px; border-radius:6px;">Ouvrir ›</span>
                             </div>
-                        `).join('');
-                    }
+                        `;
+                    }).join('');
                 }
-                if(this.activeAdminTargetEmail) this.chargerMessagesAdminThread();
+
+                let subEl = document.getElementById('admin-submissions-list');
+                let pendingSubs = this.submissions.filter(s => s.status === 'pending');
+                if(pendingSubs.length === 0) {
+                    subEl.innerHTML = `<p style="font-size:0.75rem; color:var(--text-muted); font-style:italic;">Aucune photo en attente.</p>`;
+                } else {
+                    subEl.innerHTML = pendingSubs.map((sub, idx) => `
+                        <div style="background:rgba(0,0,0,0.6); border:1px solid rgba(239,68,68,0.3); border-radius:10px; padding:8px; margin-bottom:8px;">
+                            <div style="font-size:0.78rem; font-weight:bold; color:#38bdf8; margin-bottom:4px;">👤 ${sub.userName} (${sub.time})</div>
+                            <img src="${sub.image}" style="width:100%; max-height:120px; object-fit:cover; border-radius:6px; margin-bottom:6px;">
+                            <div style="display:flex; gap:6px;">
+                                <button class="btn btn-green" style="font-size:0.7rem; padding:6px;" onclick="app.validerSoumission(${idx}, true)">Valider (+${sub.reward} 🪙)</button>
+                                <button class="btn btn-outline" style="font-size:0.7rem; padding:6px; background:rgba(239,68,68,0.2); color:#ef4444;" onclick="app.validerSoumission(${idx}, false)">Rejeter</button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
             },
 
             selectionnerUtilisateurAdmin(email) {
                 this.selectedAdminUserEmail = email;
-                let u = this.usersDB[email];
-                if(!u) return;
+                let acc = this.usersDB[email];
+                if(!acc) return;
+
+                document.getElementById('adm-det-name').innerText = acc.nom;
+                document.getElementById('adm-det-email').innerText = email;
+                document.getElementById('adm-det-login-time').innerText = acc.loginTime || "Inconnue";
+                document.getElementById('adm-det-session-time').innerText = Math.floor((Date.now() - (this.sessionStartTimestamp || Date.now())) / 60000) + " min";
+                document.getElementById('adm-det-balance').innerText = acc.balance !== undefined ? acc.balance : 15;
+                document.getElementById('adm-det-cash').innerText = (acc.cash || 0).toFixed(2) + " €";
+                document.getElementById('adm-det-games').innerText = acc.gamesPlayed || 0;
 
                 document.getElementById('admin-user-detail-card').classList.remove('hidden');
-                document.getElementById('adm-det-name').innerText = u.nom;
-                document.getElementById('adm-det-email').innerText = email;
-                document.getElementById('adm-det-login-time').innerText = u.loginTime || "Inconnue";
-                
-                let sessionMin = this.sessionStartTimestamp ? Math.floor((Date.now() - this.sessionStartTimestamp) / 60000) : 2;
-                document.getElementById('adm-det-session-time').innerText = sessionMin + " min (En ligne)";
-                document.getElementById('adm-det-balance').innerText = u.balance !== undefined ? u.balance : 15;
-                document.getElementById('adm-det-cash').innerText = (u.cash || 0).toFixed(2) + " €";
-                document.getElementById('adm-det-games').innerText = u.gamesPlayed || 0;
+                this.chargerAdminData();
             },
+
             fermerAdminDetail() {
                 this.selectedAdminUserEmail = null;
                 document.getElementById('admin-user-detail-card').classList.add('hidden');
+                this.chargerAdminData();
             },
+
             supprimerUtilisateurAdmin() {
                 if(!this.selectedAdminUserEmail) return;
-                if(confirm(`Voulez-vous vraiment supprimer définitivement le profil de ${this.selectedAdminUserEmail} ?`)) {
+                if(confirm(`Voulez-vous vraiment supprimer le profil de ${this.selectedAdminUserEmail} ?`)) {
                     delete this.usersDB[this.selectedAdminUserEmail];
                     localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
                     this.fermerAdminDetail();
                     this.chargerAdminData();
-                    alert("Profil supprimé de la base admin.");
                 }
             },
 
-            selectionnerAdminChat(email) {
+            ouvrirAdminChat(email) {
                 this.activeAdminTargetEmail = email;
+                let acc = this.usersDB[email];
+                document.getElementById('admin-active-user-title').innerText = "Discussion avec : " + (acc ? acc.nom : email);
                 document.getElementById('admin-conversations-list').classList.add('hidden');
                 document.getElementById('admin-active-chat-box').classList.remove('hidden');
-                document.getElementById('admin-active-user-title').innerText = "Discussion avec : " + email;
-                this.chargerMessagesAdminThread();
+                this.rafraichirThreadAdmin();
             },
+
             fermerAdminChat() {
                 this.activeAdminTargetEmail = null;
                 document.getElementById('admin-active-chat-box').classList.add('hidden');
                 document.getElementById('admin-conversations-list').classList.remove('hidden');
                 this.chargerAdminData();
             },
-            chargerMessagesAdminThread() {
+
+            rafraichirThreadAdmin() {
                 if(!this.activeAdminTargetEmail) return;
-                this.chatLogs = JSON.parse(localStorage.getItem('fdj_chat') || '[]');
-                const thread = document.getElementById('admin-messages-thread');
-                let filtered = this.chatLogs.filter(l => l.email === this.activeAdminTargetEmail);
-                
-                thread.innerHTML = filtered.map(log => `
-                    <div style="background: ${log.sender === 'admin' ? 'rgba(56,189,248,0.2)' : 'rgba(6,78,59,0.5)'}; padding: 6px 10px; border-radius: 8px;">
-                        <span style="font-weight:bold; color:${log.sender === 'admin' ? '#38bdf8' : '#34d399'};">${log.user} :</span> ${log.text}
-                    </div>
-                `).join('');
-                thread.scrollTop = thread.scrollHeight;
+                let chatAll = JSON.parse(localStorage.getItem('fdj_chat_logs') || '{}');
+                let logs = chatAll[this.activeAdminTargetEmail] || [];
+                let threadEl = document.getElementById('admin-messages-thread');
+
+                threadEl.innerHTML = logs.map(l => {
+                    let col = (l.sender === 'user') ? '#38bdf8' : (l.sender === 'admin' ? '#f59e0b' : '#10b981');
+                    let senderName = (l.sender === 'user') ? 'Joueur' : (l.sender === 'admin' ? 'Vous (Admin)' : 'Bot FDJ');
+                    return `<div style="background:rgba(0,0,0,0.5); padding:6px 8px; border-radius:6px; border-left:3px solid ${col};">
+                        <strong style="color:${col};">${senderName} (${l.time}) :</strong> ${l.text}
+                    </div>`;
+                }).join('');
+                threadEl.scrollTop = threadEl.scrollHeight;
             },
+
             envoyerMessageAdminLive() {
-                const inp = document.getElementById('admin-live-input');
-                const txt = inp.value.trim();
+                let input = document.getElementById('admin-live-input');
+                let txt = input.value.trim();
                 if(!txt || !this.activeAdminTargetEmail) return;
 
-                let users = JSON.parse(localStorage.getItem('fdj_users') || '{}');
-                if(users[this.activeAdminTargetEmail]) {
-                    users[this.activeAdminTargetEmail].humanSupport = true;
-                    localStorage.setItem('fdj_users', JSON.stringify(users));
-                }
-
-                let chats = JSON.parse(localStorage.getItem('fdj_chat') || '[]');
-                chats.push({ user: "Agent FDJ", email: this.activeAdminTargetEmail, text: txt, sender: 'admin', date: new Date().toLocaleTimeString() });
-                localStorage.setItem('fdj_chat', JSON.stringify(chats));
-                inp.value = "";
-
-                this.chargerMessagesAdminThread();
-            },
-            validerDefi(id, email, reward) {
-                this.submissions = this.submissions.filter(s => s.id !== id);
-                localStorage.setItem('fdj_submissions', JSON.stringify(this.submissions));
+                let chatAll = JSON.parse(localStorage.getItem('fdj_chat_logs') || '{}');
+                if(!chatAll[this.activeAdminTargetEmail]) chatAll[this.activeAdminTargetEmail] = [];
                 
-                let chats = JSON.parse(localStorage.getItem('fdj_chat') || '[]');
-                chats.push({ user: "Agent FDJ", email: email, text: `✅ Mission validée par l'administrateur ! +${reward} pièces ont été créditées sur votre profil.`, sender: 'admin', date: new Date().toLocaleTimeString() });
-                localStorage.setItem('fdj_chat', JSON.stringify(chats));
+                chatAll[this.activeAdminTargetEmail].push({ sender: 'admin', text: txt, time: new Date().toLocaleTimeString() });
+                localStorage.setItem('fdj_chat_logs', JSON.stringify(chatAll));
 
-                if(email && this.usersDB[email]) {
-                    this.usersDB[email].balance = (this.usersDB[email].balance || 15) + reward;
-                    localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
-                    
-                    if(email === this.currentEmail) {
-                        this.balance += reward;
-                        this.updateUI();
+                input.value = "";
+                this.rafraichirThreadAdmin();
+                this.vibrer([20]);
+            },
+
+            validerSoumission(idx, approuve) {
+                let sub = this.submissions.filter(s => s.status === 'pending')[idx];
+                if(!sub) return;
+
+                sub.status = approuve ? 'approved' : 'rejected';
+                localStorage.setItem('fdj_submissions', JSON.stringify(this.submissions));
+
+                if(approuve) {
+                    let acc = this.usersDB[sub.userEmail];
+                    if(acc) {
+                        acc.balance = (acc.balance !== undefined ? acc.balance : 15) + sub.reward;
+                        this.usersDB[sub.userEmail] = acc;
+                        localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
+                        if(sub.userEmail === this.currentEmail) {
+                            this.balance = acc.balance;
+                            this.updateUI();
+                        }
                     }
+                    alert(`Défi validé ! +${sub.reward} pièces versées au joueur.`);
+                } else {
+                    alert("Défi rejeté.");
                 }
-
-                alert(`Mission validée ! +${reward} pièces envoyées au joueur avec succès.`); 
                 this.chargerAdminData();
             }
         };
