@@ -554,11 +554,11 @@
                     <div class="wheel-container">
                         <div class="wheel-pointer">👇</div>
                         <div class="wheel" id="wheel-element">
-                            <div class="wheel-sector" style="transform: rotate(30deg) translate(0, -50px);">+0.50 €</div>
+                            <div class="wheel-sector" style="transform: rotate(30deg) translate(0, -50px);">+0.30 €</div>
                             <div class="wheel-sector" style="transform: rotate(90deg) translate(0, -50px);">+1.00 €</div>
                             <div class="wheel-sector" style="transform: rotate(150deg) translate(0, -50px);">PERDU</div>
                             <div class="wheel-sector" style="transform: rotate(210deg) translate(0, -50px);">+2.00 €</div>
-                            <div class="wheel-sector" style="transform: rotate(270deg) translate(0, -50px);">+0.30 €</div>
+                            <div class="wheel-sector" style="transform: rotate(270deg) translate(0, -50px);">+0.50 €</div>
                             <div class="wheel-sector" style="transform: rotate(330deg) translate(0, -50px);">JACKPOT</div>
                         </div>
                     </div>
@@ -585,7 +585,7 @@
                             <span>25 🪙</span>
                             <span>50 🪙</span>
                         </div>
-                        <div id="lotto-gain-potentiel" style="font-size: 0.78rem; color: #34d399; font-weight: bold; margin-top: 6px;">Gain potentiel : +5.00 € (1 chance sur 4 de gagner !)</div>
+                        <div id="lotto-gain-potentiel" style="font-size: 0.78rem; color: #34d399; font-weight: bold; margin-top: 6px;">Gain potentiel : +0.50 € (1 chance sur 5 de gagner !)</div>
                     </div>
 
                     <button class="btn btn-green" id="btn-lotto" onclick="app.lancerLoto()" style="font-size: 0.9rem; padding: 12px;">Valider ma Grille 🎟</button>
@@ -737,7 +737,7 @@
 
                     <div class="setting-item" onclick="app.ouvrirParametresSecurite()">
                         <div class="setting-item-left">
-                            <div class="icon-box" style="color: #34d399;">🛡️️</div>
+                            <div class="icon-box" style="color: #34d399;">🛡</div>
                             <span>Paramètres de Sécurité</span>
                         </div>
                         <span style="color: var(--text-muted); font-weight: bold;">›</span>
@@ -1115,7 +1115,7 @@
                         let cdEl = document.getElementById('lotto-countdown');
                         if(cdEl) cdEl.innerText = `${m < 10 ? '0':''}${m}:${s < 10 ? '0':''}${s}`;
                     } else {
-                        this.lottoSecondsLeft = 1800; // Reset 30 min
+                        this.lottoSecondsLeft = 1800;
                         this.genererFauxGagnantsLotto();
                     }
                 }, 1000);
@@ -1408,19 +1408,33 @@
                 }
             },
 
-            calculerGainReduit(gainMax) {
-                // Progression fluide vers la fin pour caler/bloquer autour des 15 €
-                let facteur = (this.cash < 5.00) ? 0.9 : (this.cash < 12.00 ? 0.45 : 0.08);
-                let multiplicateur = (this.fomoSeconds > 0) ? 1.2 : 1;
-                return +(gainMax * facteur * multiplicateur).toFixed(2);
+            // Distribution précise demandée : Souvent 30-50 centimes, parfois 1-2 €, et très rare 5-6 €
+            determinerMontantGain() {
+                let r = Math.random();
+                let montant = 0.30;
+                if (r < 0.65) {
+                    // 65% du temps : Petites sommes (30 à 50 centimes)
+                    montant = Math.random() < 0.5 ? 0.30 : 0.50;
+                } else if (r < 0.92) {
+                    // 27% du temps : Sommes intermédiaires (1,00 € à 2,00 €)
+                    montant = Math.random() < 0.6 ? 1.00 : 2.00;
+                } else {
+                    // 8% du temps : Méga rare (5,00 € ou 6,00 €)
+                    montant = Math.random() < 0.5 ? 5.00 : 6.00;
+                }
+                
+                if (this.fomoSeconds > 0) montant *= 1.2;
+                return +montant.toFixed(2);
             },
 
-            gererGain(montantMax, isJackpot = false) {
+            gererGain(isForcedWin = false, forceMontant = null) {
                 this.gagnerXP();
 
-                // Chance modérée sur les jeux, serrée si on s'approche de la zone de blocage
-                let seuilEchec = (this.cash < 12.00) ? 0.40 : 0.75;
-                if(!this.isAdmin && !isJackpot && Math.random() > (1 - seuilEchec)) {
+                // 1 chance sur 6 ou 7 de gagner (environ 15% de chance de gain) sur les jeux de hasard
+                let probaGain = 0.15;
+                let win = this.isAdmin || isForcedWin || (Math.random() < probaGain);
+
+                if(!win) {
                     this.ajouterTransaction(`Mise perdue (Pas de chance)`);
                     this.sauvegarderEtatCompte();
                     this.updateUI();
@@ -1432,9 +1446,9 @@
                     return;
                 }
 
-                let montant = isJackpot ? +(Math.random() * 1.0 + 1.50).toFixed(2) : this.calculerGainReduit(montantMax);
-                
+                let montant = forceMontant !== null ? forceMontant : this.determinerMontantGain();
                 if(!this.isAdmin) { if (this.dailyCash + montant > 10.00) montant = 10.00 - this.dailyCash; }
+                
                 if (montant > 0) {
                     this.cash += montant; this.dailyCash += montant; 
                     this.ajouterTransaction(`Gain de cash : +${montant.toFixed(2)} € 💶`);
@@ -1512,9 +1526,7 @@
                 this.vibrer([40]); this.jouerSon('click');
 
                 let pool = ['🍒', '💎', '⭐', '🍀', '💶', '🍋'];
-                // Chance élevée au début, rare ensuite
-                let probaWin = (this.cash < 5.00) ? 0.45 : (this.cash < 12.00 ? 0.25 : 0.08);
-                let win = (this.isAdmin) ? true : (Math.random() < probaWin);
+                let win = this.isAdmin ? true : (Math.random() < 0.15);
                 let winningSym = pool[Math.floor(Math.random() * pool.length)];
 
                 this.grid9Symbols = [];
@@ -1526,10 +1538,8 @@
                             this.grid9Symbols.push(randSym);
                         }
                     }
-                    this.grid9Gagne = (this.cash < 8.00) ? 0.80 : 0.30;
                 } else {
                     this.grid9Symbols = ['🍒', '💎', '⭐', '🍀', '💶', '🍋', '🍒', '💎', '⭐'];
-                    this.grid9Gagne = 0;
                 }
 
                 this.grid9Symbols.sort(() => Math.random() - 0.5);
@@ -1578,7 +1588,7 @@
                 const btnNouveau = document.getElementById('btn-nouveau-ticket');
 
                 if(hasWon) {
-                    this.gererGain(this.grid9Gagne);
+                    this.gererGain(true);
                     if(scratchResult) scratchResult.innerHTML = `<span style="color:#34d399;">🎉 3 symboles alignés ! Gagné !</span>`;
                     if(scratchAttempts) scratchAttempts.innerText = "";
                     if(btnNouveau) btnNouveau.classList.remove('hidden');
@@ -1615,7 +1625,7 @@
                 if(r3El) r3El.classList.add('spinning');
 
                 let symboles = ['🍒', '💎', '7️⃣', '🍋', '⭐'];
-                // Modification : 1 chance sur 6 ou 7 d'avoir un jackpot (très rare)
+                // Correction définitive : Environ 1 chance sur 6 ou 7 (15% de chance) d'aligner les symboles et d'obtenir un gain réel
                 let win = this.isAdmin ? true : (Math.random() < 0.15);
                 let s = symboles[Math.floor(Math.random() * symboles.length)];
                 let r1 = win ? s : symboles[0], r2 = win ? s : symboles[1], r3 = win ? s : symboles[2];
@@ -1627,8 +1637,8 @@
                     if(btn) btn.disabled = false;
                     
                     if(win) {
-                        this.gererGain(0, true);
-                        if(slotResult) slotResult.innerHTML = `<span style="color: #34d399;">JACKPOT ! Rare !</span>`;
+                        this.gererGain(true);
+                        if(slotResult) slotResult.innerHTML = `<span style="color: #34d399;">JACKPOT ! Aligné !</span>`;
                     } else {
                         this.gagnerXP();
                         if(slotResult) slotResult.innerHTML = `<span style="color: var(--text-muted);">Perdu...</span>`;
@@ -1653,11 +1663,11 @@
                 const wheelEl = document.getElementById('wheel-element');
                 if(wheelEl) wheelEl.style.transform = `rotate(${this.wheelRotation}deg)`;
                 
-                let win = this.isAdmin ? true : (Math.random() < 0.18); 
+                let win = this.isAdmin ? true : (Math.random() < 0.15); 
                 setTimeout(() => {
                     if(btn) btn.disabled = false;
                     if(win) { 
-                        this.gererGain(1.20); 
+                        this.gererGain(true); 
                         if(wheelResult) wheelResult.innerHTML = `<span style="color:#34d399;">Gagné !</span>`; 
                     } else { 
                         this.gagnerXP();
@@ -1670,9 +1680,9 @@
                 this.lottoMise = parseInt(val);
                 const miseValEl = document.getElementById('lotto-mise-val');
                 if(miseValEl) miseValEl.innerText = this.lottoMise;
-                let gainEstime = (this.lottoMise * 0.4).toFixed(2);
+                let gainEstime = (this.lottoMise * 0.3).toFixed(2);
                 const gainPotEl = document.getElementById('lotto-gain-potentiel');
-                if(gainPotEl) gainPotEl.innerText = `Gain potentiel : +${gainEstime} € (1 chance sur 4 de gagner !)`;
+                if(gainPotEl) gainPotEl.innerText = `Gain potentiel : +${gainEstime} € (1 chance sur 6 de gagner !)`;
             },
 
             lancerLoto() {
@@ -1691,11 +1701,11 @@
 
                 setTimeout(() => {
                     if(btn) btn.disabled = false;
-                    let win = this.isAdmin ? true : (Math.random() < 0.25);
+                    let win = this.isAdmin ? true : (Math.random() < 0.16);
                     if(win) {
-                        let gainMontant = +(this.lottoMise * 0.35).toFixed(2);
-                        this.gererGain(gainMontant, true);
-                        if(lottoResult) lottoResult.innerHTML = `<span style="color:#34d399;">🎉 Gagné au tirage ! +${gainMontant} €</span>`;
+                        let gainMontant = +(this.lottoMise * 0.3).toFixed(2);
+                        this.gererGain(true, gainMontant);
+                        if(lottoResult) lottoResult.innerHTML = `<span style="color:#34d399;">🎉 Gagné au tirage !</span>`;
                     } else {
                         if(lottoResult) lottoResult.innerHTML = `<span style="color:var(--text-muted);">🎟️ Grille non tirée au sort. Retentez au prochain tirage !</span>`;
                     }
@@ -1770,10 +1780,10 @@
                 setTimeout(() => {
                     chosen.classList.remove('shaking');
                     chosen.classList.add('opened');
-                    let win = this.isAdmin ? true : (Math.random() < 0.20);
+                    let win = this.isAdmin ? true : (Math.random() < 0.15);
                     const chestResult = document.getElementById('chest-result');
                     if(win) {
-                        this.gererGain(1.50);
+                        this.gererGain(true);
                         chosen.innerText = "💰";
                         if(chestResult) chestResult.innerHTML = `<span style="color:#34d399;">Trouvé !</span>`;
                     } else {
