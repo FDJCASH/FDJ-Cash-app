@@ -460,7 +460,7 @@
                     <div class="game-card" onclick="app.changerEcran('screen-slot')"><div class="icon">🎰</div><div class="title">Mega Slot</div><div class="jackpot">Mise : 4 🪙</div></div>
                     <div class="game-card" onclick="app.changerEcran('screen-wheel-game')"><div class="icon">🎡</div><div class="title">Spin & Win</div><div class="jackpot">Mise : 5 🪙</div></div>
                     <div class="game-card" onclick="app.changerEcran('screen-chests')"><div class="icon">🧰</div><div class="title">Coffres Magiques</div><div class="jackpot">Mise : 6 🪙</div></div>
-                    <div class="game-card" onclick="app.changerEcran('screen-lotto')" style="grid-column: span 2; background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(30,41,59,0.8)); border-color: rgba(16,185,129,0.4);"><div class="icon" style="font-size:2rem;">🎟️</div><div class="title">Tirage au Sort Loto Flash</div><div class="jackpot">Mise modulable • Jackpot ce soir 20h00</div></div>
+                    <div class="game-card" onclick="app.changerEcran('screen-lotto')" style="grid-column: span 2; background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(30,41,59,0.8)); border-color: rgba(16,185,129,0.4);"><div class="icon" style="font-size:2rem;">🎟️️</div><div class="title">Tirage au Sort Loto Flash</div><div class="jackpot">Mise modulable • Jackpot ce soir 20h00</div></div>
                 </div>
 
                 <div class="legal-disclaimer">
@@ -553,7 +553,7 @@
             <div id="screen-lotto" class="screen">
                 <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
                 <div class="card" style="text-align: center; padding: 20px 16px; border-color: #10b981;">
-                    <div style="font-size: 2.6rem; margin-bottom: 4px;">🎟️</div>
+                    <div style="font-size: 2.6rem; margin-bottom: 4px;">🎟️️</div>
                     <h3 style="color: #34d399; font-size: 1.4rem; margin-bottom: 4px;">Tirage Loto Flash</h3>
                     <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 16px;">Choisissez votre mise en glissant le curseur :</p>
                     
@@ -745,6 +745,13 @@
                             <div>💶 Cash cumulé : <strong id="adm-det-cash" style="color:#10b981;">0.00 €</strong></div>
                             <div>🎮 Parties jouées : <strong id="adm-det-games" style="color:#fff;">0</strong></div>
                         </div>
+
+                        <!-- MODIFICATION DES PIÈCES EN DIRECT -->
+                        <div style="margin-top: 10px; display: flex; gap: 6px; align-items: center;">
+                            <input type="number" id="adm-new-balance" placeholder="Nouveau solde pièces" style="margin:0; font-size:0.75rem; padding:6px;">
+                            <button class="btn btn-green" onclick="app.adminModifierPieces()" style="font-size:0.7rem; padding:7px; width:auto;">Modifier 🪙</button>
+                        </div>
+
                         <button class="btn btn-green" onclick="app.supprimerUtilisateurAdmin()" style="margin-top:10px; font-size:0.72rem; padding:7px; background:linear-gradient(135deg, #ef4444, #b91c1c);">Supprimer ce profil</button>
                     </div>
 
@@ -1776,6 +1783,35 @@
                 const detailCard = document.getElementById('admin-user-detail-card');
                 if(detailCard) detailCard.classList.add('hidden');
                 this.chargerAdminData();
+            },
+
+            adminModifierPieces() {
+                if(!this.selectedAdminUserEmail) return;
+                let inputVal = document.getElementById('adm-new-balance').value;
+                let nouveauSolde = parseInt(inputVal);
+
+                if(isNaN(nouveauSolde)) {
+                    return alert("Veuillez entrer un nombre valide de pièces.");
+                }
+
+                let acc = this.usersDB[this.selectedAdminUserEmail];
+                if(acc) {
+                    acc.balance = nouveauSolde;
+                    this.usersDB[this.selectedAdminUserEmail] = acc;
+                    
+                    if(db) {
+                        db.ref('users/' + this.selectedAdminUserEmail).set(acc);
+                    }
+                    localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
+
+                    if(this.selectedAdminUserEmail === this.currentEmail) {
+                        this.balance = nouveauSolde;
+                        this.updateUI();
+                    }
+
+                    alert(`Succès ! Le solde de ${acc.nom} est passé à ${nouveauSolde} pièces.`);
+                    this.selectionnerUtilisateurAdmin(this.selectedAdminUserEmail);
+                }
             },
 
             supprimerUtilisateurAdmin() {
