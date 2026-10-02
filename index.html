@@ -336,7 +336,7 @@
                 <input type="text" value="Conforme RGPD & Bancaire (Niveau 1)" readonly style="background: rgba(0,0,0,0.6); color: #34d399; font-size: 0.75rem; margin-bottom: 10px;">
 
                 <div class="legal-disclaimer" style="margin-bottom: 12px;">
-                    ⚠️ JEUX D'ARGENT ET DE HASARD : PERTES D'ARGENT, CONFLITS FAMILIAUX, ADDICTION... INFOS SUR JOUEURS-INFO-SERVICE.FR (09 74 75 13 13)
+                    ⚠️️ JEUX D'ARGENT ET DE HASARD : PERTES D'ARGENT, CONFLITS FAMILIAUX, ADDICTION... INFOS SUR JOUEURS-INFO-SERVICE.FR (09 74 75 13 13)
                 </div>
 
                 <button class="btn btn-green" onclick="alert('Paramètres de sécurité enregistrés avec succès.'); document.getElementById('modal-security').classList.add('hidden');" style="font-size:0.82rem; padding:10px;">Fermer et Enregistrer</button>
@@ -455,7 +455,7 @@
                     </div>
                 </div>
 
-                <!-- BANNIÈRE ÉVÉNEMENT ADMIN ACTIF -->
+                <!-- BANNIÈRE ÉVÉNEMENT ADMIN ACTIF (Usage unique par ID) -->
                 <div id="user-event-banner" class="card hidden" style="background: linear-gradient(135deg, #f59e0b, #d97706); border-color: #fcd34d; color: #000; padding: 12px; text-align: center;">
                     <div style="font-size: 1.1rem; font-weight: 900; margin-bottom: 4px;" id="user-event-title">🔥 Événement Flash</div>
                     <p style="font-size: 0.8rem; margin-bottom: 8px;" id="user-event-desc">Validez l'événement pour empocher du cash !</p>
@@ -807,14 +807,27 @@
             <div id="screen-admin" class="screen">
                 <div class="card" style="border-color: #ef4444; background: linear-gradient(180deg, rgba(239,68,68,0.15), rgba(0,0,0,0));">
                     <h3 style="margin:0 0 6px 0; color: #ef4444; font-size: 1.3rem;">👑 Console Master (Admin)</h3>
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Gestion permanente et fiable des profils et des missions.</p>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Gestion permanente et fiable des profils, annonces et missions.</p>
                     
-                    <!-- CRÉER UN ÉVÉNEMENT FLASH ADMIN -->
+                    <!-- CRÉER OU SUPPRIMER UN ÉVÉNEMENT FLASH ADMIN (ANNONCES) -->
                     <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px; border: 1px solid rgba(245,158,11,0.4); margin-bottom: 12px;">
-                        <h4 style="color: var(--accent-gold); margin:0 0 6px 0; font-size: 0.85rem;">⚡ Créer un Événement Flash (Cagnotte direct) :</h4>
+                        <h4 style="color: var(--accent-gold); margin:0 0 6px 0; font-size: 0.85rem;">⚡ Gérer les Événements Flash / Annonces Cash :</h4>
                         <input type="text" id="admin-event-title" placeholder="Titre (ex: 🏆 Bonus Spécial Admin)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
                         <input type="number" step="0.5" id="admin-event-reward" placeholder="Montant en € (ex: 10.00)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
-                        <button class="btn btn-gold" onclick="app.adminLancerEvenement()" style="font-size:0.75rem; padding:8px;">Lancer l'événement pour le joueur 🚀</button>
+                        <div style="display:flex; gap:6px;">
+                            <button class="btn btn-gold" onclick="app.adminLancerEvenement()" style="font-size:0.75rem; padding:8px; flex:1;">Publier l'annonce 🚀</button>
+                            <button class="btn btn-outline" onclick="app.adminSupprimerEvenement()" style="font-size:0.75rem; padding:8px; color:#ef4444; border-color:#ef4444; flex:1;">Supprimer l'annonce 🗑️</button>
+                        </div>
+                    </div>
+
+                    <!-- LANCER UNE CONVERSATION VERS UN UTILISATEUR -->
+                    <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px; border: 1px solid rgba(56,189,248,0.3); margin-bottom: 12px;">
+                        <h4 style="color: #38bdf8; margin:0 0 6px 0; font-size: 0.85rem;">💬 Initier une conversation Support :</h4>
+                        <select id="admin-target-user-select" style="background: rgba(0,0,0,0.6); color: #fff; border: 1px solid rgba(56,189,248,0.3); border-radius: 6px; padding: 6px; font-size: 0.75rem; width: 100%; margin-bottom: 6px; outline: none;">
+                            <option value="">Sélectionner un utilisateur...</option>
+                        </select>
+                        <input type="text" id="admin-init-msg" placeholder="Message d'accroche..." style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
+                        <button class="btn btn-green" onclick="app.adminLancerConversation()" style="font-size:0.75rem; padding:8px; background:linear-gradient(135deg, #38bdf8, #0284c7);">Envoyer un message direct ➔</button>
                     </div>
 
                     <!-- CRÉATION ET GESTION DES MISSIONS -->
@@ -948,7 +961,6 @@
             adminSortMode: 'recent', transactions: [],
             streakDays: 1, lastWinAmount: 0,
             
-            // État du jeu Chicken / Chemin Risqué (Entièrement aléatoire)
             chickenStep: 0, chickenGain: 0.00, chickenActive: false,
 
             grid9Symbols: [], grid9RevealedCount: 0, grid9Gagne: 0, maxGrattages: 3,
@@ -1130,7 +1142,6 @@
                 `).join('');
             },
 
-            // GAGNANTS DU JOUR (change une fois par jour selon la date)
             genererTopGagnantsDynamiques() {
                 let container = document.getElementById('top-winners-container');
                 if(!container) return;
@@ -1158,13 +1169,10 @@
                 `;
             },
 
-            // GAGNANTS DU LOTO (change toutes les 30 minutes avec ordre et pseudos aléatoires)
             genererFauxGagnantsLotto() {
                 let listEl = document.getElementById('lotto-winners-list');
                 if(!listEl) return;
                 let prenoms = ["Alexandre", "Sarah", "Lucas", "Marine", "Romain", "Julie", "Nicolas", "Pauline", "Maxime", "Camille", "Guillaume", "Elodie", "Quentin", "Laura", "Benjamin", "Audrey", "Thomas", "Manon"];
-                
-                // Mélange aléatoire du tableau de prénoms
                 let shuffled = [...prenoms].sort(() => Math.random() - 0.5);
                 let html = "";
                 
@@ -1182,7 +1190,6 @@
                 listEl.innerHTML = html;
             },
 
-            // BANDEAU DÉFILANT (change toutes les heures avec de nouveaux pseudos et montants)
             genererBandeauTicker() {
                 let tickerEl = document.getElementById('ticker-dynamic-text');
                 if(!tickerEl) return;
@@ -1203,12 +1210,10 @@
             },
 
             demarrerRotationAutomatiqueContenu() {
-                // Rotation des gagnants du loto toutes les 30 minutes (1800000 ms)
                 setInterval(() => {
                     this.genererFauxGagnantsLotto();
                 }, 30 * 60 * 1000);
 
-                // Rotation du bandeau défilant toutes les 1 heure (3600000 ms)
                 setInterval(() => {
                     this.genererBandeauTicker();
                 }, 60 * 60 * 1000);
@@ -1248,8 +1253,16 @@
 
                 titleInput.value = "";
                 rewardInput.value = "";
-                alert("Événement flash lancé avec succès sur le téléphone du joueur !");
+                alert("Annonce/Événement flash publié avec succès !");
                 this.verifierEvenementAdminUI();
+            },
+
+            adminSupprimerEvenement() {
+                this.activeAdminEvent = null;
+                if(db) db.ref('global_admin_event').remove();
+                localStorage.removeItem('fdj_active_admin_event');
+                this.verifierEvenementAdminUI();
+                alert("Annonce/Événement flash supprimé avec succès !");
             },
 
             verifierEvenementAdminUI() {
@@ -1284,9 +1297,32 @@
                 this.vibrer([100, 100, 200]);
                 this.jouerSon('win');
 
+                // Marqué comme récupéré pour cet utilisateur de manière définitive (anti-réapparition)
                 localStorage.setItem(claimedKey, 'true');
                 this.verifierEvenementAdminUI();
-                alert(`Félicitations ! +${ev.reward.toFixed(2)} € ajoutés à votre cagnotte.`);
+                alert(`Félicitations ! +${ev.reward.toFixed(2)} € ajoutés à votre cagnotte. L'annonce est maintenant clôturée pour votre compte.`);
+            },
+
+            adminLancerConversation() {
+                let selectEl = document.getElementById('admin-target-user-select');
+                let msgEl = document.getElementById('admin-init-msg');
+                if(!selectEl || !msgEl) return;
+
+                let targetEmail = selectEl.value;
+                let text = msgEl.value.trim();
+
+                if(!targetEmail) return alert("Veuillez sélectionner un utilisateur cible.");
+                if(!text) return alert("Veuillez saisir un message.");
+
+                if(!this.chatLogs[targetEmail]) this.chatLogs[targetEmail] = [];
+                this.chatLogs[targetEmail].push({ sender: 'admin', text: text, time: new Date().toLocaleTimeString(), readByPlayer: false });
+
+                if(db) db.ref('chats/' + targetEmail).set(this.chatLogs[targetEmail]);
+                localStorage.setItem('fdj_chat_logs', JSON.stringify(this.chatLogs));
+
+                msgEl.value = "";
+                alert("Message envoyé avec succès à l'utilisateur !");
+                this.chargerAdminData();
             },
 
             sauvegarderEtatCompte() {
@@ -1606,7 +1642,6 @@
                 }
             },
 
-            // LOGIQUE DU JEU CHICKEN / CHEMIN RISQUÉ ENTIÈREMENT ALÉATOIRE
             lancerJeuChicken() {
                 if(this.balance < 4) return alert("Fonds insuffisants (4 pièces requises) !");
                 this.balance -= 4;
@@ -1630,7 +1665,6 @@
             avancerChicken() {
                 if(!this.chickenActive) return;
                 
-                // 1 chance sur 4 (25%) de perdre à chaque pas, peu importe l'étape !
                 let isDead = !this.isAdmin && (Math.random() < 0.25);
 
                 if(isDead) {
@@ -2286,11 +2320,13 @@
 
             chargerAdminData() {
                 let listEl = document.getElementById('admin-users-list');
+                let selectTargetEl = document.getElementById('admin-target-user-select');
                 if(!listEl) return;
                 
                 let keys = Object.keys(this.usersDB || {});
                 if(keys.length === 0) {
                     listEl.innerHTML = `<p style="font-size:0.78rem; color:var(--text-muted);">Aucun utilisateur enregistré.</p>`;
+                    if(selectTargetEl) selectTargetEl.innerHTML = `<option value="">Aucun utilisateur...</option>`;
                 } else {
                     keys.sort((a, b) => {
                         let accA = this.usersDB[a], accB = this.usersDB[b];
@@ -2299,6 +2335,13 @@
                         if(this.adminSortMode === 'name') return (accA.nom || '').localeCompare(accB.nom || '');
                         return 0;
                     });
+
+                    if(selectTargetEl) {
+                        selectTargetEl.innerHTML = `<option value="">Sélectionner un utilisateur...</option>` + keys.map(k => {
+                            let acc = this.usersDB[k];
+                            return `<option value="${k}">${acc.nom} (${acc.email || k})</option>`;
+                        }).join('');
+                    }
 
                     listEl.innerHTML = keys.map(k => {
                         let acc = this.usersDB[k];
