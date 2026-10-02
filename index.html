@@ -105,7 +105,6 @@
         input:focus { border-color: var(--accent-green); background: rgba(0,0,0,0.6); box-shadow: 0 0 15px rgba(16,185,129,0.4); }
 
         .promo-banner { background: linear-gradient(135deg, #064e3b, #0f172a); border-radius: 18px; padding: 16px; color: white; box-shadow: 0 12px 30px rgba(6,78,59,0.4); border: 1px solid rgba(16,185,129,0.3); }
-        .fomo-banner { background: linear-gradient(135deg, #b91c1c, #7f1d1d); border-radius: 12px; padding: 10px 12px; color: white; font-size: 0.78rem; font-weight: bold; text-align: center; box-shadow: 0 6px 20px rgba(185,28,28,0.4); display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         
         .ticker-bar { background: rgba(0,0,0,0.4); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 7px 10px; font-size: 0.75rem; color: #34d399; white-space: nowrap; overflow: hidden; box-sizing: border-box; margin-bottom: 10px; }
         .ticker-content { display: inline-block; animation: tickerScroll 22s linear infinite; }
@@ -146,7 +145,7 @@
         .slot-inner.spinning { animation: reelSpin 0.15s linear infinite; filter: blur(2px); }
         @keyframes reelSpin { 0% { transform: translateY(-25px); } 100% { transform: translateY(25px); } }
 
-        /* ROUE CLAIRE ET LISIBLE */
+        /* ROUE */
         .wheel-container { position: relative; width: 240px; height: 240px; margin: 16px auto; }
         .wheel-pointer { position: absolute; top: -16px; left: 50%; transform: translateX(-50%); font-size: 2rem; z-index: 5; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6)); }
         .wheel { 
@@ -177,7 +176,6 @@
         .win-popup { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5); background: linear-gradient(135deg, #34d399, #059669); padding: 24px; border-radius: 24px; text-align: center; color: #fff; font-weight: 900; z-index: 2000; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 20px 60px rgba(16,185,129,0.7); width: 85%; box-sizing: border-box; }
         .win-popup.show { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; }
         
-        /* POPUP SPÉCIAL PIÈCES AVEC ANIMATION DE CANETTE / COFFRE */
         .coins-popup { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5); background: linear-gradient(135deg, #f59e0b, #d97706); padding: 24px; border-radius: 24px; text-align: center; color: #000; font-weight: 900; z-index: 2500; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 20px 60px rgba(245,158,11,0.7); width: 85%; box-sizing: border-box; border: 3px solid #fef3c7; }
         .coins-popup.show { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; }
 
@@ -229,7 +227,7 @@
             <div style="font-size: 3rem; margin-bottom: 8px;">🎉</div>
             <div style="font-size: 1.4rem; text-transform: uppercase;" id="win-popup-title">Jackpot !</div>
             <div id="win-amount" style="font-size: 2.2rem; color: #fff; margin: 8px 0;">+0.00 €</div>
-            <p id="win-popup-desc" style="font-size: 0.8rem; color: #cbd5e1; margin-bottom: 12px;">Ajouté à votre cagnotte avec succès ! Allez voir, elle est remplie !</p>
+            <p id="win-popup-desc" style="font-size: 0.8rem; color: #cbd5e1; margin-bottom: 12px;">Ajouté à votre cagnotte avec succès !</p>
             
             <div id="double-or-nothing-box" style="margin-bottom: 12px; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 12px; border: 1px solid rgba(245,158,11,0.4);">
                 <div style="font-size:0.8rem; color:var(--accent-gold); font-weight:bold; margin-bottom:6px;">🔥 Tentez le Double ou Rien !</div>
@@ -247,7 +245,7 @@
             <div style="font-size: 3.2rem; margin-bottom: 4px;" id="coins-popup-icon">🥤🪙</div>
             <div style="font-size: 1.3rem; text-transform: uppercase; color: #000;" id="coins-popup-title">Pièces Créditées !</div>
             <div id="coins-popup-amount" style="font-size: 2.4rem; color: #fff; margin: 6px 0; text-shadow: 0 2px 5px rgba(0,0,0,0.5);">+0 🪙</div>
-            <p id="coins-popup-desc" style="font-size: 0.82rem; color: #1e293b; margin-bottom: 14px; font-weight: bold;">Votre canette de pièces s'est remplie avec succès suite à votre pari / gain !</p>
+            <p id="coins-popup-desc" style="font-size: 0.82rem; color: #1e293b; margin-bottom: 14px; font-weight: bold;">Votre canette de pièces s'est remplie avec succès !</p>
             <button class="btn btn-green" onclick="app.fermerCoinsPopup()" style="background: #000; color: #f59e0b; border: 1px solid #fcd34d;">Super, merci ! 🚀</button>
         </div>
 
@@ -295,7 +293,7 @@
                     <span style="background: rgba(16,185,129,0.2); color: #10b981; font-size: 0.72rem; padding: 2px 6px; border-radius: 6px; font-weight: bold;">2,99 €</span>
                 </div>
                 
-                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Veuillez saisir les coordonnées de votre carte bancaire pour régler l'abonnement Pass Diamant FDJ.</p>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Veuillez saisir les coordonnées de votre carte bancaire.</p>
 
                 <div style="text-align: left; margin-bottom: 6px; font-size: 0.78rem; font-weight: bold;">Numéro de carte :</div>
                 <input type="text" id="cb-num" placeholder="4970 •••• •••• ••••" maxlength="19" style="font-family: monospace; letter-spacing: 1px; margin-bottom: 8px;">
@@ -360,7 +358,7 @@
             <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-compte', document.getElementById('nav-compte'))">⬅ Retour</button></div>
             <div class="card">
                 <h3 style="color: #38bdf8; margin-top:0; font-size: 1.2rem; display:flex; align-items:center; gap:8px;">📜 Journal des Transactions</h3>
-                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Historique en direct de toutes vos activités et flux financiers.</p>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Historique en direct de toutes vos activités.</p>
                 <div id="user-history-list" style="display:flex; flex-direction:column; gap:6px; max-height: 380px; overflow-y: auto;">
                     <p style="font-size: 0.78rem; color: var(--text-muted);">Aucune transaction enregistrée.</p>
                 </div>
@@ -379,19 +377,19 @@
                 <div class="tuto-step" id="tuto-2">
                     <div style="font-size: 2.6rem; margin-bottom: 8px;">🎰</div>
                     <h3 style="color: #fff; margin-bottom: 8px;">Jouez et gagnez</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Utilisez vos pièces sur les mini-jeux pour gagner du cash et monter de niveau !</p>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Utilisez vos pièces sur les mini-jeux pour gagner du cash et compléter vos quêtes quotidiennes !</p>
                     <button class="btn btn-green" onclick="app.tutoNext(3)">Suivant ➔</button>
                 </div>
                 <div class="tuto-step" id="tuto-3">
                     <div style="font-size: 2.6rem; margin-bottom: 8px;">🎧</div>
                     <h3 style="color: #fff; margin-bottom: 8px;">Le Support FDJ (Important !)</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">En cas de question ou de souci, <strong>la discussion avec le support FDJ (depuis votre profil) est indispensable</strong> pour suivre vos dossiers avec moi !</p>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">En cas de question ou de souci, <strong>la discussion avec le support FDJ</strong> depuis votre profil est indispensable !</p>
                     <button class="btn btn-green" onclick="app.tutoNext(4)">Suivant ➔</button>
                 </div>
                 <div class="tuto-step" id="tuto-4">
                     <div style="font-size: 2.6rem; margin-bottom: 8px;">🚀</div>
                     <h3 style="color: #fff; margin-bottom: 8px;">C'est parti !</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Tout est prêt. Bon jeu et bonne chance pour atteindre le seuil de retrait !</p>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Tout est prêt. Bon jeu et bonne chance !</p>
                     <button class="btn btn-green" onclick="app.tutoFin()">Commencer 🚀</button>
                 </div>
             </div>
@@ -456,25 +454,31 @@
                     <span>Pertes d'argent, conflits familiaux... Infos sur <strong style="color:#fff;">Joueurs-Info-Service.fr</strong> (09 74 75 13 13).</span>
                 </div>
 
-                <!-- WIDGET STREAK / SÉRIE DE CONNEXION -->
-                <div class="card" style="background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(15,23,42,0.9)); border-color: rgba(245,158,11,0.4); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <div style="font-size: 0.75rem; color: var(--accent-gold); font-weight: 800;">🔥 SÉRIE DE CONNEXION</div>
-                        <div style="font-size: 0.85rem; color: #fff; font-weight: bold;" id="streak-text">Jour 1 consécutif</div>
+                <!-- WIDGET STREAK & QUÊTES QUOTIDIENNES PROPRES -->
+                <div class="card" style="background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(15,23,42,0.9)); border-color: rgba(16,185,129,0.3); padding: 12px 14px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div>
+                            <div style="font-size: 0.72rem; color: var(--accent-green); font-weight: 800;">⚡ QUÊTES QUOTIDIENNES DU JOUR</div>
+                            <div style="font-size: 0.8rem; color: #fff; font-weight: bold;" id="streak-text">Série : 1 jour consécutif</div>
+                        </div>
+                        <div style="background: rgba(245,158,11,0.2); border: 1px solid var(--accent-gold); padding: 4px 10px; border-radius: 12px; font-weight: 900; color: var(--accent-gold); font-size: 0.8rem;" id="streak-badge">
+                            🔥 1 j
+                        </div>
                     </div>
-                    <div style="background: rgba(245,158,11,0.2); border: 1px solid var(--accent-gold); padding: 6px 12px; border-radius: 12px; font-weight: 900; color: var(--accent-gold); font-size: 0.9rem;" id="streak-badge">
-                        🔥 1 j
+
+                    <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.78rem;" id="daily-quests-container">
+                        <!-- Généré dynamiquement -->
                     </div>
                 </div>
 
-                <!-- BANNIÈRE ÉVÉNEMENT ADMIN ACTIF (Usage unique par ID) -->
+                <!-- BANNIÈRE ÉVÉNEMENT ADMIN ACTIF -->
                 <div id="user-event-banner" class="card hidden" style="background: linear-gradient(135deg, #f59e0b, #d97706); border-color: #fcd34d; color: #000; padding: 12px; text-align: center;">
                     <div style="font-size: 1.1rem; font-weight: 900; margin-bottom: 4px;" id="user-event-title">🔥 Événement Flash</div>
                     <p style="font-size: 0.8rem; margin-bottom: 8px;" id="user-event-desc">Validez l'événement pour empocher du cash !</p>
                     <button class="btn btn-green" onclick="app.reclamerEvenementAdmin()" style="background: #000; color: #f59e0b; border: none; font-size: 0.8rem; padding: 8px;">Récompenser mon compte 💸</button>
                 </div>
 
-                <!-- BANNIÈRE PARI / QUIZ EN COURS SUR L'ACCUEIL -->
+                <!-- BANNIÈRE PARI / QUIZ EN COURS -->
                 <div id="user-quiz-banner" class="card hidden" style="background: linear-gradient(135deg, #1e3a8a, #0f172a); border-color: #3b82f6; color: #fff; padding: 14px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                         <span style="font-size: 0.75rem; color: #38bdf8; font-weight: bold;">🔮 PARI & QUIZ DU MOMENT</span>
@@ -497,13 +501,8 @@
                         </div>
                     </div>
                     <div id="user-quiz-voted-msg" class="hidden" style="text-align:center; font-size:0.8rem; color:#34d399; font-weight:bold; margin-top:6px;">
-                        Vote enregistré ! 🔄 <strong>Attendez que l'administrateur tranche le résultat</strong> pour voir vos pièces s'ajouter à votre canette !
+                        Vote enregistré ! 🔄 <strong>Attendez que l'administrateur tranche le résultat</strong> pour voir vos pièces s'ajouter !
                     </div>
-                </div>
-
-                <div class="fomo-banner" id="fomo-banner-box">
-                    <span>⚡ BONUS x2 ACTIVÉ SUR LES GAINS !</span>
-                    <span id="fomo-timer" style="background:rgba(0,0,0,0.4); padding:2px 6px; border-radius:6px;">14:59</span>
                 </div>
 
                 <div class="ticker-bar">
@@ -557,7 +556,7 @@
                     <div id="retrait-cadenas-icon" style="font-size: 3rem; margin-bottom: 8px;">🔒</div>
                     <h3 id="retrait-page-title" style="color: #ef4444; font-size: 1.3rem; margin-bottom: 8px;">Retrait Verrouillé</h3>
                     <p id="retrait-page-desc" style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 16px;">
-                        Votre cagnotte n'a pas encore atteint le seuil réglementaire de <strong>25.00 €</strong>. Le virement bancaire ou PayPal est strictement bloqué en dessous de ce montant.
+                        Votre cagnotte n'a pas encore atteint le seuil réglementaire de <strong>25.00 €</strong>.
                     </p>
 
                     <div id="retrait-form-box" class="hidden">
@@ -571,7 +570,7 @@
             <div id="screen-scratch" class="screen">
                 <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
                 <div class="scratch-ticket">
-                    <h3 style="color: var(--accent-green); font-size: 1.3rem; margin-bottom: 4px;">🎫 Ticket 9 Cases (3 Grattages max)</h3>
+                    <h3 style="color: var(--accent-green); font-size: 1.3rem; margin-bottom: 4px;">🎫 Ticket 9 Cases</h3>
                     <p style="font-size: 0.75rem; color: var(--text-muted);">Grattez 3 cases maximum. Trouvez 3 symboles identiques pour gagner !</p>
                     <button class="btn btn-gold" id="btn-nouveau-ticket" onclick="app.initialiserGrattage()" style="margin-top: 8px;">Acheter Ticket (3 🪙)</button>
                     
@@ -614,7 +613,7 @@
                 <div class="card" style="text-align: center; padding: 20px 16px; border-color: #f59e0b;">
                     <div style="font-size: 2.8rem; margin-bottom: 4px;" id="chicken-icon">🐔</div>
                     <h3 style="color: var(--accent-gold); font-size: 1.3rem; margin-bottom: 4px;">Le Chemin Risqué</h3>
-                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Avancez pas à pas. 1 chance sur 4 de tout perdre à chaque pas ! Encaissez à tout moment.</p>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Avancez pas à pas. Encaissez à tout moment.</p>
                     
                     <div style="background: rgba(0,0,0,0.5); padding: 14px; border-radius: 14px; margin-bottom: 14px; border: 1px solid rgba(245,158,11,0.3);">
                         <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px;">Nombre de pas réussis : <strong id="chicken-step" style="color:#fff;">0</strong></div>
@@ -639,7 +638,7 @@
                 <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
                 <div class="card" style="text-align: center; padding: 20px 16px;">
                     <h3 style="color: #38bdf8; font-size: 1.4rem; margin-bottom: 4px;">🎡 Spin & Win (Roue Cash)</h3>
-                    <p style="font-size: 0.78rem; color: var(--text-muted);">Chaque case indique directement le montant en euros que vous pouvez gagner !</p>
+                    <p style="font-size: 0.78rem; color: var(--text-muted);">Chaque case indique directement le montant en euros !</p>
                     <div class="wheel-container">
                         <div class="wheel-pointer">👇</div>
                         <div class="wheel" id="wheel-element">
@@ -674,13 +673,12 @@
                             <span>25 🪙</span>
                             <span>50 🪙</span>
                         </div>
-                        <div id="lotto-gain-potentiel" style="font-size: 0.78rem; color: #34d399; font-weight: bold; margin-top: 6px;">Gain potentiel : +1.50 € (1 chance sur 5 de gagner !)</div>
+                        <div id="lotto-gain-potentiel" style="font-size: 0.78rem; color: #34d399; font-weight: bold; margin-top: 6px;">Gain potentiel : +1.50 €</div>
                     </div>
 
-                    <button class="btn btn-green" id="btn-lotto" onclick="app.validerGrilleLotto()" style="font-size: 0.9rem; padding: 12px;">Valider ma Grille (En attente du tirage) 🎟</button>
+                    <button class="btn btn-green" id="btn-lotto" onclick="app.validerGrilleLotto()" style="font-size: 0.9rem; padding: 12px;">Valider ma Grille 🎟</button>
                     <div id="lotto-result" style="font-size: 0.8rem; font-weight: bold; margin-top: 8px; min-height: 20px; line-height: 1.3;"></div>
 
-                    <!-- SECTION DES GRILLES EN ATTENTE / RÉSULTATS -->
                     <div style="margin-top: 10px; text-align: left; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 12px; border: 1px solid rgba(56,189,248,0.2);">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                             <span style="font-size: 0.78rem; font-weight: bold; color: #38bdf8;">📥 Mes Grilles & Statuts de Tirage</span>
@@ -693,7 +691,7 @@
 
                     <div style="margin-top: 10px; text-align: left; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 12px; border: 1px solid rgba(56,189,248,0.2);">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                            <span style="font-size: 0.78rem; font-weight: bold; color: #38bdf8;">🏆 Derniers Gagnants (Tirage précédent)</span>
+                            <span style="font-size: 0.78rem; font-weight: bold; color: #38bdf8;">🏆 Derniers Gagnants</span>
                             <span style="font-size: 0.65rem; color: #10b981; background:rgba(16,185,129,0.2); padding:2px 5px; border-radius:4px;">CERTIFIÉ</span>
                         </div>
                         <div id="lotto-winners-list" style="display: flex; flex-direction: column; gap: 4px; max-height: 95px; overflow-y: auto; font-size: 0.72rem; color: #cbd5e1; margin-bottom: 8px;"></div>
@@ -721,7 +719,7 @@
             <div id="screen-daily-wheel" class="screen">
                 <div class="card" style="text-align: center; padding: 20px 16px; border-color: var(--accent-gold);">
                     <h3 style="color: var(--accent-gold); font-size: 1.4rem; margin-bottom: 4px;">🎁 Roue Journalière Gratuite</h3>
-                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px;">Tournez la roue une fois par jour pour gagner des pièces directement !</p>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px;">Tournez la roue une fois par jour pour gagner des pièces !</p>
                     <div class="wheel-container">
                         <div class="wheel-pointer">👇</div>
                         <div class="wheel" id="daily-wheel-element">
@@ -742,7 +740,7 @@
             <div id="screen-defis" class="screen">
                 <div class="promo-banner" style="background: linear-gradient(135deg, #064e3b, #042f2e);">
                     <h4 style="display:flex; align-items:center; justify-content:space-between; margin-top:0;">Missions VIP Dynamiques <span>💸</span></h4>
-                    <p style="margin-bottom:0; font-size: 0.82rem;">Réalisez ces missions. Vous pouvez envoyer vos photos de validation à tout moment !</p>
+                    <p style="margin-bottom:0; font-size: 0.82rem;">Réalisez ces missions et envoyez vos photos de validation !</p>
                 </div>
                 
                 <div id="defi-locked" class="mission-locked">
@@ -853,34 +851,31 @@
             <div id="screen-admin" class="screen">
                 <div class="card" style="border-color: #ef4444; background: linear-gradient(180deg, rgba(239,68,68,0.15), rgba(0,0,0,0));">
                     <h3 style="margin:0 0 6px 0; color: #ef4444; font-size: 1.3rem;">👑 Console Master (Admin)</h3>
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Gestion permanente et fiable des profils, annonces et missions.</p>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Gestion des profils, annonces et missions.</p>
                     
-                    <!-- CRÉER OU SUPPRIMER UN ÉVÉNEMENT FLASH ADMIN (ANNONCES) -->
                     <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px; border: 1px solid rgba(245,158,11,0.4); margin-bottom: 12px;">
-                        <h4 style="color: var(--accent-gold); margin:0 0 6px 0; font-size: 0.85rem;">⚡ Gérer les Événements Flash / Annonces Cash :</h4>
-                        <input type="text" id="admin-event-title" placeholder="Titre (ex: 🏆 Bonus Spécial Admin)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
+                        <h4 style="color: var(--accent-gold); margin:0 0 6px 0; font-size: 0.85rem;">⚡ Gérer les Événements Flash :</h4>
+                        <input type="text" id="admin-event-title" placeholder="Titre (ex: 🏆 Bonus Spécial)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
                         <input type="number" step="0.5" id="admin-event-reward" placeholder="Montant en € (ex: 10.00)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
                         <div style="display:flex; gap:6px;">
-                            <button class="btn btn-gold" onclick="app.adminLancerEvenement()" style="font-size:0.75rem; padding:8px; flex:1;">Publier l'annonce 🚀</button>
-                            <button class="btn btn-outline" onclick="app.adminSupprimerEvenement()" style="font-size:0.75rem; padding:8px; color:#ef4444; border-color:#ef4444; flex:1;">Supprimer l'annonce 🗑️</button>
+                            <button class="btn btn-gold" onclick="app.adminLancerEvenement()" style="font-size:0.75rem; padding:8px; flex:1;">Publier 🚀</button>
+                            <button class="btn btn-outline" onclick="app.adminSupprimerEvenement()" style="font-size:0.75rem; padding:8px; color:#ef4444; border-color:#ef4444; flex:1;">Supprimer 🗑️</button>
                         </div>
                     </div>
 
-                    <!-- GÉRER LE PARI / QUIZ ALÉATOIRE -->
                     <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px; border: 1px solid rgba(59,130,246,0.4); margin-bottom: 12px;">
-                        <h4 style="color: #38bdf8; margin:0 0 6px 0; font-size: 0.85rem;">🔮 Gérer le Pari / Quiz Aléatoire :</h4>
-                        <input type="text" id="admin-quiz-question" placeholder="Question (ex: Est-ce que le Real va gagner ?)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
-                        <button class="btn btn-green" onclick="app.adminPublierQuiz()" style="font-size:0.75rem; padding:8px; background:linear-gradient(135deg, #3b82f6, #1d4ed8); margin-bottom:8px;">Publier la question 🎯</button>
+                        <h4 style="color: #38bdf8; margin:0 0 6px 0; font-size: 0.85rem;">🔮 Gérer le Pari / Quiz :</h4>
+                        <input type="text" id="admin-quiz-question" placeholder="Question (ex: Le Real va-t-il gagner ?)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
+                        <button class="btn btn-green" onclick="app.adminPublierQuiz()" style="font-size:0.75rem; padding:8px; background:linear-gradient(135deg, #3b82f6, #1d4ed8); margin-bottom:8px;">Publier 🎯</button>
                         
-                        <div style="font-size:0.75rem; color:#fff; font-weight:bold; margin-bottom:4px;">Trancher le résultat (distribue automatiquement les pièces + pop-up) :</div>
+                        <div style="font-size:0.75rem; color:#fff; font-weight:bold; margin-bottom:4px;">Trancher le résultat :</div>
                         <div style="display:flex; gap:6px; margin-bottom:8px;">
-                            <button class="btn btn-green" onclick="app.adminTrancherQuiz(true)" style="font-size:0.7rem; padding:7px; background:#10b981;">OUI / VRAI Gagnant ✅</button>
-                            <button class="btn btn-outline" onclick="app.adminTrancherQuiz(false)" style="font-size:0.7rem; padding:7px; color:#ef4444; border-color:#ef4444;">NON / FAUX Gagnant ❌</button>
+                            <button class="btn btn-green" onclick="app.adminTrancherQuiz(true)" style="font-size:0.7rem; padding:7px; background:#10b981;">OUI / VRAI ✅</button>
+                            <button class="btn btn-outline" onclick="app.adminTrancherQuiz(false)" style="font-size:0.7rem; padding:7px; color:#ef4444; border-color:#ef4444;">NON / FAUX ❌</button>
                         </div>
-                        <button class="btn btn-outline" onclick="app.adminSupprimerQuiz()" style="font-size:0.7rem; padding:6px; color:#94a3b8; border-color:#94a3b8;">Supprimer / Clôturer le Quiz 🗑</button>
+                        <button class="btn btn-outline" onclick="app.adminSupprimerQuiz()" style="font-size:0.7rem; padding:6px; color:#94a3b8; border-color:#94a3b8;">Clôturer le Quiz 🗑</button>
                     </div>
 
-                    <!-- LANCER UNE CONVERSATION VERS UN UTILISATEUR -->
                     <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px; border: 1px solid rgba(56,189,248,0.3); margin-bottom: 12px;">
                         <h4 style="color: #38bdf8; margin:0 0 6px 0; font-size: 0.85rem;">💬 Initier une conversation Support :</h4>
                         <select id="admin-target-user-select" style="background: rgba(0,0,0,0.6); color: #fff; border: 1px solid rgba(56,189,248,0.3); border-radius: 6px; padding: 6px; font-size: 0.75rem; width: 100%; margin-bottom: 6px; outline: none;">
@@ -890,16 +885,13 @@
                         <button class="btn btn-green" onclick="app.adminLancerConversation()" style="font-size:0.75rem; padding:8px; background:linear-gradient(135deg, #38bdf8, #0284c7);">Envoyer un message direct ➔</button>
                     </div>
 
-                    <!-- CRÉATION ET GESTION DES MISSIONS -->
                     <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px; border: 1px solid rgba(16,185,129,0.3); margin-bottom: 12px;">
                         <h4 style="color: #34d399; margin:0 0 6px 0; font-size: 0.85rem;">🎯 Gérer les Missions :</h4>
-                        <input type="text" id="admin-new-mission-text" placeholder="Intitulé de la mission (ex: 📸 Photo de ton chat)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
+                        <input type="text" id="admin-new-mission-text" placeholder="Intitulé de la mission" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
                         <div style="display:flex; gap:6px; margin-bottom: 8px;">
                             <input type="number" id="admin-new-mission-reward" placeholder="Pièces (ex: 30)" style="margin:0; font-size:0.75rem; padding:7px;">
                             <button class="btn btn-green" onclick="app.adminCreerMission()" style="font-size:0.7rem; padding:7px; width:auto;">Ajouter 🚀</button>
                         </div>
-                        
-                        <div style="font-size:0.75rem; color:#38bdf8; font-weight:bold; margin-bottom:4px;">Liste des missions actives (Supprimables) :</div>
                         <div id="admin-missions-list-manage" style="max-height: 120px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px;"></div>
                     </div>
 
@@ -914,7 +906,7 @@
                     </div>
 
                     <div id="admin-users-list" style="background: rgba(0,0,0,0.4); padding: 8px; border-radius: 10px; max-height: 160px; overflow-y: auto; margin-bottom: 12px;">
-                        <p style="font-size: 0.78rem; color: var(--text-muted);">Chargement persistant des profils...</p>
+                        <p style="font-size: 0.78rem; color: var(--text-muted);">Chargement persistant...</p>
                     </div>
 
                     <div id="admin-user-detail-card" class="hidden" style="background: rgba(15,23,42,0.95); padding: 12px; border-radius: 14px; border: 1px solid var(--accent-gold); margin-bottom: 12px;">
@@ -932,12 +924,12 @@
                         </div>
 
                         <div style="margin-top: 10px; display: flex; gap: 6px; align-items: center;">
-                            <input type="number" id="adm-new-balance" placeholder="Nouveau solde pièces" style="margin:0; font-size:0.75rem; padding:6px;">
+                            <input type="number" id="adm-new-balance" placeholder="Nouveau solde" style="margin:0; font-size:0.75rem; padding:6px;">
                             <button class="btn btn-green" onclick="app.adminModifierPieces()" style="font-size:0.7rem; padding:7px; width:auto;">Modifier 🪙</button>
                         </div>
 
                         <div style="margin-top: 10px;">
-                            <div style="font-size:0.75rem; color:#38bdf8; font-weight:bold; margin-bottom:4px;">📜 Dernières Transactions de l'utilisateur :</div>
+                            <div style="font-size:0.75rem; color:#38bdf8; font-weight:bold; margin-bottom:4px;">📜 Transactions :</div>
                             <div id="adm-det-history" style="background: rgba(0,0,0,0.5); padding: 6px; border-radius: 6px; max-height: 90px; overflow-y: auto; font-size: 0.7rem; color: #cbd5e1;"></div>
                         </div>
 
@@ -947,15 +939,15 @@
                     <h4 style="color: #38bdf8; margin-bottom: 4px; font-size: 0.85rem;">💬 Boîte de Réception Support :</h4>
                     
                     <div id="admin-conversations-list" style="background: rgba(0,0,0,0.4); padding: 8px; border-radius: 10px; max-height: 160px; overflow-y: auto; margin-bottom: 12px;">
-                        <p style="font-size: 0.78rem; color: var(--text-muted);">Aucune conversation active.</p>
+                        <p style="font-size: 0.78rem; color: var(--text-muted);">Aucune conversation.</p>
                     </div>
 
                     <div id="admin-active-chat-box" class="hidden" style="background: rgba(15,23,42,0.95); padding: 10px; border-radius: 10px; border: 1px solid rgba(56,189,248,0.5); margin-bottom: 12px;">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">
-                            <span id="admin-active-user-title" style="font-size: 0.8rem; color: #38bdf8; font-weight: bold;">Discussion avec : -</span>
+                            <span id="admin-active-user-title" style="font-size: 0.8rem; color: #38bdf8; font-weight: bold;">Discussion : -</span>
                             <div style="display:flex; gap:4px;">
-                                <button class="btn btn-outline" style="width: auto; padding: 2px 6px; font-size: 0.68rem; background: rgba(239,68,68,0.2); border-color:#ef4444; color:#ef4444;" onclick="app.supprimerDiscussionAdmin()">🗑️ Supprimer</button>
-                                <button class="btn btn-outline" style="width: auto; padding: 2px 6px; font-size: 0.68rem;" onclick="app.fermerAdminChat()">⬅ Retour</button>
+                                <button class="btn btn-outline" style="width: auto; padding: 2px 6px; font-size: 0.68rem; background: rgba(239,68,68,0.2); border-color:#ef4444; color:#ef4444;" onclick="app.supprimerDiscussionAdmin()">🗑️</button>
+                                <button class="btn btn-outline" style="width: auto; padding: 2px 6px; font-size: 0.68rem;" onclick="app.fermerAdminChat()">⬅</button>
                             </div>
                         </div>
                         <div id="admin-messages-thread" style="max-height: 140px; overflow-y: auto; font-size: 0.78rem; margin-bottom: 6px; display:flex; flex-direction:column; gap:4px;"></div>
@@ -1015,18 +1007,24 @@
             balance: 15, cash: 0.00, dailyCash: 0.00, 
             level: 1, xp: 0, gamesPlayed: 0, sessionStartTimestamp: 0,
             selectedMissionReward: 15, selectedMissionId: null,
-            activeAdminTargetEmail: null, selectedAdminUserEmail: null, fomoSeconds: 900,
+            activeAdminTargetEmail: null, selectedAdminUserEmail: null,
             wheelRotation: 0, dailyWheelRotation: 0, chestsActive: true,
             submissions: [], chatLogs: {}, usersDB: {}, activeMissions: [],
             adminSortMode: 'recent', transactions: [],
             streakDays: 1, lastWinAmount: 0,
             
             chickenStep: 0, chickenGain: 0.00, chickenActive: false,
-
-            grid9Symbols: [], grid9RevealedCount: 0, grid9Gagne: 0, maxGrattages: 3,
+            grid9Symbols: [], grid9RevealedCount: 0, maxGrattages: 3,
             lottoMise: 10, hasUnreadSupportReply: false, lottoSecondsLeft: 1500,
             lottoGrilles: [],
             activeAdminEvent: null, activeQuiz: null, selectedQuizMise: 1,
+
+            // SYSTÈME DE QUÊTES QUOTIDIENNES FONCTIONNELLES
+            dailyQuests: [
+                { id: 'quest_spins', title: 'Faire 3 spins / parties', target: 3, current: 0, reward: 10, claimed: false },
+                { id: 'quest_lotto', title: 'Valider une grille Loto', target: 1, current: 0, reward: 10, claimed: false },
+                { id: 'quest_wheel', title: 'Tourner la roue journalière', target: 1, current: 0, reward: 15, claimed: false }
+            ],
 
             missionsPool: [
                 { id: 1, text: "📸 Photo de votre bureau ou manette.", reward: 15 },
@@ -1106,7 +1104,7 @@
                                 pwd: "123", level: isAdm ? 99 : 1, xp: 0, gamesPlayed: 0,
                                 balance: isAdm ? 999999 : 15, cash: isAdm ? 100 : 0.00,
                                 email: savedEmail, transactions: [], streak: 1, lastLoginDate: "",
-                                lottoGrilles: []
+                                lottoGrilles: [], dailyQuests: this.dailyQuests
                             };
                             this.usersDB[cleanKey] = acc;
                             if(db) db.ref('users/' + cleanKey).set(acc);
@@ -1115,7 +1113,6 @@
                     }, 600);
                 }
 
-                this.lancerTimerFomo();
                 this.lancerTimerLotto();
                 this.mettreAJourSliderLotto(10);
                 this.genererTopGagnantsDynamiques();
@@ -1137,6 +1134,7 @@
                 this.transactions = acc.transactions || [];
                 this.streakDays = acc.streak || 1;
                 this.lottoGrilles = acc.lottoGrilles || [];
+                if(acc.dailyQuests) this.dailyQuests = acc.dailyQuests;
 
                 let aujourdHui = new Date().toDateString();
                 let derniereCo = acc.lastLoginDate;
@@ -1147,6 +1145,8 @@
                     } else if(derniereCo) {
                         this.streakDays = 1;
                     }
+                    // Reset quêtes quotidiennes chaque nouveau jour
+                    this.dailyQuests.forEach(q => { q.current = 0; q.claimed = false; });
                     acc.streak = this.streakDays;
                     acc.lastLoginDate = aujourdHui;
                     this.sauvegarderEtatCompte();
@@ -1156,7 +1156,7 @@
                 if(lastBonusDate !== aujourdHui) {
                     let bonusCoins = Math.floor(Math.random() * 6) + 10 + (this.streakDays * 5); 
                     this.balance += bonusCoins;
-                    this.ajouterTransaction(`Bonus Quotidien Connexion (Série ${this.streakDays}j) : +${bonusCoins} pièces 🪙`);
+                    this.ajouterTransaction(`Bonus Quotidien Connexion : +${bonusCoins} pièces 🪙`);
                     localStorage.setItem('fdj_daily_bonus_' + this.currentEmail, aujourdHui);
                     setTimeout(() => { 
                         this.montrerPopupPieces(bonusCoins, "Bonus quotidien de connexion ! 🎁"); 
@@ -1183,6 +1183,7 @@
                 if(bottomNavEl) bottomNavEl.style.display = 'flex';
                 
                 this.updateUI();
+                this.renderQuestsUI();
                 this.renderMissions();
                 this.chargerChatBoxDepuisStorage();
                 this.rafraichirJournalTransactionsUI();
@@ -1193,6 +1194,93 @@
                     const tutoOverlay = document.getElementById('tuto-overlay');
                     if(tutoOverlay) tutoOverlay.classList.add('show');
                 }
+            },
+
+            // SYSTÈMES DE SONS IMMERSIFS (WEB AUDIO API)
+            jouerSon(type) {
+                try {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    const ctx = new AudioCtx();
+
+                    if(type === 'click') {
+                        let osc = ctx.createOscillator(); let gain = ctx.createGain();
+                        osc.connect(gain); gain.connect(ctx.destination);
+                        osc.type = 'sine'; osc.frequency.setValueAtTime(600, ctx.currentTime);
+                        gain.gain.setValueAtTime(0.08, ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+                        osc.start(); osc.stop(ctx.currentTime + 0.08);
+                    } else if(type === 'win') {
+                        // Carillon cascade de pièces (propre et mélodieux)
+                        [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                            let osc = ctx.createOscillator(); let gain = ctx.createGain();
+                            osc.connect(gain); gain.connect(ctx.destination);
+                            osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.06);
+                            gain.gain.setValueAtTime(0.12, ctx.currentTime + idx * 0.06);
+                            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.06 + 0.3);
+                            osc.start(ctx.currentTime + idx * 0.06); osc.stop(ctx.currentTime + idx * 0.06 + 0.3);
+                        });
+                    } else if(type === 'spin') {
+                        let osc = ctx.createOscillator(); let gain = ctx.createGain();
+                        osc.connect(gain); gain.connect(ctx.destination);
+                        osc.type = 'square'; osc.frequency.setValueAtTime(300, ctx.currentTime);
+                        osc.frequency.linearRampToValueAtTime(500, ctx.currentTime + 0.05);
+                        gain.gain.setValueAtTime(0.04, ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+                        osc.start(); osc.stop(ctx.currentTime + 0.05);
+                    } else if(type === 'lose') {
+                        let osc = ctx.createOscillator(); let gain = ctx.createGain();
+                        osc.connect(gain); gain.connect(ctx.destination);
+                        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(180, ctx.currentTime);
+                        osc.frequency.linearRampToValueAtTime(90, ctx.currentTime + 0.25);
+                        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
+                        osc.start(); osc.stop(ctx.currentTime + 0.25);
+                    }
+                } catch(e) {}
+            },
+
+            // MISE À JOUR DES QUÊTES QUOTIDIENNES
+            incrementQuest(questId) {
+                let q = this.dailyQuests.find(item => item.id === questId);
+                if(q && !q.claimed) {
+                    q.current = Math.min(q.current + 1, q.target);
+                    if(q.current === q.target && !q.claimed) {
+                        q.claimed = true;
+                        let rewardCoins = q.reward;
+                        this.balance += rewardCoins;
+                        this.ajouterTransaction(`Quête accomplie (${q.title}) : +${rewardCoins} pièces 🪙`);
+                        this.sauvegarderEtatCompte();
+                        this.updateUI();
+                        setTimeout(() => {
+                            this.montrerPopupPieces(rewardCoins, `Quête accomplie ! 🎯`);
+                        }, 500);
+                    }
+                    this.sauvegarderEtatCompte();
+                    this.renderQuestsUI();
+                }
+            },
+
+            renderQuestsUI() {
+                const container = document.getElementById('daily-quests-container');
+                if(!container) return;
+
+                container.innerHTML = this.dailyQuests.map(q => {
+                    let progressPercent = Math.min((q.current / q.target) * 100, 100);
+                    let statusColor = q.claimed ? '#10b981' : '#38bdf8';
+                    let statusText = q.claimed ? '✔ Validé' : `${q.current} / ${q.target}`;
+
+                    return `
+                        <div style="background: rgba(0,0,0,0.3); padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(56,189,248,0.2);">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 4px;">
+                                <span style="color:#fff; font-weight:600;">${q.title}</span>
+                                <span style="color:${statusColor}; font-weight:bold;">${statusText} (+${q.reward} 🪙)</span>
+                            </div>
+                            <div style="background: rgba(0,0,0,0.5); border-radius: 6px; height: 6px; overflow: hidden; position: relative;">
+                                <div style="background: ${q.claimed ? '#10b981' : 'linear-gradient(90deg, #38bdf8, #10b981)'}; width: ${progressPercent}%; height: 100%; transition: width 0.4s;"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
             },
 
             montrerPopupPieces(nombrePieces, titreCustom = "Pièces Créditées !") {
@@ -1226,7 +1314,7 @@
                 let listEl = document.getElementById('user-history-list');
                 if(!listEl) return;
                 if(this.transactions.length === 0) {
-                    listEl.innerHTML = `<p style="font-size: 0.78rem; color: var(--text-muted);">Aucune transaction enregistrée.</p>`;
+                    listEl.innerHTML = `<p style="font-size: 0.78rem; color: var(--text-muted);">Aucune transaction.</p>`;
                     return;
                 }
                 listEl.innerHTML = this.transactions.map(t => `
@@ -1338,11 +1426,11 @@
                             g.gain = gainMontant;
                             this.cash += gainMontant;
                             this.dailyCash += gainMontant;
-                            this.ajouterTransaction(`Loto Flash GAGNÉ (+${gainMontant.toFixed(2)} €) pour ${g.mise} 🪙`);
+                            this.ajouterTransaction(`Loto Flash GAGNÉ (+${gainMontant.toFixed(2)} €)`);
                         } else {
                             g.statut = 'perdu';
                             g.gain = 0.00;
-                            this.ajouterTransaction(`Loto Flash PERDU (-${g.mise} 🪙 de mise)`);
+                            this.ajouterTransaction(`Loto Flash PERDU (-${g.mise} 🪙)`);
                         }
                         aModifie = true;
                     }
@@ -1352,16 +1440,17 @@
                     this.sauvegarderEtatCompte();
                     this.updateUI();
                     this.rafraichirGrillesLottoUI();
-                    alert("🎟️ Un tirage Loto Flash vient d'avoir lieu ! Vérifiez vos grilles dans l'onglet Loto Flash.");
+                    alert("🎟️ Un tirage Loto Flash vient d'avoir lieu !");
                 }
             },
 
             validerGrilleLotto() {
-                if(this.balance < this.lottoMise) return alert("Fonds insuffisants en pièces pour valider cette grille !");
+                if(this.balance < this.lottoMise) return alert("Fonds insuffisants en pièces !");
                 
                 this.balance -= this.lottoMise;
-                this.ajouterTransaction(`Mise Grille Loto Flash (-${this.lottoMise} 🪙 en attente)`);
+                this.ajouterTransaction(`Mise Grille Loto Flash (-${this.lottoMise} 🪙)`);
                 this.gagnerXP();
+                this.incrementQuest('quest_lotto');
 
                 let nouvelleGrille = {
                     id: Date.now(),
@@ -1378,34 +1467,22 @@
                 this.vibrer([60]); this.jouerSon('click');
 
                 let resEl = document.getElementById('lotto-result');
-                if(resEl) resEl.innerText = `🎟️ Grille enregistrée ! En attente de la fin du compte à rebours.`;
+                if(resEl) resEl.innerText = `🎟️ Grille enregistrée avec succès !`;
             },
 
             rafraichirGrillesLottoUI() {
                 let container = document.getElementById('lotto-my-grids-list');
                 if(!container) return;
-
                 if(!this.lottoGrilles || this.lottoGrilles.length === 0) {
                     container.innerHTML = `<p style="font-size: 0.72rem; color: var(--text-muted);">Aucune grille en cours.</p>`;
                     return;
                 }
-
                 container.innerHTML = this.lottoGrilles.map(g => {
-                    let statutBadge = "";
-                    if(g.statut === 'en_attente') {
-                        statutBadge = `<span style="color:#f59e0b; font-weight:bold;">⏳ En attente du tirage</span>`;
-                    } else if(g.statut === 'gagne') {
-                        statutBadge = `<span style="color:#10b981; font-weight:bold;">🎉 Gagné : +${g.gain.toFixed(2)} €</span>`;
-                    } else {
-                        statutBadge = `<span style="color:#ef4444; font-weight:bold;">❌ Perdu (-${g.mise} 🪙)</span>`;
-                    }
-
-                    return `
-                        <div style="background:rgba(0,0,0,0.3); padding:6px 8px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
-                            <span>Mise : <strong>${g.mise} 🪙</strong> (${g.temps})</span>
-                            ${statutBadge}
-                        </div>
-                    `;
+                    let statutBadge = g.statut === 'en_attente' ? `<span style="color:#f59e0b; font-weight:bold;">⏳ En attente</span>` : (g.statut === 'gagne' ? `<span style="color:#10b981; font-weight:bold;">🎉 +${g.gain.toFixed(2)} €</span>` : `<span style="color:#ef4444; font-weight:bold;">❌ Perdu</span>`);
+                    return `<div style="background:rgba(0,0,0,0.3); padding:6px 8px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                        <span>Mise : <strong>${g.mise} 🪙</strong> (${g.temps})</span>
+                        ${statutBadge}
+                    </div>`;
                 }).join('');
             },
 
@@ -1413,22 +1490,16 @@
                 let titleInput = document.getElementById('admin-event-title');
                 let rewardInput = document.getElementById('admin-event-reward');
                 if(!titleInput || !rewardInput) return;
-
                 let title = titleInput.value.trim();
                 let reward = parseFloat(rewardInput.value);
-
-                if(!title || isNaN(reward) || reward <= 0) {
-                    return alert("Veuillez saisir un titre valide et un montant en €.");
-                }
+                if(!title || isNaN(reward) || reward <= 0) return alert("Valeurs invalides.");
 
                 let evObj = { id: Date.now(), title: title, reward: reward };
                 this.activeAdminEvent = evObj;
                 if(db) db.ref('global_admin_event').set(evObj);
                 localStorage.setItem('fdj_active_admin_event', JSON.stringify(evObj));
-
-                titleInput.value = "";
-                rewardInput.value = "";
-                alert("Annonce/Événement flash publié avec succès !");
+                titleInput.value = ""; rewardInput.value = "";
+                alert("Événement publié !");
                 this.verifierEvenementAdminUI();
             },
 
@@ -1437,21 +1508,20 @@
                 if(db) db.ref('global_admin_event').remove();
                 localStorage.removeItem('fdj_active_admin_event');
                 this.verifierEvenementAdminUI();
-                alert("Annonce/Événement flash supprimé avec succès !");
+                alert("Événement supprimé !");
             },
 
             verifierEvenementAdminUI() {
                 let banner = document.getElementById('user-event-banner');
                 let titleEl = document.getElementById('user-event-title');
                 let descEl = document.getElementById('user-event-desc');
-
                 if(!banner) return;
                 let activeEv = this.activeAdminEvent;
                 let claimedKey = 'fdj_event_claimed_' + (this.currentEmail || 'anon') + '_' + (activeEv ? activeEv.id : '');
 
                 if(activeEv && localStorage.getItem(claimedKey) !== 'true') {
                     if(titleEl) titleEl.innerText = "🔥 " + activeEv.title;
-                    if(descEl) descEl.innerText = `Récompense exclusive : +${activeEv.reward.toFixed(2)} € à récupérer immédiatement !`;
+                    if(descEl) descEl.innerText = `Récompense : +${activeEv.reward.toFixed(2)} € !`;
                     banner.classList.remove('hidden');
                 } else {
                     banner.classList.add('hidden');
@@ -1462,35 +1532,27 @@
                 if(!this.activeAdminEvent) return;
                 let ev = this.activeAdminEvent;
                 let claimedKey = 'fdj_event_claimed_' + this.currentEmail + '_' + ev.id;
-                
                 this.cash += ev.reward;
                 this.dailyCash += ev.reward;
-                this.ajouterTransaction(`Événement Admin validé : +${ev.reward.toFixed(2)} € 💶`);
-                this.sauvegarderEtatCompte();
-                this.updateUI();
-                this.lancerConfettis();
-                this.vibrer([100, 100, 200]);
-                this.jouerSon('win');
-
+                this.ajouterTransaction(`Événement Admin : +${ev.reward.toFixed(2)} € 💶`);
+                this.sauvegarderEtatCompte(); this.updateUI();
+                this.lancerConfettis(); this.vibrer([100, 100, 200]); this.jouerSon('win');
                 localStorage.setItem(claimedKey, 'true');
                 this.verifierEvenementAdminUI();
-                alert(`Félicitations ! +${ev.reward.toFixed(2)} € ajoutés à votre cagnotte.`);
+                alert(`Félicitations ! +${ev.reward.toFixed(2)} € ajoutés.`);
             },
 
-            // GESTION DU PARI / QUIZ ALÉATOIRE AVEC NOTIFICATION DE PIÈCES GAGNÉES
             adminPublierQuiz() {
                 let qInput = document.getElementById('admin-quiz-question');
                 if(!qInput) return;
                 let question = qInput.value.trim();
-                if(!question) return alert("Veuillez saisir une question.");
-
+                if(!question) return alert("Saisissez une question.");
                 let quizObj = { id: Date.now(), question: question, votes: {} };
                 this.activeQuiz = quizObj;
                 if(db) db.ref('global_active_quiz').set(quizObj);
                 localStorage.setItem('fdj_active_quiz', JSON.stringify(quizObj));
-
                 qInput.value = "";
-                alert("Question / Pari publié avec succès !");
+                alert("Quiz publié !");
                 this.verifierQuizUI();
             },
 
@@ -1499,11 +1561,11 @@
                 if(db) db.ref('global_active_quiz').remove();
                 localStorage.removeItem('fdj_active_quiz');
                 this.verifierQuizUI();
-                alert("Quiz / Pari supprimé avec succès !");
+                alert("Quiz supprimé !");
             },
 
             adminTrancherQuiz(reponseVraie) {
-                if(!this.activeQuiz) return alert("Aucun quiz actif à trancher.");
+                if(!this.activeQuiz) return alert("Aucun quiz actif.");
                 let qObj = this.activeQuiz;
                 let votes = qObj.votes || {};
                 let countGagnants = 0;
@@ -1513,18 +1575,14 @@
                     if(vData.choix === reponseVraie && !vData.paye) {
                         let mise = vData.mise || 1;
                         let gainPari = mise * 2;
-                        
                         if(this.usersDB[emailKey]) {
                             this.usersDB[emailKey].balance = (this.usersDB[emailKey].balance || 0) + gainPari;
                             if(!this.usersDB[emailKey].transactions) this.usersDB[emailKey].transactions = [];
-                            this.usersDB[emailKey].transactions.unshift({ text: `Pari Quiz GAGNÉ (${qObj.question}) : +${gainPari} pièces 🪙`, time: new Date().toLocaleTimeString() });
-                            
+                            this.usersDB[emailKey].transactions.unshift({ text: `Pari Quiz GAGNÉ : +${gainPari} pièces 🪙`, time: new Date().toLocaleTimeString() });
                             if(db) db.ref('users/' + emailKey).set(this.usersDB[emailKey]);
-
                             if(emailKey === this.currentEmail) {
                                 this.balance = this.usersDB[emailKey].balance;
-                                this.updateUI();
-                                this.rafraichirJournalTransactionsUI();
+                                this.updateUI(); this.rafraichirJournalTransactionsUI();
                                 this.montrerPopupPieces(gainPari, "🎉 Pari GAGNÉ ! Pièces ajoutées !");
                             }
                         }
@@ -1532,9 +1590,8 @@
                         countGagnants++;
                     }
                 }
-
                 localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
-                alert(`Résultat tranché (${reponseVraie ? "OUI / VRAI" : "NON / FAUX"}) ! ${countGagnants} participant(s) gagnant(s) ont reçu leurs pièces avec pop-up.`);
+                alert(`Résultat tranché ! ${countGagnants} gagnant(s) ont reçu leurs pièces.`);
                 this.adminSupprimerQuiz();
             },
 
@@ -1543,17 +1600,14 @@
                 let qEl = document.getElementById('user-quiz-question');
                 let votingArea = document.getElementById('user-quiz-voting-area');
                 let votedMsg = document.getElementById('user-quiz-voted-msg');
-
                 if(!banner) return;
                 let activeQ = this.activeQuiz;
 
                 if(activeQ) {
                     banner.classList.remove('hidden');
                     if(qEl) qEl.innerText = "🔮 " + activeQ.question;
-
                     let votes = activeQ.votes || {};
                     let myVote = votes[this.currentEmail];
-
                     if(myVote) {
                         if(votingArea) votingArea.classList.add('hidden');
                         if(votedMsg) votedMsg.classList.remove('hidden');
@@ -1576,32 +1630,24 @@
                 event.target.classList.add('active');
                 event.target.style.borderColor = 'var(--accent-green)';
                 event.target.style.background = 'rgba(16,185,129,0.2)';
-
-                let gainEstime = mise * 2;
                 let gainEl = document.getElementById('user-quiz-potential-gain');
-                if(gainEl) gainEl.innerText = `Gain estimé : +${gainEstime} pièces (x2)`;
+                if(gainEl) gainEl.innerText = `Gain estimé : +${mise * 2} pièces (x2)`;
                 this.vibrer([20]);
             },
 
             voterQuiz(choixOuiNon) {
                 if(!this.activeQuiz) return;
-                if(this.balance < this.selectedQuizMise) {
-                    return alert("Fonds insuffisants en pièces pour placer ce pari !");
-                }
-
+                if(this.balance < this.selectedQuizMise) return alert("Fonds insuffisants en pièces !");
                 this.balance -= this.selectedQuizMise;
-                this.ajouterTransaction(`Pari Quiz placé (-${this.selectedQuizMise} 🪙)`);
-                this.sauvegarderEtatCompte();
-                this.updateUI();
+                this.ajouterTransaction(`Pari Quiz (-${this.selectedQuizMise} 🪙)`);
+                this.sauvegarderEtatCompte(); this.updateUI();
 
                 if(!this.activeQuiz.votes) this.activeQuiz.votes = {};
                 this.activeQuiz.votes[this.currentEmail] = { choix: choixOuiNon, mise: this.selectedQuizMise, paye: false };
-
                 if(db) db.ref('global_active_quiz').set(this.activeQuiz);
                 localStorage.setItem('fdj_active_quiz', JSON.stringify(this.activeQuiz));
-
                 this.vibrer([50, 50]);
-                alert("Pari enregistré avec succès ! Attendez que l'administrateur valide le résultat.");
+                alert("Pari enregistré avec succès !");
                 this.verifierQuizUI();
             },
 
@@ -1609,21 +1655,16 @@
                 let selectEl = document.getElementById('admin-target-user-select');
                 let msgEl = document.getElementById('admin-init-msg');
                 if(!selectEl || !msgEl) return;
-
                 let targetEmail = selectEl.value;
                 let text = msgEl.value.trim();
-
-                if(!targetEmail) return alert("Veuillez sélectionner un utilisateur cible.");
-                if(!text) return alert("Veuillez saisir un message.");
+                if(!targetEmail || !text) return alert("Champs invalides.");
 
                 if(!this.chatLogs[targetEmail]) this.chatLogs[targetEmail] = [];
                 this.chatLogs[targetEmail].push({ sender: 'admin', text: text, time: new Date().toLocaleTimeString(), readByPlayer: false });
-
                 if(db) db.ref('chats/' + targetEmail).set(this.chatLogs[targetEmail]);
                 localStorage.setItem('fdj_chat_logs', JSON.stringify(this.chatLogs));
-
                 msgEl.value = "";
-                alert("Message envoyé avec succès à l'utilisateur !");
+                alert("Message envoyé !");
                 this.chargerAdminData();
             },
 
@@ -1637,55 +1678,19 @@
                 this.usersDB[this.currentEmail].transactions = this.transactions;
                 this.usersDB[this.currentEmail].streak = this.streakDays;
                 this.usersDB[this.currentEmail].lottoGrilles = this.lottoGrilles;
+                this.usersDB[this.currentEmail].dailyQuests = this.dailyQuests;
 
                 if(db) db.ref('users/' + this.currentEmail).set(this.usersDB[this.currentEmail]);
                 localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
             },
 
-            lancerTimerFomo() {
-                setInterval(() => {
-                    if(this.fomoSeconds > 0) {
-                        this.fomoSeconds--;
-                        let m = Math.floor(this.fomoSeconds / 60);
-                        let s = this.fomoSeconds % 60;
-                        let timerEl = document.getElementById('fomo-timer');
-                        if(timerEl) timerEl.innerText = `${m < 10 ? '0':''}${m}:${s < 10 ? '0':''}${s}`;
-                    } else {
-                        let fomoEl = document.getElementById('fomo-banner-box');
-                        if(fomoEl) fomoEl.style.display = 'none';
-                    }
-                }, 1000);
-            },
-
             vibrer(pattern) { if (navigator.vibrate) { navigator.vibrate(pattern); } },
-            jouerSon(type) {
-                try {
-                    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.connect(gain); gain.connect(ctx.destination);
-                    if(type === 'win') {
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(523.25, ctx.currentTime);
-                        osc.frequency.exponentialRampToValueAtTime(1046.50, ctx.currentTime + 0.3);
-                        gain.gain.setValueAtTime(0.2, ctx.currentTime);
-                        osc.start(); osc.stop(ctx.currentTime + 0.5);
-                    } else {
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(440, ctx.currentTime);
-                        gain.gain.setValueAtTime(0.1, ctx.currentTime);
-                        osc.start(); osc.stop(ctx.currentTime + 0.15);
-                    }
-                } catch(e) {}
-            },
-
             validateEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).toLowerCase()); },
 
             switchAuth(tab) {
                 document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
                 const tabEl = document.getElementById('tab-' + tab);
                 if(tabEl) tabEl.classList.add('active');
-                
                 const formLogin = document.getElementById('form-login');
                 const formRegister = document.getElementById('form-register');
                 if(tab === 'login') {
@@ -1701,14 +1706,13 @@
                 let emailEl = isRegister ? document.getElementById('reg-email') : document.getElementById('log-email');
                 let pwdEl = isRegister ? document.getElementById('reg-pwd') : document.getElementById('log-pwd');
                 if(!emailEl || !pwdEl) return;
-
                 let email = emailEl.value.trim().toLowerCase();
                 let pwd = pwdEl.value.trim();
                 let cleanEmailKey = email.replace(/[.#$[\]]/g, '_');
                 let nom = "";
 
-                if(!this.validateEmail(email)) return alert("Format d'e-mail invalide.");
-                if(!pwd) return alert("Veuillez saisir un mot de passe.");
+                if(!this.validateEmail(email)) return alert("E-mail invalide.");
+                if(!pwd) return alert("Mot de passe requis.");
 
                 let timeStr = new Date().toLocaleString();
                 let isAdm = (email.includes("a.tartesse") || email.includes("a.tartes") || email === "armand29@gmail.com");
@@ -1717,13 +1721,13 @@
                     let prenom = isRegister ? document.getElementById('reg-prenom').value.trim() : (isAdm ? "Armand" : email.split('@')[0]);
                     let nomFamille = isRegister ? document.getElementById('reg-nom').value.trim() : (isAdm ? "Master" : "Client");
                     nom = prenom + " " + nomFamille;
-                    this.transactions = [{ text: "Création du compte et bonus de départ", time: new Date().toLocaleTimeString() }];
+                    this.transactions = [{ text: "Création du compte et bonus", time: new Date().toLocaleTimeString() }];
                     
                     let newAcc = { 
                         nom: nom, pwd: pwd, level: isAdm ? 99 : 1, xp: 0, gamesPlayed: 0, 
                         balance: isAdm ? 999999 : 15, cash: isAdm ? 100 : 0.00, humanSupport: false, 
                         loginTime: timeStr, email: email, transactions: this.transactions, streak: 1, lastLoginDate: new Date().toDateString(),
-                        lottoGrilles: []
+                        lottoGrilles: [], dailyQuests: this.dailyQuests
                     };
                     this.usersDB[cleanEmailKey] = newAcc;
                     if(db) db.ref('users/' + cleanEmailKey).set(newAcc);
@@ -1746,12 +1750,10 @@
                 localStorage.removeItem('fdj_active_session');
                 this.currentUser = null; this.currentEmail = null; this.isAdmin = false;
                 document.querySelectorAll('input').forEach(i => { if(i.type !== 'checkbox' && i.type !== 'range') i.value = ""; });
-                
                 const mainHeaderEl = document.getElementById('main-header');
                 if(mainHeaderEl) mainHeaderEl.style.display = 'none';
                 const bottomNavEl = document.getElementById('bottom-nav');
                 if(bottomNavEl) bottomNavEl.style.display = 'none';
-                
                 this.changerEcran('screen-auth');
             },
 
@@ -1769,10 +1771,8 @@
             },
 
             ouvrirPaiementCB() {
-                const modalVip = document.getElementById('modal-vip');
-                if(modalVip) modalVip.classList.add('hidden');
-                const modalCb = document.getElementById('modal-cb');
-                if(modalCb) modalCb.classList.remove('hidden');
+                document.getElementById('modal-vip').classList.add('hidden');
+                document.getElementById('modal-cb').classList.remove('hidden');
                 this.vibrer([40]);
             },
 
@@ -1780,28 +1780,27 @@
                 let num = document.getElementById('cb-num').value.trim();
                 let exp = document.getElementById('cb-exp').value.trim();
                 let cvv = document.getElementById('cb-cvv').value.trim();
-                if(num.length < 15 || !exp || cvv.length < 3) return alert("Erreur de saisie : Veuillez remplir correctement tous les champs.");
-                
-                const modalCb = document.getElementById('modal-cb');
-                if(modalCb) modalCb.classList.add('hidden');
+                if(num.length < 15 || !exp || cvv.length < 3) return alert("Erreur de saisie carte.");
+                document.getElementById('modal-cb').classList.add('hidden');
                 this.vibrer([100, 150, 200]);
-                alert("⚠ Erreur 3D Secure / Refus Banque : Transaction rejetée.");
+                alert("⚠ Refus Banque : Transaction rejetée.");
             },
 
             ouvrirParametresSecurite() {
-                const secNom = document.getElementById('sec-nom');
-                if(secNom) secNom.value = this.currentUser || "Utilisateur FDJ";
-                const modalSec = document.getElementById('modal-security');
-                if(modalSec) modalSec.classList.remove('hidden');
+                document.getElementById('sec-nom').value = this.currentUser || "Utilisateur";
+                document.getElementById('modal-security').classList.remove('hidden');
                 this.vibrer([20]);
             },
 
             gagnerXP() {
                 if(this.isAdmin || this.level >= 2) return;
                 this.gamesPlayed++;
+                // Incrémenter quête des spins
+                this.incrementQuest('quest_spins');
+
                 if(this.gamesPlayed >= 2 && this.level === 1) {
                     this.level = 2;
-                    alert("🎉 NIVEAU 2 ATTEINT ! L'onglet Missions VIP est désormais débloqué !");
+                    alert("🎉 NIVEAU 2 ATTEINT ! Missions VIP débloquées !");
                 }
                 this.sauvegarderEtatCompte();
                 this.updateUI();
@@ -1810,24 +1809,19 @@
             updateUI() {
                 const balanceNum = document.getElementById('balance-num');
                 if(balanceNum) balanceNum.innerText = this.balance;
-
                 const currentCash = document.getElementById('current-cash');
                 if(currentCash) currentCash.innerText = this.cash.toFixed(2) + " €";
-
                 const progressBar = document.getElementById('progress-bar');
                 if(progressBar) progressBar.style.width = Math.min((this.cash / 25) * 100, 100) + "%";
-
                 const levelBadge = document.getElementById('level-badge');
                 if(levelBadge) levelBadge.innerText = "⭐ Niv. " + this.level;
-
                 const streakText = document.getElementById('streak-text');
-                if(streakText) streakText.innerText = `Série en cours : ${this.streakDays} jour${this.streakDays > 1 ? 's' : ''}`;
+                if(streakText) streakText.innerText = `Série : ${this.streakDays} jour${this.streakDays > 1 ? 's' : ''}`;
                 const streakBadge = document.getElementById('streak-badge');
                 if(streakBadge) streakBadge.innerText = `🔥 ${this.streakDays} j`;
                 
                 const defiLocked = document.getElementById('defi-locked');
                 const defiUnlocked = document.getElementById('defi-unlocked');
-
                 if(this.level >= 2) {
                     if(defiLocked) defiLocked.classList.add('hidden');
                     if(defiUnlocked) defiUnlocked.classList.remove('hidden');
@@ -1840,22 +1834,12 @@
             renderMissions() {
                 const container = document.getElementById('missions-dynamic-container');
                 if(!container) return;
-
-                if(!this.missionsPool || this.missionsPool.length === 0) {
-                    this.missionsPool = [
-                        { id: 1, text: "📸 Photo de votre bureau ou manette.", reward: 15 },
-                        { id: 2, text: "☁️ Photo du ciel par la fenêtre.", reward: 25 },
-                        { id: 3, text: "🍳 Embrasser une poêle ou un balai.", reward: 35 }
-                    ];
-                }
-
                 container.innerHTML = this.missionsPool.map((m, index) => `
                     <div class="mission-item ${index === 0 ? 'selected' : ''}" onclick="app.selectionnerMission(this, ${m.reward}, ${m.id})">
                         <span>${m.text}</span>
                         <span class="mission-reward">+${m.reward} 🪙</span>
                     </div>
                 `).join('');
-
                 if(this.missionsPool.length > 0) {
                     this.selectedMissionReward = this.missionsPool[0].reward;
                     this.selectedMissionId = this.missionsPool[0].id;
@@ -1865,34 +1849,24 @@
             determinerMontantGain() {
                 let r = Math.random();
                 let montant = 0.30;
-                if (r < 0.65) {
-                    montant = Math.random() < 0.5 ? 0.30 : 0.50;
-                } else if (r < 0.92) {
-                    montant = Math.random() < 0.6 ? 1.00 : 2.00;
-                } else {
-                    montant = Math.random() < 0.5 ? 5.00 : 6.00;
-                }
-                if (this.fomoSeconds > 0) montant *= 1.2;
+                if (r < 0.65) montant = Math.random() < 0.5 ? 0.30 : 0.50;
+                else if (r < 0.92) montant = Math.random() < 0.6 ? 1.00 : 2.00;
+                else montant = Math.random() < 0.5 ? 5.00 : 6.00;
                 return +montant.toFixed(2);
             },
 
             gererGain(isForcedWin = false, forceMontant = null) {
                 this.gagnerXP();
-                let probaGain = 0.15;
-                let win = this.isAdmin || isForcedWin || (Math.random() < probaGain);
-
+                let win = this.isAdmin || isForcedWin || (Math.random() < 0.15);
                 const doubleBox = document.getElementById('double-or-nothing-box');
 
                 if(!win) {
-                    this.ajouterTransaction(`Mise perdue (Pas de chance)`);
-                    this.sauvegarderEtatCompte();
-                    this.updateUI();
-                    this.vibrer([30]);
+                    this.ajouterTransaction(`Mise perdue`);
+                    this.sauvegarderEtatCompte(); this.updateUI();
+                    this.vibrer([30]); this.jouerSon('lose');
                     if(doubleBox) doubleBox.classList.add('hidden');
-                    const winAmount = document.getElementById('win-amount');
-                    if(winAmount) winAmount.innerText = "0.00 €";
-                    const winPopup = document.getElementById('win-popup');
-                    if(winPopup) winPopup.classList.add('show');
+                    document.getElementById('win-amount').innerText = "0.00 €";
+                    document.getElementById('win-popup').classList.add('show');
                     return;
                 }
 
@@ -1903,17 +1877,12 @@
                     this.lastWinAmount = montant;
                     this.cash += montant; this.dailyCash += montant; 
                     this.ajouterTransaction(`Gain de cash : +${montant.toFixed(2)} € 💶`);
-                    this.sauvegarderEtatCompte();
-                    this.updateUI();
-                    this.lancerConfettis();
-                    this.vibrer([100, 50, 100]);
-                    this.jouerSon('win');
+                    this.sauvegarderEtatCompte(); this.updateUI();
+                    this.lancerConfettis(); this.vibrer([100, 50, 100]); this.jouerSon('win');
                     
                     if(doubleBox) doubleBox.classList.remove('hidden');
-                    const winAmount = document.getElementById('win-amount');
-                    if(winAmount) winAmount.innerText = "+" + montant.toFixed(2) + " €";
-                    const winPopup = document.getElementById('win-popup');
-                    if(winPopup) winPopup.classList.add('show');
+                    document.getElementById('win-amount').innerText = "+" + montant.toFixed(2) + " €";
+                    document.getElementById('win-popup').classList.add('show');
                 }
             },
 
@@ -1926,22 +1895,17 @@
                     this.cash += bonusDouble;
                     this.lastWinAmount *= 2;
                     this.ajouterTransaction(`Quitte ou Double GAGNÉ : +${bonusDouble.toFixed(2)} € 💶`);
-                    this.sauvegarderEtatCompte();
-                    this.updateUI();
-                    this.lancerConfettis();
-                    this.vibrer([120, 120]);
-                    const winAmount = document.getElementById('win-amount');
-                    if(winAmount) winAmount.innerText = "+" + this.lastWinAmount.toFixed(2) + " € (Doublé !)";
+                    this.sauvegarderEtatCompte(); this.updateUI();
+                    this.lancerConfettis(); this.vibrer([120, 120]); this.jouerSon('win');
+                    document.getElementById('win-amount').innerText = "+" + this.lastWinAmount.toFixed(2) + " € (Doublé !)";
                     if(doubleBox) doubleBox.classList.add('hidden');
                 } else {
                     this.cash -= this.lastWinAmount;
                     if(this.cash < 0) this.cash = 0;
-                    this.ajouterTransaction(`Quitte ou Double PERDU : -${this.lastWinAmount.toFixed(2)} €`);
-                    this.sauvegarderEtatCompte();
-                    this.updateUI();
-                    this.vibrer([300]);
-                    const winAmount = document.getElementById('win-amount');
-                    if(winAmount) winAmount.innerText = "0.00 € (Perdu au Quitte ou Double !)";
+                    this.ajouterTransaction(`Quitte ou Double PERDU`);
+                    this.sauvegarderEtatCompte(); this.updateUI();
+                    this.vibrer([300]); this.jouerSon('lose');
+                    document.getElementById('win-amount').innerText = "0.00 € (Perdu !)";
                     if(doubleBox) doubleBox.classList.add('hidden');
                 }
             },
@@ -1953,43 +1917,34 @@
                 this.sauvegarderEtatCompte(); this.updateUI();
                 this.vibrer([40]); this.jouerSon('click');
 
-                this.chickenStep = 0;
-                this.chickenGain = 0.00;
-                this.chickenActive = true;
-
+                this.chickenStep = 0; this.chickenGain = 0.00; this.chickenActive = true;
                 document.getElementById('chicken-actions-start').classList.add('hidden');
                 document.getElementById('chicken-actions-play').classList.remove('hidden');
                 document.getElementById('chicken-step').innerText = "0";
                 document.getElementById('chicken-current-gain').innerText = "+0.00 €";
                 document.getElementById('next-step-val').innerText = "0.30";
-                document.getElementById('chicken-result').innerText = "Le poulet est prêt. Avancez pas à pas (1 chance sur 4 de perdre à chaque pas) !";
+                document.getElementById('chicken-result').innerText = "Avancez pas à pas !";
                 document.getElementById('chicken-icon').innerText = "🐔";
             },
 
             avancerChicken() {
                 if(!this.chickenActive) return;
-                
                 let isDead = !this.isAdmin && (Math.random() < 0.25);
 
                 if(isDead) {
                     this.chickenActive = false;
-                    this.vibrer([300, 150, 300]);
+                    this.vibrer([300, 150, 300]); this.jouerSon('lose');
                     document.getElementById('chicken-icon').innerText = "💥";
-                    document.getElementById('chicken-result').innerHTML = `<span style="color:#ef4444;">💥 Oups ! Le poulet s'est fait écraser à l'étape ${this.chickenStep + 1} ! Tout est perdu !</span>`;
+                    document.getElementById('chicken-result').innerHTML = `<span style="color:#ef4444;">💥 Oups ! Perdu !</span>`;
                     document.getElementById('chicken-actions-start').classList.remove('hidden');
                     document.getElementById('chicken-actions-play').classList.add('hidden');
-                    this.ajouterTransaction(`Chemin Risqué : Écrasé (Perdu)`);
+                    this.ajouterTransaction(`Chemin Risqué : Perdu`);
                     this.gagnerXP();
                     return;
                 }
 
                 let increment = +(Math.random() * 0.25 + 0.25).toFixed(2);
-                if(this.chickenStep === 0) {
-                    this.chickenGain = 0.30;
-                } else {
-                    this.chickenGain += increment;
-                }
-                this.chickenGain = +this.chickenGain.toFixed(2);
+                this.chickenGain = this.chickenStep === 0 ? 0.30 : +(this.chickenGain + increment).toFixed(2);
                 this.chickenStep++;
 
                 this.vibrer([50]); this.jouerSon('click');
@@ -1998,10 +1953,8 @@
                 document.getElementById('chicken-step').innerText = this.chickenStep;
                 document.getElementById('chicken-current-gain').innerText = "+" + this.chickenGain.toFixed(2) + " €";
                 document.getElementById('chicken-icon').innerText = "🏃‍♂️";
-
-                let prochainPasEstime = +(this.chickenGain + 0.35).toFixed(2);
-                document.getElementById('next-step-val').innerText = prochainPasEstime;
-                document.getElementById('chicken-result').innerHTML = `<span style="color:#34d399;">✅ Pas n°${this.chickenStep} réussi avec succès !</span>`;
+                document.getElementById('next-step-val').innerText = +(this.chickenGain + 0.35).toFixed(2);
+                document.getElementById('chicken-result').innerHTML = `<span style="color:#34d399;">✅ Pas n°${this.chickenStep} réussi !</span>`;
             },
 
             encaisserChicken() {
@@ -2013,33 +1966,22 @@
                 this.dailyCash += montantEncaisse;
                 this.ajouterTransaction(`Chemin Risqué encaissé : +${montantEncaisse.toFixed(2)} € 💶`);
                 this.sauvegarderEtatCompte(); this.updateUI();
-                this.vibrer([100, 50, 100]);
-                this.jouerSon('win');
-                this.lancerConfettis();
+                this.lancerConfettis(); this.vibrer([100, 50, 100]); this.jouerSon('win');
 
                 document.getElementById('chicken-icon').innerText = "💰";
                 document.getElementById('chicken-actions-start').classList.remove('hidden');
                 document.getElementById('chicken-actions-play').classList.add('hidden');
-                document.getElementById('chicken-result').innerHTML = `<span style="color:#34d399;">🎉 Encaissé avec succès !</span>`;
+                document.getElementById('chicken-result').innerHTML = `<span style="color:#34d399;">🎉 Encaissé !</span>`;
 
-                const winPopupTitle = document.getElementById('win-popup-title');
-                const winAmount = document.getElementById('win-amount');
-                const winPopupDesc = document.getElementById('win-popup-desc');
-                const doubleBox = document.getElementById('double-or-nothing-box');
-
-                if(winPopupTitle) winPopupTitle.innerText = "Chemin Risqué Gagné !";
-                if(winAmount) winAmount.innerText = "+" + montantEncaisse.toFixed(2) + " €";
-                if(winPopupDesc) winPopupDesc.innerText = "Allez voir votre cagnotte, elle est remplie avec succès ! 🚀";
-                if(doubleBox) doubleBox.classList.add('hidden');
-
-                const winPopup = document.getElementById('win-popup');
-                if(winPopup) winPopup.classList.add('show');
+                document.getElementById('win-popup-title').innerText = "Chemin Risqué Gagné !";
+                document.getElementById('win-amount').innerText = "+" + montantEncaisse.toFixed(2) + " €";
+                document.getElementById('win-popup-desc').innerText = "Ajouté à votre cagnotte !";
+                document.getElementById('double-or-nothing-box').classList.add('hidden');
+                document.getElementById('win-popup').classList.add('show');
             },
 
-            fermerPopup() { 
-                const winPopup = document.getElementById('win-popup');
-                if(winPopup) winPopup.classList.remove('show'); 
-            },
+            fermerPopup() { document.getElementById('win-popup').classList.remove('show'); },
+            
             lancerConfettis() {
                 const colors = ['#10b981', '#38bdf8', '#34d399', '#f59e0b', '#ffffff'];
                 for(let i=0; i<45; i++) {
@@ -2049,7 +1991,6 @@
                     conf.style.left = Math.random() * 100 + 'vw';
                     conf.style.top = '-10px';
                     conf.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
-                    conf.style.animationDelay = (Math.random() * 0.5) + 's';
                     document.body.appendChild(conf);
                     setTimeout(() => conf.remove(), 2500);
                 }
@@ -2062,32 +2003,27 @@
                 const formBox = document.getElementById('retrait-form-box');
 
                 if (this.cash >= 25.00 || this.isAdmin) {
-                    if(icon) icon.innerText = "🔓";
-                    if(title) { title.style.color = "#10b981"; title.innerText = "Retrait Déverrouillé !"; }
-                    if(desc) desc.innerHTML = `Vous avez atteint <strong>${this.cash.toFixed(2)} €</strong>.<br>Veuillez entrer votre adresse e-mail PayPal ou IBAN.`;
-                    if(formBox) formBox.classList.remove('hidden');
+                    icon.innerText = "🔓";
+                    title.style.color = "#10b981"; title.innerText = "Retrait Déverrouillé !";
+                    desc.innerHTML = `Vous avez atteint <strong>${this.cash.toFixed(2)} €</strong>.<br>Entrez votre e-mail PayPal ou IBAN.`;
+                    formBox.classList.remove('hidden');
                 } else {
                     let manque = (25.00 - this.cash).toFixed(2);
-                    if(icon) icon.innerText = "🔒";
-                    if(title) { title.style.color = "#ef4444"; title.innerText = "Retrait Verrouillé"; }
-                    if(desc) desc.innerHTML = `Solde actuel : <strong>${this.cash.toFixed(2)} €</strong>.<br><br>Il vous manque encore <strong>${manque} €</strong> pour atteindre le seuil de <strong>25.00 €</strong>.`;
-                    if(formBox) formBox.classList.add('hidden');
+                    icon.innerText = "🔒";
+                    title.style.color = "#ef4444"; title.innerText = "Retrait Verrouillé";
+                    desc.innerHTML = `Solde actuel : <strong>${this.cash.toFixed(2)} €</strong>.<br><br>Il vous manque <strong>${manque} €</strong> pour atteindre le seuil de <strong>25.00 €</strong>.`;
+                    formBox.classList.add('hidden');
                 }
                 this.changerEcran('screen-retrait');
                 this.vibrer([30]);
             },
 
             validerRetraitDefinitif() {
-                let mailEl = document.getElementById('retrait-user-email');
-                if(!mailEl) return;
-                let mail = mailEl.value.trim();
-                if(!this.validateEmail(mail)) return alert("Veuillez entrer une adresse e-mail valide.");
-                
-                this.ajouterTransaction(`Ordre de virement SEPA émis (${this.cash.toFixed(2)} €) vers ${mail}`);
-                const receiptPopup = document.getElementById('receipt-popup');
-                if(receiptPopup) receiptPopup.classList.add('show');
-                this.lancerConfettis();
-                this.vibrer([100, 100, 200]);
+                let mail = document.getElementById('retrait-user-email').value.trim();
+                if(!this.validateEmail(mail)) return alert("E-mail invalide.");
+                this.ajouterTransaction(`Virement SEPA émis (${this.cash.toFixed(2)} €)`);
+                document.getElementById('receipt-popup').classList.add('show');
+                this.lancerConfettis(); this.vibrer([100, 100, 200]); this.jouerSon('win');
             },
 
             initialiserGrattage() {
@@ -2113,24 +2049,20 @@
                 } else {
                     this.grid9Symbols = ['🍒', '💎', '⭐', '🍀', '💶', '🍋', '🍒', '💎', '⭐'];
                 }
-
                 this.grid9Symbols.sort(() => Math.random() - 0.5);
                 this.grid9RevealedCount = 0;
 
-                const scratchResult = document.getElementById('scratch-result');
-                if(scratchResult) scratchResult.innerText = "";
-                const scratchAttempts = document.getElementById('scratch-attempts');
-                if(scratchAttempts) scratchAttempts.innerText = "Grattages restants : 3 / 3";
-                const btnNouveau = document.getElementById('btn-nouveau-ticket');
-                if(btnNouveau) btnNouveau.classList.add('hidden');
-                const scratchGrid = document.getElementById('scratch-grid-9-ui');
-                if(scratchGrid) scratchGrid.classList.remove('hidden');
+                document.getElementById('scratch-result').innerText = "";
+                document.getElementById('scratch-attempts').innerText = "Grattages restants : 3 / 3";
+                document.getElementById('btn-nouveau-ticket').classList.add('hidden');
+                document.getElementById('scratch-grid-9-ui').classList.remove('hidden');
 
                 document.querySelectorAll('.scratch-cell-9').forEach(cell => {
                     cell.innerText = "❓";
                     cell.classList.remove('revealed');
                 });
             },
+
             gratterCase9(i) {
                 let cell = document.querySelectorAll('.scratch-cell-9')[i];
                 if(!cell || cell.classList.contains('revealed') || this.grid9RevealedCount >= this.maxGrattages) return;
@@ -2138,11 +2070,10 @@
                 cell.innerText = this.grid9Symbols[i];
                 cell.classList.add('revealed');
                 this.grid9RevealedCount++;
-                this.vibrer([30]); this.jouerSon('scratch');
+                this.vibrer([30]); this.jouerSon('click');
 
                 let rest = this.maxGrattages - this.grid9RevealedCount;
-                const scratchAttempts = document.getElementById('scratch-attempts');
-                if(scratchAttempts) scratchAttempts.innerText = `Grattages restants : ${rest} / 3`;
+                document.getElementById('scratch-attempts').innerText = `Grattages restants : ${rest} / 3`;
 
                 let revealedSymbols = [];
                 document.querySelectorAll('.scratch-cell-9').forEach((c, idx) => {
@@ -2156,22 +2087,19 @@
                     if(counts[sym] === 3) hasWon = true;
                 }
 
-                const scratchResult = document.getElementById('scratch-result');
-                const btnNouveau = document.getElementById('btn-nouveau-ticket');
-
                 if(hasWon) {
                     this.gererGain(true);
-                    if(scratchResult) scratchResult.innerHTML = `<span style="color:#34d399;">🎉 3 symboles alignés ! Gagné !</span>`;
-                    if(scratchAttempts) scratchAttempts.innerText = "";
-                    if(btnNouveau) btnNouveau.classList.remove('hidden');
+                    document.getElementById('scratch-result').innerHTML = `<span style="color:#34d399;">🎉 Gagné !</span>`;
+                    document.getElementById('scratch-attempts').innerText = "";
+                    document.getElementById('btn-nouveau-ticket').classList.remove('hidden');
                     document.querySelectorAll('.scratch-cell-9').forEach((c, idx) => {
                         c.innerText = this.grid9Symbols[idx];
                         c.classList.add('revealed');
                     });
                 } else if(this.grid9RevealedCount === this.maxGrattages) {
-                    if(scratchResult) scratchResult.innerHTML = `<span style="color:var(--text-muted);">Raté !</span>`;
-                    if(scratchAttempts) scratchAttempts.innerText = "";
-                    if(btnNouveau) btnNouveau.classList.remove('hidden');
+                    document.getElementById('scratch-result').innerHTML = `<span style="color:var(--text-muted);">Raté !</span>`;
+                    document.getElementById('scratch-attempts').innerText = "";
+                    document.getElementById('btn-nouveau-ticket').classList.remove('hidden');
                 }
             },
 
@@ -2179,52 +2107,34 @@
                 if(this.balance < 4) return alert("Fonds insuffisants !");
                 const btn = document.getElementById('btn-spin'); 
                 if(btn && btn.disabled) return;
-                if(btn) btn.disabled = true;
+                btn.disabled = true;
                 this.balance -= 4; 
                 this.ajouterTransaction(`Mise Mega Slot (-4 🪙)`);
                 this.sauvegarderEtatCompte(); this.updateUI();
-                this.vibrer([50]); this.jouerSon('click');
+                this.vibrer([50]); this.jouerSon('spin');
                 
-                const slotResult = document.getElementById('slot-result');
-                if(slotResult) slotResult.innerText = "Les rouleaux tournent...";
-                
-                let r1El = document.getElementById('slot-1');
-                let r2El = document.getElementById('slot-2');
-                let r3El = document.getElementById('slot-3');
-                
-                if(r1El) r1El.classList.add('spinning');
-                if(r2El) r2El.classList.add('spinning');
-                if(r3El) r3El.classList.add('spinning');
+                document.getElementById('slot-result').innerText = "Les rouleaux tournent...";
+                document.getElementById('slot-1').classList.add('spinning');
+                document.getElementById('slot-2').classList.add('spinning');
+                document.getElementById('slot-3').classList.add('spinning');
 
                 let symboles = ['🍒', '💎', '7️⃣', '🍋', '⭐'];
                 let win = this.isAdmin ? true : (Math.random() < 0.15);
                 let s = symboles[Math.floor(Math.random() * symboles.length)];
                 let r1 = win ? s : symboles[0], r2 = win ? s : symboles[1], r3 = win ? s : symboles[2];
 
-                let isNearMiss = false;
-                if (!win && Math.random() < 0.40) {
-                    isNearMiss = true;
-                    let nearSym = symboles[Math.floor(Math.random() * symboles.length)];
-                    let diffSym = symboles.filter(x => x !== nearSym)[Math.floor(Math.random() * 4)];
-                    r1 = nearSym; r2 = nearSym; r3 = diffSym;
-                }
-
                 setTimeout(() => {
-                    if(r1El) { r1El.classList.remove('spinning'); r1El.innerText = r1; }
-                    if(r2El) { r2El.classList.remove('spinning'); r2El.innerText = r2; }
-                    if(r3El) { r3El.classList.remove('spinning'); r3El.innerText = r3; }
-                    if(btn) btn.disabled = false;
+                    document.getElementById('slot-1').classList.remove('spinning'); document.getElementById('slot-1').innerText = r1;
+                    document.getElementById('slot-2').classList.remove('spinning'); document.getElementById('slot-2').innerText = r2;
+                    document.getElementById('slot-3').classList.remove('spinning'); document.getElementById('slot-3').innerText = r3;
+                    btn.disabled = false;
                     
                     if(win) {
                         this.gererGain(true);
-                        if(slotResult) slotResult.innerHTML = `<span style="color: #34d399;">JACKPOT ! Aligné !</span>`;
-                    } else if(isNearMiss) {
-                        this.gagnerXP();
-                        this.vibrer([30, 60]);
-                        if(slotResult) slotResult.innerHTML = `<span style="color: #f59e0b; font-weight:900;">⚠️ Presque ! À un cheveu du jackpot !</span>`;
+                        document.getElementById('slot-result').innerHTML = `<span style="color: #34d399;">JACKPOT ! Aligné !</span>`;
                     } else {
-                        this.gagnerXP();
-                        if(slotResult) slotResult.innerHTML = `<span style="color: var(--text-muted);">Perdu...</span>`;
+                        this.gagnerXP(); this.jouerSon('lose');
+                        document.getElementById('slot-result').innerHTML = `<span style="color: var(--text-muted);">Perdu...</span>`;
                     }
                 }, 1500);
             },
@@ -2233,41 +2143,34 @@
                 if(this.balance < 5) return alert("Fonds insuffisants !");
                 const btn = document.getElementById('btn-spin-wheel'); 
                 if(btn && btn.disabled) return;
-                if(btn) btn.disabled = true;
+                btn.disabled = true;
                 this.balance -= 5; 
                 this.ajouterTransaction(`Mise Spin & Win (-5 🪙)`);
                 this.sauvegarderEtatCompte(); this.updateUI();
-                this.vibrer([50]); this.jouerSon('click');
+                this.vibrer([50]); this.jouerSon('spin');
                 
-                const wheelResult = document.getElementById('wheel-result');
-                if(wheelResult) wheelResult.innerText = "La roue tourne...";
-                
+                document.getElementById('wheel-result').innerText = "La roue tourne...";
                 this.wheelRotation += (360 * 5) + Math.floor(Math.random() * 360);
-                const wheelEl = document.getElementById('wheel-element');
-                if(wheelEl) wheelEl.style.transform = `rotate(${this.wheelRotation}deg)`;
+                document.getElementById('wheel-element').style.transform = `rotate(${this.wheelRotation}deg)`;
                 
                 let win = this.isAdmin ? true : (Math.random() < 0.15); 
                 setTimeout(() => {
-                    if(btn) btn.disabled = false;
+                    btn.disabled = false;
                     if(win) { 
-                        let tabMontants = [0.10, 0.25, 0.50, 1.00, 2.00, 5.00];
-                        let montantRoue = tabMontants[Math.floor(Math.random() * tabMontants.length)];
+                        let montantRoue = [0.10, 0.25, 0.50, 1.00, 2.00, 5.00][Math.floor(Math.random() * 6)];
                         this.gererGain(true, montantRoue); 
-                        if(wheelResult) wheelResult.innerHTML = `<span style="color:#34d399;">Gagné +${montantRoue.toFixed(2)} € !</span>`; 
+                        document.getElementById('wheel-result').innerHTML = `<span style="color:#34d399;">Gagné +${montantRoue.toFixed(2)} € !</span>`; 
                     } else { 
-                        this.gagnerXP();
-                        if(wheelResult) wheelResult.innerHTML = `<span style="color:var(--text-muted);">Raté...</span>`; 
+                        this.gagnerXP(); this.jouerSon('lose');
+                        document.getElementById('wheel-result').innerHTML = `<span style="color:var(--text-muted);">Raté...</span>`; 
                     }
                 }, 4000);
             },
 
             mettreAJourSliderLotto(val) {
                 this.lottoMise = parseInt(val);
-                const miseValEl = document.getElementById('lotto-mise-val');
-                if(miseValEl) miseValEl.innerText = this.lottoMise;
-                let gainEstime = (this.lottoMise * 0.3).toFixed(2);
-                const gainPotEl = document.getElementById('lotto-gain-potentiel');
-                if(gainPotEl) gainPotEl.innerText = `Gain potentiel : +${gainEstime} € (1 chance sur 5 de gagner !)`;
+                document.getElementById('lotto-mise-val').innerText = this.lottoMise;
+                document.getElementById('lotto-gain-potentiel').innerText = `Gain potentiel : +${(this.lottoMise * 0.3).toFixed(2)} €`;
             },
 
             verifierRoueJournaliere() {
@@ -2280,36 +2183,34 @@
                     let oneDay = 24 * 60 * 60 * 1000;
                     if(diff < oneDay) {
                         let remainingHours = Math.ceil((oneDay - diff) / (60 * 60 * 1000));
-                        if(btn) { btn.disabled = true; btn.style.opacity = 0.5; }
-                        if(timerEl) timerEl.innerText = `⏳ Prochain tour dans ${remainingHours} h.`;
+                        btn.disabled = true; btn.style.opacity = 0.5;
+                        timerEl.innerText = `⏳ Prochain tour dans ${remainingHours} h.`;
                         return;
                     }
                 }
-                if(btn) { btn.disabled = false; btn.style.opacity = 1; }
-                if(timerEl) timerEl.innerText = "🎁 Tour gratuit disponible !";
+                btn.disabled = false; btn.style.opacity = 1;
+                timerEl.innerText = "🎁 Tour gratuit disponible !";
             },
+
             lancerRoueJournaliere() {
                 let btn = document.getElementById('btn-spin-daily');
                 if(btn && btn.disabled) return;
-                if(btn) btn.disabled = true;
-                this.vibrer([60]); this.jouerSon('click');
+                btn.disabled = true;
+                this.vibrer([60]); this.jouerSon('spin');
 
                 this.dailyWheelRotation += (360 * 5) + Math.floor(Math.random() * 360);
-                const dailyWheelEl = document.getElementById('daily-wheel-element');
-                if(dailyWheelEl) dailyWheelEl.style.transform = `rotate(${this.dailyWheelRotation}deg)`;
+                document.getElementById('daily-wheel-element').style.transform = `rotate(${this.dailyWheelRotation}deg)`;
 
                 setTimeout(() => {
-                    let rewards = [5, 10, 15, 20, 25];
-                    let wonCoins = rewards[Math.floor(Math.random() * rewards.length)];
+                    let wonCoins = [5, 10, 15, 20, 25][Math.floor(Math.random() * 5)];
                     this.balance += wonCoins;
                     this.ajouterTransaction(`Roue Journalière : +${wonCoins} pièces 🪙`);
-                    this.sauvegarderEtatCompte();
-                    this.updateUI();
+                    this.incrementQuest('quest_wheel');
+                    this.sauvegarderEtatCompte(); this.updateUI();
                     localStorage.setItem('fdj_last_daily_' + this.currentEmail, Date.now().toString());
                     
                     this.montrerPopupPieces(wonCoins, "🎁 Roue Journalière GAGNÉE !");
-                    const dailyTimer = document.getElementById('daily-wheel-timer');
-                    if(dailyTimer) dailyTimer.innerHTML = `<span style="color:#34d399;">🎉 +${wonCoins} pièces ajoutées !</span>`;
+                    document.getElementById('daily-wheel-timer').innerHTML = `<span style="color:#34d399;">🎉 +${wonCoins} pièces !</span>`;
                 }, 4000);
             },
 
@@ -2319,18 +2220,16 @@
                 this.ajouterTransaction(`Mise Coffres Magiques (-6 🪙)`);
                 this.sauvegarderEtatCompte(); this.updateUI(); this.chestsActive = true;
                 this.vibrer([40]); this.jouerSon('click');
-                const btnNewChests = document.getElementById('btn-new-chests');
-                if(btnNewChests) btnNewChests.classList.add('hidden'); 
-                const chestResult = document.getElementById('chest-result');
-                if(chestResult) chestResult.innerText = "Choisissez un coffre !";
+                document.getElementById('btn-new-chests').classList.add('hidden'); 
+                document.getElementById('chest-result').innerText = "Choisissez un coffre !";
                 document.querySelectorAll('.chest').forEach(c => { c.innerText = "📦"; c.classList.remove('opened', 'shaking'); c.style.opacity = 1; });
             },
+
             ouvrirCoffre(idx) {
                 if(!this.chestsActive) return;
                 this.chestsActive = false;
                 let chests = document.querySelectorAll('.chest');
                 let chosen = chests[idx];
-                if(!chosen) return;
                 chosen.classList.add('shaking');
                 this.vibrer([60]); this.jouerSon('click');
 
@@ -2338,25 +2237,23 @@
                     chosen.classList.remove('shaking');
                     chosen.classList.add('opened');
                     let win = this.isAdmin ? true : (Math.random() < 0.15);
-                    const chestResult = document.getElementById('chest-result');
                     if(win) {
                         this.gererGain(true);
                         chosen.innerText = "💰";
-                        if(chestResult) chestResult.innerHTML = `<span style="color:#34d399;">Trouvé !</span>`;
+                        document.getElementById('chest-result').innerHTML = `<span style="color:#34d399;">Trouvé !</span>`;
                     } else {
-                        this.gagnerXP();
+                        this.gagnerXP(); this.jouerSon('lose');
                         chosen.innerText = "📭";
-                        if(chestResult) chestResult.innerHTML = `<span style="color:var(--text-muted);">Vide...</span>`;
+                        document.getElementById('chest-result').innerHTML = `<span style="color:var(--text-muted);">Vide...</span>`;
                     }
                     chests.forEach((c, i) => { if(i !== idx) c.style.opacity = 0.4; });
-                    const btnNewChests = document.getElementById('btn-new-chests');
-                    if(btnNewChests) btnNewChests.classList.remove('hidden');
+                    document.getElementById('btn-new-chests').classList.remove('hidden');
                 }, 1000);
             },
 
             selectionnerMission(el, reward, id) {
                 document.querySelectorAll('.mission-item').forEach(m => m.classList.remove('selected'));
-                if(el) el.classList.add('selected');
+                el.classList.add('selected');
                 this.selectedMissionReward = reward;
                 this.selectedMissionId = id;
                 this.vibrer([20]);
@@ -2370,25 +2267,16 @@
                     let reader = new FileReader();
                     reader.onload = (e) => {
                         let subObj = {
-                            id: Date.now(),
-                            userEmail: this.currentEmail,
-                            userName: this.currentUser,
-                            image: e.target.result,
-                            reward: this.selectedMissionReward,
-                            missionId: this.selectedMissionId,
-                            time: new Date().toLocaleTimeString(),
-                            status: 'pending'
+                            id: Date.now(), userEmail: this.currentEmail, userName: this.currentUser,
+                            image: e.target.result, reward: this.selectedMissionReward,
+                            missionId: this.selectedMissionId, time: new Date().toLocaleTimeString(), status: 'pending'
                         };
                         this.submissions.push(subObj);
-                        
                         if(db) db.ref('submissions').set(this.submissions);
                         localStorage.setItem('fdj_submissions', JSON.stringify(this.submissions));
 
                         this.ajouterTransaction(`Soumission photo défi envoyée`);
-                        if(msgEl) {
-                            msgEl.style.color = "#34d399";
-                            msgEl.innerText = "📸 Envoyé ! En attente de validation admin.";
-                        }
+                        if(msgEl) { msgEl.style.color = "#34d399"; msgEl.innerText = "📸 Envoyé ! En attente de validation."; }
                         fileInput.value = "";
                         this.vibrer([80]);
                     };
@@ -2399,20 +2287,17 @@
             },
 
             envoyerMessageRapide(txt) {
-                let chatInput = document.getElementById('chat-input');
-                if(chatInput) chatInput.value = txt;
+                document.getElementById('chat-input').value = txt;
                 this.envoyerMessageManuel();
             },
 
             envoyerMessageManuel() {
                 let input = document.getElementById('chat-input');
-                if(!input) return;
                 let txt = input.value.trim();
                 if(!txt) return;
 
-                if(!this.chatLogs[this.currentEmail]) { this.chatLogs[this.currentEmail] = []; }
+                if(!this.chatLogs[this.currentEmail]) this.chatLogs[this.currentEmail] = [];
                 this.chatLogs[this.currentEmail].push({ sender: 'user', text: txt, time: new Date().toLocaleTimeString(), adminReplied: false });
-
                 if(db) db.ref('chats/' + this.currentEmail).set(this.chatLogs[this.currentEmail]);
                 localStorage.setItem('fdj_chat_logs', JSON.stringify(this.chatLogs));
 
@@ -2427,16 +2312,15 @@
                 if (adminAlreadyReplied || (acc && acc.humanSupport)) return;
 
                 const typingEl = document.getElementById('typing-indicator');
-                if(typingEl) typingEl.style.display = 'block';
+                typingEl.style.display = 'block';
                 
                 setTimeout(() => {
-                    if(typingEl) typingEl.style.display = 'none';
+                    typingEl.style.display = 'none';
                     let botReply = "Nos équipes examinent votre demande.";
                     if(txt.toLowerCase().includes('virement') || txt.toLowerCase().includes('bloqué')) {
                         botReply = "Votre virement SEPA est suspendu tant que le seuil de 25.00 € n'est pas atteint.";
                     }
                     this.chatLogs[this.currentEmail].push({ sender: 'bot', text: botReply, time: new Date().toLocaleTimeString() });
-
                     if(db) db.ref('chats/' + this.currentEmail).set(this.chatLogs[this.currentEmail]);
                     localStorage.setItem('fdj_chat_logs', JSON.stringify(this.chatLogs));
                     this.chargerChatBoxDepuisStorage();
@@ -2446,7 +2330,7 @@
             demanderAgentFDJ() {
                 let acc = this.usersDB[this.currentEmail];
                 if(acc) { acc.humanSupport = true; this.usersDB[this.currentEmail] = acc; this.sauvegarderEtatCompte(); }
-                if(!this.chatLogs[this.currentEmail]) { this.chatLogs[this.currentEmail] = []; }
+                if(!this.chatLogs[this.currentEmail]) this.chatLogs[this.currentEmail] = [];
                 this.chatLogs[this.currentEmail].push({ sender: 'bot', text: "👤 Un conseiller FDJ a pris en charge votre dossier.", time: new Date().toLocaleTimeString() });
                 if(db) db.ref('chats/' + this.currentEmail).set(this.chatLogs[this.currentEmail]);
                 localStorage.setItem('fdj_chat_logs', JSON.stringify(this.chatLogs));
@@ -2456,15 +2340,12 @@
 
             changerEcran(screenId, navElement = null) {
                 document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-                const targetScreen = document.getElementById(screenId);
-                if(targetScreen) targetScreen.classList.add('active');
-                
+                document.getElementById(screenId).classList.add('active');
                 if(navElement) {
                     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
                     navElement.classList.add('active');
                 }
-                let area = document.querySelector('.content-area');
-                if(area) area.scrollTop = 0;
+                document.querySelector('.content-area').scrollTop = 0;
                 this.jouerSon('click');
             },
 
@@ -2475,10 +2356,7 @@
                     btn.className = 'nav-item';
                     btn.id = 'nav-admin';
                     btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg> Admin`;
-                    btn.onclick = () => { 
-                        this.changerEcran('screen-admin', btn); 
-                        this.chargerAdminData(); 
-                    };
+                    btn.onclick = () => { this.changerEcran('screen-admin', btn); this.chargerAdminData(); };
                     nav.appendChild(btn);
                 }
             },
@@ -2495,51 +2373,38 @@
             adminCreerMission() {
                 let txtInput = document.getElementById('admin-new-mission-text');
                 let rewardInput = document.getElementById('admin-new-mission-reward');
-                if(!txtInput || !rewardInput) return;
-
                 let text = txtInput.value.trim();
                 let reward = parseInt(rewardInput.value);
+                if(!text || isNaN(reward) || reward <= 0) return alert("Valeurs invalides.");
 
-                if(!text || isNaN(reward) || reward <= 0) {
-                    return alert("Veuillez saisir un nom de mission valide et un nombre de pièces.");
-                }
-
-                let newMission = { id: Date.now(), text: text, reward: reward };
-                this.missionsPool.push(newMission);
-                
+                this.missionsPool.push({ id: Date.now(), text: text, reward: reward });
                 if(db) db.ref('global_missions_pool').set(this.missionsPool);
                 localStorage.setItem('fdj_custom_missions', JSON.stringify(this.missionsPool));
-
-                txtInput.value = "";
-                rewardInput.value = "";
-                alert(`Mission "${text}" créée avec succès (${reward} pièces) !`);
-                this.renderMissions();
-                this.chargerAdminMissionsManage();
+                txtInput.value = ""; rewardInput.value = "";
+                alert("Mission créée !");
+                this.renderMissions(); this.chargerAdminMissionsManage();
             },
 
             adminSupprimerMission(index) {
-                if(confirm("Voulez-vous supprimer cette mission ?")) {
+                if(confirm("Supprimer cette mission ?")) {
                     this.missionsPool.splice(index, 1);
                     if(db) db.ref('global_missions_pool').set(this.missionsPool);
                     localStorage.setItem('fdj_custom_missions', JSON.stringify(this.missionsPool));
-                    this.renderMissions();
-                    this.chargerAdminMissionsManage();
+                    this.renderMissions(); this.chargerAdminMissionsManage();
                 }
             },
 
             chargerAdminMissionsManage() {
                 let listManage = document.getElementById('admin-missions-list-manage');
                 if(!listManage) return;
-
                 if(!this.missionsPool || this.missionsPool.length === 0) {
-                    listManage.innerHTML = `<p style="font-size:0.75rem; color:var(--text-muted);">Aucune mission active.</p>`;
+                    listManage.innerHTML = `<p style="font-size:0.75rem; color:var(--text-muted);">Aucune mission.</p>`;
                     return;
                 }
-
                 listManage.innerHTML = this.missionsPool.map((m, idx) => `
                     <div style="background:rgba(0,0,0,0.5); padding:6px 8px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; font-size:0.75rem;">
                         <span style="color:#fff; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:210px;">${m.text} (${m.reward} 🪙)</span>
-                        <button class="btn btn-outline" style="width:auto; padding:2px 6px; font-size:0.68rem; color:#ef4444; border-color:#ef4444;" onclick="app.adminSupprimerMission(${idx})">✕ Supprimer</button>
+                        <button class="btn btn-outline" style="width:auto; padding:2px 6px; font-size:0.68rem; color:#ef4444; border-color:#ef4444;" onclick="app.adminSupprimerMission(${idx})">✕</button>
                     </div>
                 `).join('');
             },
@@ -2551,7 +2416,7 @@
                 
                 let keys = Object.keys(this.usersDB || {});
                 if(keys.length === 0) {
-                    listEl.innerHTML = `<p style="font-size:0.78rem; color:var(--text-muted);">Aucun utilisateur enregistré.</p>`;
+                    listEl.innerHTML = `<p style="font-size:0.78rem; color:var(--text-muted);">Aucun utilisateur.</p>`;
                     if(selectTargetEl) selectTargetEl.innerHTML = `<option value="">Aucun utilisateur...</option>`;
                 } else {
                     keys.sort((a, b) => {
@@ -2600,7 +2465,7 @@
                             return `
                                 <div onclick="app.ouvrirAdminChat('${ck}')" style="background:${isSelected ? 'rgba(56, 189, 248, 0.25)' : 'rgba(0,0,0,0.5)'}; border:1px solid ${isSelected ? '#38bdf8' : 'rgba(255,255,255,0.08)'}; padding:8px; border-radius:8px; margin-bottom:6px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
                                     <span style="font-size:0.8rem; font-weight:bold; color:#fff;">💬 ${name}</span>
-                                    <span style="font-size:0.68rem; color:#38bdf8; background:rgba(56,189,248,0.15); padding:2px 6px; border-radius:6px;">Ouvrir ›</span>
+                                    <span style="font-size:0.68rem; color:#38bdf8;">Ouvrir ›</span>
                                 </div>
                             `;
                         }).join('');
@@ -2614,7 +2479,7 @@
                 let subListEl = document.getElementById('admin-submissions-list');
                 if(!subListEl) return;
                 if(!this.submissions || this.submissions.length === 0) {
-                    subListEl.innerHTML = `<p style="font-size:0.75rem; color:var(--text-muted);">Aucune photo de défi en attente.</p>`;
+                    subListEl.innerHTML = `<p style="font-size:0.75rem; color:var(--text-muted);">Aucune photo en attente.</p>`;
                     return;
                 }
                 subListEl.innerHTML = this.submissions.map((sub, index) => `
@@ -2625,7 +2490,7 @@
                         </div>
                         <img src="${sub.image}" style="width:100%; max-height:140px; object-fit:cover; border-radius:6px; border:1px solid rgba(255,255,255,0.1);">
                         <div style="display:flex; gap:6px;">
-                            <button class="btn btn-green" style="padding:6px; font-size:0.7rem;" onclick="app.validerDefiAdmin(${index}, true)">Valider et donner +${sub.reward} 🪙</button>
+                            <button class="btn btn-green" style="padding:6px; font-size:0.7rem;" onclick="app.validerDefiAdmin(${index}, true)">Valider (+${sub.reward} 🪙)</button>
                             <button class="btn btn-outline" style="padding:6px; font-size:0.7rem; color:#ef4444; border-color:#ef4444;" onclick="app.validerDefiAdmin(${index}, false)">Refuser</button>
                         </div>
                     </div>
@@ -2641,20 +2506,18 @@
                     if(targetAcc) {
                         targetAcc.balance = (targetAcc.balance || 0) + sub.reward;
                         if(!targetAcc.transactions) targetAcc.transactions = [];
-                        targetAcc.transactions.unshift({ text: `Défi validé par l'admin : +${sub.reward} pièces 🪙`, time: new Date().toLocaleTimeString() });
-                        
+                        targetAcc.transactions.unshift({ text: `Défi validé : +${sub.reward} pièces 🪙`, time: new Date().toLocaleTimeString() });
                         this.usersDB[targetKey] = targetAcc;
                         if(db) db.ref('users/' + targetKey).set(targetAcc);
                         localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
 
                         if(targetKey === this.currentEmail) {
                             this.balance = targetAcc.balance;
-                            this.updateUI();
-                            this.rafraichirJournalTransactionsUI();
+                            this.updateUI(); this.rafraichirJournalTransactionsUI();
                             this.montrerPopupPieces(sub.reward, "📸 Défi validé !");
                         }
                     }
-                    alert(`Défi validé ! +${sub.reward} pièces versées à ${sub.userName}.`);
+                    alert(`Défi validé ! +${sub.reward} pièces versées.`);
                 } else {
                     alert("Défi refusé.");
                 }
@@ -2670,105 +2533,84 @@
                 let acc = this.usersDB[emailKey];
                 if(!acc) return;
 
-                const nameEl = document.getElementById('adm-det-name');
-                if(nameEl) nameEl.innerText = acc.nom;
-                const emailEl = document.getElementById('adm-det-email');
-                if(emailEl) emailEl.innerText = acc.email || emailKey;
-                const loginTimeEl = document.getElementById('adm-det-login-time');
-                if(loginTimeEl) loginTimeEl.innerText = acc.loginTime || "Inconnue";
-                const sessionTimeEl = document.getElementById('adm-det-session-time');
-                if(sessionTimeEl) sessionTimeEl.innerText = Math.floor((Date.now() - (this.sessionStartTimestamp || Date.now())) / 60000) + " min";
-                const balanceEl = document.getElementById('adm-det-balance');
-                if(balanceEl) balanceEl.innerText = acc.balance !== undefined ? acc.balance : 15;
-                const cashEl = document.getElementById('adm-det-cash');
-                if(cashEl) cashEl.innerText = (acc.cash || 0).toFixed(2) + " €";
-                const gamesEl = document.getElementById('adm-det-games');
-                if(gamesEl) gamesEl.innerText = acc.gamesPlayed || 0;
+                document.getElementById('adm-det-name').innerText = acc.nom;
+                document.getElementById('adm-det-email').innerText = acc.email || emailKey;
+                document.getElementById('adm-det-login-time').innerText = acc.loginTime || "-";
+                document.getElementById('adm-det-session-time').innerText = Math.floor((Date.now() - (this.sessionStartTimestamp || Date.now())) / 60000) + " min";
+                document.getElementById('adm-det-balance').innerText = acc.balance !== undefined ? acc.balance : 15;
+                document.getElementById('adm-det-cash').innerText = (acc.cash || 0).toFixed(2) + " €";
+                document.getElementById('adm-det-games').innerText = acc.gamesPlayed || 0;
 
                 let admHistEl = document.getElementById('adm-det-history');
-                if(admHistEl) {
-                    let trans = acc.transactions || [];
-                    admHistEl.innerHTML = trans.length === 0 ? "Aucune transaction." : trans.slice(0, 5).map(t => `<div>• [${t.time}] ${t.text}</div>`).join('');
-                }
+                let trans = acc.transactions || [];
+                admHistEl.innerHTML = trans.length === 0 ? "Aucune." : trans.slice(0, 5).map(t => `<div>• [${t.time}] ${t.text}</div>`).join('');
 
-                const detailCard = document.getElementById('admin-user-detail-card');
-                if(detailCard) detailCard.classList.remove('hidden');
+                document.getElementById('admin-user-detail-card').classList.remove('hidden');
                 this.chargerAdminData();
             },
 
             fermerAdminDetail() {
                 this.selectedAdminUserEmail = null;
-                const detailCard = document.getElementById('admin-user-detail-card');
-                if(detailCard) detailCard.classList.add('hidden');
+                document.getElementById('admin-user-detail-card').classList.add('hidden');
                 this.chargerAdminData();
             },
 
             adminModifierPieces() {
                 if(!this.selectedAdminUserEmail) return;
                 let nouveauSolde = parseInt(document.getElementById('adm-new-balance').value);
-                if(isNaN(nouveauSolde)) return alert("Veuillez entrer un nombre valide de pièces.");
-
+                if(isNaN(nouveauSolde)) return alert("Valeur invalide.");
                 let acc = this.usersDB[this.selectedAdminUserEmail];
                 if(acc) {
                     acc.balance = nouveauSolde;
                     if(!acc.transactions) acc.transactions = [];
                     acc.transactions.unshift({ text: `Admin a modifié le solde : ${nouveauSolde} pièces`, time: new Date().toLocaleTimeString() });
-
                     this.usersDB[this.selectedAdminUserEmail] = acc;
                     if(db) db.ref('users/' + this.selectedAdminUserEmail).set(acc);
                     localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
 
                     if(this.selectedAdminUserEmail === this.currentEmail) {
                         this.balance = nouveauSolde;
-                        this.updateUI();
-                        this.rafraichirJournalTransactionsUI();
+                        this.updateUI(); this.rafraichirJournalTransactionsUI();
                     }
-                    alert(`Succès ! Solde de ${acc.nom} mis à jour.`);
+                    alert("Solde mis à jour.");
                     this.selectionnerUtilisateurAdmin(this.selectedAdminUserEmail);
                 }
             },
 
             supprimerUtilisateurAdmin() {
                 if(!this.selectedAdminUserEmail) return;
-                if(confirm(`Supprimer ce profil ?`)) {
+                if(confirm("Supprimer ce profil ?")) {
                     delete this.usersDB[this.selectedAdminUserEmail];
                     if(db) db.ref('users/' + this.selectedAdminUserEmail).remove();
                     localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
-                    this.fermerAdminDetail();
-                    this.chargerAdminData();
+                    this.fermerAdminDetail(); this.chargerAdminData();
                 }
             },
 
             ouvrirAdminChat(emailKey) {
                 this.activeAdminTargetEmail = emailKey;
                 let acc = this.usersDB[emailKey];
-                const activeTitle = document.getElementById('admin-active-user-title');
-                if(activeTitle) activeTitle.innerText = "Discussion : " + (acc ? acc.nom : emailKey);
-                
-                const convList = document.getElementById('admin-conversations-list');
-                if(convList) convList.classList.add('hidden');
-                const activeChatBox = document.getElementById('admin-active-chat-box');
-                if(activeChatBox) activeChatBox.classList.remove('hidden');
+                document.getElementById('admin-active-user-title').innerText = "Discussion : " + (acc ? acc.nom : emailKey);
+                document.getElementById('admin-conversations-list').classList.add('hidden');
+                document.getElementById('admin-active-chat-box').classList.remove('hidden');
                 this.rafraichirThreadAdmin();
             },
 
             fermerAdminChat() {
                 this.activeAdminTargetEmail = null;
-                const activeChatBox = document.getElementById('admin-active-chat-box');
-                if(activeChatBox) activeChatBox.classList.add('hidden');
-                const convList = document.getElementById('admin-conversations-list');
-                if(convList) convList.classList.remove('hidden');
+                document.getElementById('admin-active-chat-box').classList.add('hidden');
+                document.getElementById('admin-conversations-list').classList.remove('hidden');
                 this.chargerAdminData();
             },
 
             supprimerDiscussionAdmin() {
                 if(!this.activeAdminTargetEmail) return;
-                if(confirm("Voulez-vous supprimer toute cette conversation ?")) {
+                if(confirm("Supprimer cette conversation ?")) {
                     delete this.chatLogs[this.activeAdminTargetEmail];
                     if(db) db.ref('chats/' + this.activeAdminTargetEmail).remove();
                     localStorage.setItem('fdj_chat_logs', JSON.stringify(this.chatLogs));
                     this.fermerAdminChat();
-                    alert("Conversation supprimée avec succès.");
+                    alert("Supprimé.");
                 }
             },
 
@@ -2777,12 +2619,11 @@
                 let logs = this.chatLogs[this.activeAdminTargetEmail] || [];
                 let threadEl = document.getElementById('admin-messages-thread');
                 if(!threadEl) return;
-
                 threadEl.innerHTML = logs.map(l => {
                     let col = (l.sender === 'user') ? '#38bdf8' : (l.sender === 'admin' ? '#f59e0b' : '#10b981');
-                    let senderName = (l.sender === 'user') ? 'Joueur' : (l.sender === 'admin' ? 'Vous (Admin)' : 'Bot FDJ');
+                    let name = (l.sender === 'user') ? 'Joueur' : (l.sender === 'admin' ? 'Admin' : 'Bot');
                     return `<div style="background:rgba(0,0,0,0.5); padding:6px 8px; border-radius:6px; border-left:3px solid ${col};">
-                        <strong style="color:${col};">${senderName} (${l.time}) :</strong> ${l.text}
+                        <strong style="color:${col};">${name} (${l.time}) :</strong> ${l.text}
                     </div>`;
                 }).join('');
                 threadEl.scrollTop = threadEl.scrollHeight;
@@ -2790,39 +2631,30 @@
 
             envoyerMessageAdminLive() {
                 let input = document.getElementById('admin-live-input');
-                if(!input) return;
                 let txt = input.value.trim();
                 if(!txt || !this.activeAdminTargetEmail) return;
-
                 if(!this.chatLogs[this.activeAdminTargetEmail]) this.chatLogs[this.activeAdminTargetEmail] = [];
                 this.chatLogs[this.activeAdminTargetEmail].push({ sender: 'admin', text: txt, time: new Date().toLocaleTimeString(), readByPlayer: false });
-                
                 if(db) db.ref('chats/' + this.activeAdminTargetEmail).set(this.chatLogs[this.activeAdminTargetEmail]);
                 localStorage.setItem('fdj_chat_logs', JSON.stringify(this.chatLogs));
-
                 input.value = "";
-                this.rafraichirThreadAdmin();
-                this.vibrer([20]);
+                this.rafraichirThreadAdmin(); this.vibrer([20]);
             },
 
             chargerChatBoxDepuisStorage() {
                 if(!this.currentEmail) return;
                 let box = document.getElementById('chat-box');
                 if(!box) return;
-
                 let logs = this.chatLogs[this.currentEmail] || [];
                 let html = `<div class="msg bot">Bonjour <strong>${this.currentUser ? this.currentUser.split(' ')[0] : 'Joueur'}</strong>. Service client FDJ.</div>`;
-                
                 let hasUnread = false;
+
                 logs.forEach(l => {
-                    if(l.sender === 'user') {
-                        html += `<div class="msg user">${l.text}</div>`;
-                    } else if(l.sender === 'admin') {
+                    if(l.sender === 'user') html += `<div class="msg user">${l.text}</div>`;
+                    else if(l.sender === 'admin') {
                         html += `<div class="msg admin-reply">👑 Support FDJ : ${l.text}</div>`;
                         if(!l.readByPlayer) hasUnread = true;
-                    } else {
-                        html += `<div class="msg bot">${l.text}</div>`;
-                    }
+                    } else html += `<div class="msg bot">${l.text}</div>`;
                 });
                 box.innerHTML = html;
                 box.scrollTop = box.scrollHeight;
@@ -2843,10 +2675,7 @@
                 if(!this.currentEmail || !this.chatLogs[this.currentEmail]) return;
                 let modified = false;
                 this.chatLogs[this.currentEmail].forEach(l => {
-                    if(l.sender === 'admin' && !l.readByPlayer) {
-                        l.readByPlayer = true;
-                        modified = true;
-                    }
+                    if(l.sender === 'admin' && !l.readByPlayer) { l.readByPlayer = true; modified = true; }
                 });
                 if(modified) {
                     if(db) db.ref('chats/' + this.currentEmail).set(this.chatLogs[this.currentEmail]);
