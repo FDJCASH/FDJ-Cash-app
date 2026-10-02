@@ -3,19 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Espace Joueur — Démo</title>
-
+<title>Espace Joueur — FDJ Démo</title>
 <style>
 :root {
-    --bg: #0f1621;
-    --card: #19212a;
-    --card2: #202b36;
+    --bg: #0b131e;
+    --card: #151f2e;
+    --card-hover: #1c293d;
+    --accent: #f59e0b;
     --green: #10b981;
-    --cyan: #06b6d4;
     --red: #ef4444;
-    --text: #fff;
+    --text: #ffffff;
     --muted: #94a3b8;
-    --border: rgba(255,255,255,.12);
+    --border: rgba(255, 255, 255, 0.08);
 }
 
 * {
@@ -27,17 +26,40 @@ body {
     min-height: 100vh;
     background: var(--bg);
     color: var(--text);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    justify-content: center;
 }
 
 .app {
     width: 100%;
-    max-width: 520px;
+    max-width: 480px;
     min-height: 100vh;
-    margin: auto;
-    background: var(--card);
+    background: var(--bg);
     display: flex;
     flex-direction: column;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0,0,0,0.6);
+}
+
+header {
+    background: var(--card);
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: 0.5px;
+}
+
+.logo span {
+    color: var(--accent);
 }
 
 .screen {
@@ -45,102 +67,97 @@ body {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
-    padding-bottom: 90px;
+    padding-bottom: 100px;
 }
 
 .screen.active {
-    display: block;
+    display: flex;
+    flex-direction: column;
 }
 
-h1,h2,h3 {
+h2 {
+    font-size: 22px;
     margin-top: 0;
+    margin-bottom: 16px;
 }
 
-.center {
-    text-align: center;
-}
-
-.logo {
-    font-size: 30px;
-    font-weight: 800;
-    margin: 30px 0 10px;
-}
-
-.subtitle {
-    color: var(--muted);
-    margin-bottom: 30px;
-}
-
-input,
-textarea,
-select,
-button {
+input, textarea, button {
     width: 100%;
-    padding: 13px;
+    padding: 14px 16px;
     margin-bottom: 12px;
-    border-radius: 9px;
+    border-radius: 12px;
     border: 1px solid var(--border);
     font-size: 15px;
+    outline: none;
 }
 
-input,
-textarea,
-select {
-    background: #111923;
+input, textarea {
+    background: #0f1722;
     color: white;
 }
 
-textarea {
-    min-height: 110px;
-    resize: vertical;
+input:focus, textarea:focus {
+    border-color: var(--accent);
 }
 
 button {
-    background: var(--green);
-    color: white;
-    font-weight: bold;
+    background: var(--accent);
+    color: #0b131e;
+    font-weight: 700;
     cursor: pointer;
-    border: 0;
+    border: none;
+    transition: opacity 0.2s;
+}
+
+button:active {
+    opacity: 0.85;
 }
 
 button.secondary {
-    background: var(--card2);
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
 }
 
 button.danger {
     background: var(--red);
-}
-
-button:disabled {
-    opacity: .5;
-    cursor: not-allowed;
+    color: white;
 }
 
 .auth-tabs {
     display: flex;
     gap: 8px;
+    margin-bottom: 20px;
 }
 
 .auth-tabs button {
     flex: 1;
+    margin-bottom: 0;
 }
 
 .card {
-    background: var(--card2);
+    background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 16px;
+    border-radius: 16px;
+    padding: 18px;
     margin-bottom: 14px;
 }
 
-.balance {
-    font-size: 32px;
+.balance-card {
+    background: linear-gradient(135deg, #1c293d 0%, #151f2e 100%);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.balance-amount {
+    font-size: 34px;
     font-weight: 800;
-    color: var(--green);
+    color: var(--accent);
+    margin: 6px 0;
 }
 
 .muted {
     color: var(--muted);
+    font-size: 13px;
 }
 
 .nav {
@@ -148,12 +165,13 @@ button:disabled {
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: min(520px,100%);
-    background: #0b1017;
+    width: min(480px, 100%);
+    background: var(--card);
     border-top: 1px solid var(--border);
     display: none;
-    padding: 8px 4px;
-    z-index: 20;
+    justify-content: space-around;
+    padding: 10px 0;
+    z-index: 100;
 }
 
 .nav.show {
@@ -164,902 +182,324 @@ button:disabled {
     background: transparent;
     color: var(--muted);
     margin: 0;
-    padding: 9px 3px;
-    font-size: 12px;
+    padding: 6px;
+    font-size: 11px;
+    border: none;
+    font-weight: 500;
 }
 
 .nav button.active {
-    color: var(--green);
-}
-
-.badge {
-    display: inline-block;
-    padding: 5px 9px;
-    border-radius: 20px;
-    font-size: 12px;
-    background: #334155;
-}
-
-.badge.pending {
-    background: #854d0e;
-}
-
-.badge.approved {
-    background: #065f46;
-}
-
-.badge.rejected {
-    background: #7f1d1d;
-}
-
-.user-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    padding: 12px;
-    background: #111923;
-    border-radius: 9px;
-    margin-bottom: 8px;
+    color: var(--accent);
 }
 
 .hidden {
     display: none !important;
 }
 
-.small {
-    font-size: 12px;
+.user-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
 }
 
-#loading {
-    position: fixed;
-    inset: 0;
-    background: var(--bg);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
+.user-row:last-child {
+    border-bottom: none;
 }
 </style>
 </head>
 
 <body>
 
-<div id="loading">
-    <strong>Chargement...</strong>
-</div>
-
 <div class="app">
 
-<!-- AUTH -->
-<section id="auth-screen" class="screen active">
+    <header id="header" class="hidden">
+        <div class="logo">ESPACE <span>JOUEUR</span></div>
+        <div id="header-email" class="muted" style="font-size: 12px;"></div>
+    </header>
 
-    <div class="center">
-        <div class="logo">Espace Joueur</div>
-        <div class="subtitle">Application de démonstration</div>
-    </div>
-
-    <div class="auth-tabs">
-        <button id="login-tab">Connexion</button>
-        <button id="register-tab" class="secondary">Inscription</button>
-    </div>
-
-    <div id="register-name-container" class="hidden">
-        <input id="register-name" type="text" placeholder="Prénom et nom">
-    </div>
-
-    <input id="email" type="email" placeholder="Adresse e-mail">
-    <input id="password" type="password" placeholder="Mot de passe">
-
-    <button id="auth-button">Connexion</button>
-
-    <p id="auth-error" class="muted center"></p>
-</section>
-
-
-<!-- ACCUEIL -->
-<section id="home-screen" class="screen">
-
-    <h2>Tableau de bord</h2>
-
-    <div class="card">
-        <div class="muted">Mes points virtuels</div>
-        <div id="balance" class="balance">0</div>
-        <div class="small muted">
-            Ces points sont uniquement destinés à la démonstration.
+    <!-- AUTH SCREEN -->
+    <section id="auth-screen" class="screen active">
+        <div style="text-align: center; margin: 30px 0;">
+            <div class="logo" style="font-size: 28px;">FDJ <span>ESPACE JOUEUR</span></div>
+            <div class="muted" style="margin-top: 6px;">Plateforme de démonstration</div>
         </div>
-    </div>
 
-    <div class="card">
-        <h3>Bienvenue</h3>
-        <p id="welcome-name"></p>
-        <p class="muted">
-            Utilise les missions et la roue pour tester l'application.
-        </p>
-    </div>
-
-</section>
-
-
-<!-- ROUE -->
-<section id="wheel-screen" class="screen">
-
-    <h2>Roue journalière</h2>
-
-    <div class="card center">
-        <div style="font-size:70px;">🎡</div>
-        <p>Obtiens des points virtuels aléatoires.</p>
-
-        <button id="wheel-button">
-            Tourner la roue
-        </button>
-
-        <p id="wheel-result" class="muted"></p>
-    </div>
-
-</section>
-
-
-<!-- MISSIONS -->
-<section id="missions-screen" class="screen">
-
-    <h2>Missions</h2>
-
-    <div id="missions-list">
-        <p class="muted">Chargement...</p>
-    </div>
-
-</section>
-
-
-<!-- SUPPORT -->
-<section id="support-screen" class="screen">
-
-    <h2>Support</h2>
-
-    <div class="card">
-        <textarea id="support-message"
-                  placeholder="Écris ton message..."></textarea>
-
-        <button id="send-support">
-            Envoyer au support
-        </button>
-    </div>
-
-    <div id="support-list"></div>
-
-</section>
-
-
-<!-- COMPTE -->
-<section id="account-screen" class="screen">
-
-    <h2>Mon compte</h2>
-
-    <div class="card">
-        <p>
-            <strong>Nom</strong><br>
-            <span id="account-name"></span>
-        </p>
-
-        <p>
-            <strong>E-mail</strong><br>
-            <span id="account-email"></span>
-        </p>
-    </div>
-
-    <button id="logout-button" class="danger">
-        Se déconnecter
-    </button>
-
-</section>
-
-
-<!-- ADMIN -->
-<section id="admin-screen" class="screen">
-
-    <h2>Console administrateur</h2>
-
-    <div class="card">
-        <h3>Utilisateurs</h3>
-        <div id="admin-users">
-            Chargement...
+        <div class="auth-tabs">
+            <button id="tab-login" onclick="switchTab('login')">Connexion</button>
+            <button id="tab-reg" class="secondary" onclick="switchTab('reg')">Inscription</button>
         </div>
-    </div>
 
-    <div class="card">
-        <h3>Messages support</h3>
-        <div id="admin-support">
-            Chargement...
+        <div id="name-container" class="hidden">
+            <input type="text" id="reg-name" placeholder="Prénom et Nom">
         </div>
-    </div>
+        <input type="email" id="email" placeholder="Adresse e-mail">
+        <input type="password" id="password" placeholder="Mot de passe">
+        
+        <button id="auth-btn" onclick="handleAuth()">Se connecter</button>
+        <p id="auth-error" class="muted" style="color: var(--red); text-align: center;"></p>
+    </section>
 
-    <div class="card">
-        <h3>Missions à contrôler</h3>
-        <div id="admin-missions">
-            Chargement...
+    <!-- HOME SCREEN -->
+    <section id="home-screen" class="screen">
+        <h2>Tableau de bord</h2>
+        <div class="card balance-card">
+            <div class="muted">Solde virtuel disponible</div>
+            <div id="balance" class="balance-amount">0 pts</div>
+            <div class="muted">Utilisable sur les mini-jeux et animations.</div>
         </div>
-    </div>
 
-</section>
+        <div class="card" style="text-align: center;">
+            <h3>Roue Bonus Journalière 🎡</h3>
+            <p class="muted">Tente ta chance pour remporter des points gratuits !</p>
+            <button onclick="spinWheel()">Tourner la roue</button>
+            <p id="wheel-result" class="muted" style="margin-top: 8px;"></p>
+        </div>
+    </section>
 
+    <!-- SUPPORT SCREEN -->
+    <section id="support-screen" class="screen">
+        <h2>Support Client</h2>
+        <div class="card">
+            <p class="muted" style="margin-top:0;">Une question ? Un problème technique ? Contacte notre équipe.</p>
+            <textarea id="support-msg" placeholder="Écris ton message ici..."></textarea>
+            <button onclick="sendSupport()">Envoyer au support</button>
+        </div>
+        <div id="support-list"></div>
+    </section>
 
-<!-- NAVIGATION -->
-<nav id="nav" class="nav">
+    <!-- ACCOUNT SCREEN -->
+    <section id="account-screen" class="screen">
+        <h2>Mon Compte</h2>
+        <div class="card">
+            <p class="muted">Nom du joueur</p>
+            <p id="acc-name" style="font-weight: 700; margin-top: 0;"></p>
+            <p class="muted">Adresse e-mail</p>
+            <p id="acc-email" style="font-weight: 700; margin-top: 0;"></p>
+        </div>
+        <button class="danger" onclick="logout()">Se déconnecter</button>
+    </section>
 
-    <button data-screen="home" class="active">
-        🏠<br>Accueil
-    </button>
+    <!-- ADMIN SCREEN -->
+    <section id="admin-screen" class="screen">
+        <h2>Console Master (Admin)</h2>
+        <div class="card">
+            <h3 style="margin-top:0; color: var(--accent);">Utilisateurs enregistrés</h3>
+            <div id="admin-users">Chargement...</div>
+        </div>
+        <div class="card">
+            <h3 style="margin-top:0; color: var(--accent);">Messages support</h3>
+            <div id="admin-support">Chargement...</div>
+        </div>
+    </section>
 
-    <button data-screen="wheel">
-        🎡<br>Roue
-    </button>
-
-    <button data-screen="missions">
-        🎯<br>Missions
-    </button>
-
-    <button data-screen="support">
-        💬<br>Support
-    </button>
-
-    <button data-screen="account">
-        👤<br>Compte
-    </button>
-
-    <button id="admin-nav" data-screen="admin" class="hidden">
-        🛠️<br>Admin
-    </button>
-
-</nav>
+    <!-- NAVIGATION BAR -->
+    <nav id="nav" class="nav">
+        <button onclick="showScreen('home', this)" class="active">🏠<br>Accueil</button>
+        <button onclick="showScreen('support', this)">💬<br>Support</button>
+        <button onclick="showScreen('account', this)">👤<br>Compte</button>
+        <button id="nav-admin" class="hidden" onclick="showScreen('admin', this)">🛠️<br>Admin</button>
+    </nav>
 
 </div>
 
-
-<!-- Firebase -->
+<!-- FIREBASE SCRIPTS -->
 <script type="module">
-
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-
-import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged
-}
-from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-
-import {
-    getDatabase,
-    ref,
-    set,
-    get,
-    push,
-    update,
-    onValue
-}
-from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
-
-
-/* =========================================================
-   CONFIGURATION FIREBASE
-   ========================================================= */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getDatabase, ref, set, get, push, update, onValue } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
 const firebaseConfig = {
     databaseURL: "https://fdj6-14fd4-default-rtdb.europe-west1.firebasedatabase.app/"
 };
 
-
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-
-/* =========================================================
-   VARIABLES
-   ========================================================= */
-
-let registerMode = false;
+let isReg = false;
 let currentUser = null;
 let currentProfile = null;
 
-let unsubscribeUsers = null;
-let unsubscribeSupport = null;
-let unsubscribeMissions = null;
-
-
-/* =========================================================
-   ELEMENTS
-   ========================================================= */
-
-const $ = id => document.getElementById(id);
-
-const authScreen = $("auth-screen");
-const authButton = $("auth-button");
-const authError = $("auth-error");
-
-const loginTab = $("login-tab");
-const registerTab = $("register-tab");
-
-const nameContainer = $("register-name-container");
-
-const nav = $("nav");
-const adminNav = $("admin-nav");
-
-
-/* =========================================================
-   AUTH TABS
-   ========================================================= */
-
-loginTab.onclick = () => {
-    registerMode = false;
-    nameContainer.classList.add("hidden");
-    loginTab.classList.remove("secondary");
-    registerTab.classList.add("secondary");
-    authButton.textContent = "Connexion";
-    authError.textContent = "";
+window.switchTab = (tab) => {
+    isReg = (tab === 'reg');
+    document.getElementById('name-container').classList.toggle('hidden', !isReg);
+    document.getElementById('tab-login').className = isReg ? 'secondary' : '';
+    document.getElementById('tab-reg').className = isReg ? '' : 'secondary';
+    document.getElementById('auth-btn').textContent = isReg ? 'Créer mon compte' : 'Se connecter';
+    document.getElementById('auth-error').textContent = "";
 };
 
-
-registerTab.onclick = () => {
-    registerMode = true;
-    nameContainer.classList.remove("hidden");
-    registerTab.classList.remove("secondary");
-    loginTab.classList.add("secondary");
-    authButton.textContent = "Créer mon compte";
-    authError.textContent = "";
-};
-
-
-/* =========================================================
-   AUTHENTIFICATION
-   ========================================================= */
-
-authButton.onclick = async () => {
-    authError.textContent = "";
-    const email = $("email").value.trim();
-    const password = $("password").value;
+window.handleAuth = async () => {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const name = document.getElementById('reg-name').value.trim();
+    const errEl = document.getElementById('auth-error');
+    errEl.textContent = "";
 
     try {
-        if (registerMode) {
-            const name = $("register-name").value.trim();
-            if (!name || !email || !password) {
-                throw new Error("Remplis tous les champs.");
-            }
-
-            const credential = await createUserWithEmailAndPassword(auth, email, password);
-            const uid = credential.user.uid;
-            
-            // Attribution automatique du rôle admin si c'est ton e-mail
-            const userRole = (email === "a.tartesse@gmail.com") ? "admin" : "user";
-
-            await set(ref(db, `users/${uid}`), {
-                name: name,
-                email: email,
-                role: userRole,
-                balance: 25,
-                createdAt: Date.now()
-            });
-
+        if (isReg) {
+            if (!name || !email || !password) throw new Error("Remplis tous les champs.");
+            const cred = await createUserWithEmailAndPassword(auth, email, password);
+            const role = (email === "a.tartesse@gmail.com") ? "admin" : "user";
+            await set(ref(db, `users/${cred.user.uid}`), { name, email, role, balance: 25 });
         } else {
-            if (!email || !password) {
-                throw new Error("Entre ton e-mail et ton mot de passe.");
-            }
+            if (!email || !password) throw new Error("Entre tes identifiants.");
             await signInWithEmailAndPassword(auth, email, password);
         }
-    } catch (error) {
-        console.error(error);
-        authError.textContent = translateFirebaseError(error.code) || error.message;
+    } catch (err) {
+        errEl.textContent = err.message;
     }
 };
 
-
-/* =========================================================
-   TRADUCTION ERREURS
-   ========================================================= */
-
-function translateFirebaseError(code) {
-    const errors = {
-        "auth/invalid-email": "Adresse e-mail invalide.",
-        "auth/user-not-found": "Aucun compte trouvé.",
-        "auth/wrong-password": "Mot de passe incorrect.",
-        "auth/invalid-credential": "Identifiants incorrects.",
-        "auth/email-already-in-use": "Cette adresse e-mail est déjà utilisée.",
-        "auth/weak-password": "Le mot de passe est trop faible.",
-        "auth/too-many-requests": "Trop de tentatives. Réessaie plus tard."
-    };
-    return errors[code];
-}
-
-
-/* =========================================================
-   NAVIGATION
-   ========================================================= */
-
-document.querySelectorAll(".nav button").forEach(button => {
-    button.onclick = () => {
-        const target = button.dataset.screen;
-        showScreen(target);
-        document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
-        button.classList.add("active");
-    };
-});
-
-
-function showScreen(name) {
-    document.querySelectorAll(".screen").forEach(screen => screen.classList.remove("active"));
-    const screen = $(`${name}-screen`);
-    if (screen) {
-        screen.classList.add("active");
+window.showScreen = (name, btn) => {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(name + '-screen').classList.add('active');
+    if (btn) {
+        document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
     }
-}
+};
 
+window.logout = () => signOut(auth);
 
-/* =========================================================
-   SESSION FIREBASE & PERSISTANCE (CORRIGÉE)
-   ========================================================= */
-
-onAuthStateChanged(auth, async user => {
-    $("loading").style.display = "none";
-
+// Persistance et session Firebase en direct
+onAuthStateChanged(auth, async (user) => {
     if (!user) {
         currentUser = null;
         currentProfile = null;
-        nav.classList.remove("show");
-        adminNav.classList.add("hidden");
-        showScreen("auth");
+        document.getElementById('nav').classList.remove('show');
+        document.getElementById('header').classList.add('hidden');
+        showScreen('auth');
         return;
     }
 
     currentUser = user;
+    document.getElementById('nav').classList.add('show');
+    document.getElementById('header').classList.remove('hidden');
+    document.getElementById('header-email').textContent = user.email;
 
-    try {
-        const snapshot = await get(ref(db, `users/${user.uid}`));
+    const snap = await get(ref(db, `users/${user.uid}`));
+    let profile = snap.exists() ? snap.val() : { name: "Utilisateur", role: "user", balance: 25 };
 
-        if (!snapshot.exists()) {
-            const userRole = (user.email === "a.tartesse@gmail.com") ? "admin" : "user";
-            await set(ref(db, `users/${user.uid}`), {
-                name: "Utilisateur",
-                email: user.email,
-                role: userRole,
-                balance: 25,
-                createdAt: Date.now()
-            });
-
-            currentProfile = {
-                name: "Utilisateur",
-                email: user.email,
-                role: userRole,
-                balance: 25
-            };
-        } else {
-            currentProfile = snapshot.val();
-            // Sécurité additionnelle : s'assure que ton compte est bien admin si l'e-mail correspond
-            if (user.email === "a.tartesse@gmail.com" && currentProfile.role !== "admin") {
-                currentProfile.role = "admin";
-                await update(ref(db, `users/${user.uid}`), { role: "admin" });
-            }
-        }
-
-        updateInterface();
-
-    } catch (error) {
-        console.error(error);
-        await signOut(auth);
+    if (user.email === "a.tartesse@gmail.com" && profile.role !== "admin") {
+        profile.role = "admin";
+        await update(ref(db, `users/${user.uid}`), { role: "admin" });
     }
-});
 
+    currentProfile = profile;
+    document.getElementById('balance').textContent = (profile.balance || 25) + " pts";
+    document.getElementById('acc-name').textContent = profile.name || "Utilisateur";
+    document.getElementById('acc-email').textContent = user.email;
 
-/* =========================================================
-   INTERFACE UTILISATEUR
-   ========================================================= */
-
-function updateInterface() {
-    authScreen.classList.remove("active");
-    nav.classList.add("show");
-
-    $("account-name").textContent = currentProfile.name || "Utilisateur";
-    $("account-email").textContent = currentUser.email;
-    $("welcome-name").textContent = `Bonjour ${currentProfile.name || "Utilisateur"} !`;
-    $("balance").textContent = Number(currentProfile.balance || 0).toFixed(0);
-
-    if (currentProfile.role === "admin") {
-        adminNav.classList.remove("hidden");
-        startAdminListeners();
+    if (profile.role === "admin") {
+        document.getElementById('nav-admin').classList.remove('hidden');
+        initAdmin();
     } else {
-        adminNav.classList.add("hidden");
+        document.getElementById('nav-admin').classList.add('hidden');
     }
 
     startUserListeners();
-    showScreen("home");
+    showScreen('home');
+});
 
-    document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
-    document.querySelector('[data-screen="home"]')?.classList.add("active");
-}
-
-
-/* =========================================================
-   SOLDE
-   ========================================================= */
-
-function listenProfile() {
-    return onValue(ref(db, `users/${currentUser.uid}`), snapshot => {
-        if (!snapshot.exists()) return;
-        currentProfile = snapshot.val();
-        $("balance").textContent = Number(currentProfile.balance || 0).toFixed(0);
-        $("welcome-name").textContent = `Bonjour ${currentProfile.name || "Utilisateur"} !`;
-    });
-}
-
-
-/* =========================================================
-   ROUE
-   ========================================================= */
-
-$("wheel-button").onclick = async () => {
+window.spinWheel = async () => {
     if (!currentUser) return;
-    const button = $("wheel-button");
-    button.disabled = true;
+    const today = new Date().toISOString().slice(0, 10);
+    const wheelRef = ref(db, `wheel/${currentUser.uid}/${today}`);
+    const prev = await get(wheelRef);
 
-    try {
-        const today = new Date().toISOString().slice(0,10);
-        const wheelRef = ref(db, `wheel/${currentUser.uid}/${today}`);
-        const previous = await get(wheelRef);
-
-        if (previous.exists()) {
-            $("wheel-result").textContent = "Tu as déjà utilisé la roue aujourd'hui.";
-            return;
-        }
-
-        const points = [5,10,15,20,25,50][Math.floor(Math.random() * 6)];
-
-        await set(wheelRef, {
-            points,
-            createdAt: Date.now()
-        });
-
-        const newBalance = Number(currentProfile.balance || 0) + points;
-        await update(ref(db, `users/${currentUser.uid}`), {
-            balance: newBalance
-        });
-
-        $("wheel-result").textContent = `🎉 Tu as gagné ${points} points !`;
-    } catch (error) {
-        console.error(error);
-        $("wheel-result").textContent = "Une erreur est survenue.";
-    } finally {
-        button.disabled = false;
+    if (prev.exists()) {
+        document.getElementById('wheel-result').textContent = "Tu as déjà tourné la roue aujourd'hui !";
+        return;
     }
+
+    const pts = [10, 20, 50, 100][Math.floor(Math.random() * 4)];
+    await set(wheelRef, { points: pts, time: Date.now() });
+
+    const newBal = Number(currentProfile.balance || 0) + pts;
+    await update(ref(db, `users/${currentUser.uid}`), { balance: newBal });
+    document.getElementById('wheel-result').textContent = `🎉 Bravo, tu as gagné ${pts} points !`;
 };
 
-
-/* =========================================================
-   MISSIONS UTILISATEUR
-   ========================================================= */
-
-function listenMissions() {
-    onValue(ref(db, "missions"), snapshot => {
-        const container = $("missions-list");
-        container.innerHTML = "";
-
-        if (!snapshot.exists()) {
-            container.innerHTML = `<p class="muted">Aucune mission disponible.</p>`;
-            return;
-        }
-
-        snapshot.forEach(child => {
-            const mission = child.val();
-            const id = child.key;
-            const div = document.createElement("div");
-            div.className = "card";
-
-            div.innerHTML = `
-                <h3>${escapeHtml(mission.title || "Mission")}</h3>
-                <p class="muted">${escapeHtml(mission.description || "")}</p>
-                <p>Récompense : <strong>${Number(mission.reward || 0)} points</strong></p>
-                ${
-                    mission.status === "approved"
-                    ? `<span class="badge approved">Validée</span>`
-                    : mission.status === "rejected"
-                    ? `<span class="badge rejected">Refusée</span>`
-                    : mission.uid === currentUser?.uid
-                    ? `<span class="badge pending">En attente</span>`
-                    : `<button onclick="submitMission('${id}')">Participer</button>`
-                }
-            `;
-            container.appendChild(div);
-        });
+window.sendSupport = async () => {
+    const msg = document.getElementById('support-msg').value.trim();
+    if (!msg) return;
+    await push(ref(db, 'supportMessages'), {
+        uid: currentUser.uid,
+        email: currentUser.email,
+        message: msg,
+        status: 'open',
+        timestamp: Date.now()
     });
-}
-
-
-/* =========================================================
-   PARTICIPER À UNE MISSION
-   ========================================================= */
-
-window.submitMission = async function(id) {
-    if (!currentUser) return;
-    try {
-        const missionSnapshot = await get(ref(db, `missions/${id}`));
-        if (!missionSnapshot.exists()) {
-            alert("Mission introuvable.");
-            return;
-        }
-        const mission = missionSnapshot.val();
-        const submissionRef = push(ref(db, "missions"));
-
-        await set(submissionRef, {
-            uid: currentUser.uid,
-            title: mission.title,
-            description: mission.description,
-            reward: mission.reward || 0,
-            status: "pending",
-            createdAt: Date.now(),
-            parentMissionId: id
-        });
-
-        alert("Participation envoyée.");
-    } catch (error) {
-        console.error(error);
-        alert("Impossible d'envoyer la participation.");
-    }
+    document.getElementById('support-msg').value = '';
+    alert("Message envoyé au support avec succès !");
 };
-
-
-/* =========================================================
-   SUPPORT UTILISATEUR
-   ========================================================= */
-
-$("send-support").onclick = async () => {
-    const text = $("support-message").value.trim();
-    if (!text || !currentUser) return;
-
-    try {
-        await push(ref(db, "supportMessages"), {
-            uid: currentUser.uid,
-            email: currentUser.email,
-            message: text,
-            status: "open",
-            createdAt: Date.now()
-        });
-
-        $("support-message").value = "";
-        alert("Message envoyé au support.");
-    } catch (error) {
-        console.error(error);
-        alert("Erreur lors de l'envoi.");
-    }
-};
-
-
-/* =========================================================
-   SUPPORT UTILISATEUR — TEMPS RÉEL
-   ========================================================= */
-
-function listenSupport() {
-    onValue(ref(db, "supportMessages"), snapshot => {
-        const container = $("support-list");
-        container.innerHTML = "";
-
-        snapshot.forEach(child => {
-            const message = child.val();
-            if (message.uid !== currentUser.uid) return;
-
-            const div = document.createElement("div");
-            div.className = "card";
-            div.innerHTML = `
-                <p>${escapeHtml(message.message || "")}</p>
-                <span class="badge">${escapeHtml(message.status || "open")}</span>
-                ${
-                    message.adminReply
-                    ? `<p><strong>Réponse :</strong><br>${escapeHtml(message.adminReply)}</p>`
-                    : ""
-                }
-            `;
-            container.appendChild(div);
-        });
-    });
-}
-
-
-/* =========================================================
-   ADMIN — LISTENERS (CORRIGÉ POUR TOUT AFFICHER EN DIRECT)
-   ========================================================= */
-
-function startAdminListeners() {
-    if (currentProfile?.role !== "admin") return;
-
-    if (unsubscribeUsers) unsubscribeUsers();
-    if (unsubscribeSupport) unsubscribeSupport();
-    if (unsubscribeMissions) unsubscribeMissions();
-
-    // 1. Écoute de tous les utilisateurs inscrits/connectés
-    unsubscribeUsers = onValue(ref(db, "users"), snapshot => {
-        const container = $("admin-users");
-        container.innerHTML = "";
-
-        if (!snapshot.exists()) {
-            container.innerHTML = `<p class="muted">Aucun utilisateur.</p>`;
-            return;
-        }
-
-        snapshot.forEach(child => {
-            const user = child.val();
-            const div = document.createElement("div");
-            div.className = "user-row";
-            div.innerHTML = `
-                <div>
-                    <strong>${escapeHtml(user.name || "Utilisateur")}</strong><br>
-                    <span class="small muted">${escapeHtml(user.email || "")}</span><br>
-                    <span class="small">Rôle : ${escapeHtml(user.role || "user")}</span>
-                </div>
-                <div>${Number(user.balance || 0)} pts</div>
-            `;
-            container.appendChild(div);
-        });
-    });
-
-    // 2. Écoute des messages de support de TOUS les utilisateurs
-    unsubscribeSupport = onValue(ref(db, "supportMessages"), snapshot => {
-        const container = $("admin-support");
-        container.innerHTML = "";
-
-        if (!snapshot.exists()) {
-            container.innerHTML = `<p class="muted">Aucun message de support.</p>`;
-            return;
-        }
-
-        snapshot.forEach(child => {
-            const message = child.val();
-            const id = child.key;
-            const div = document.createElement("div");
-            div.className = "card";
-            div.innerHTML = `
-                <strong>${escapeHtml(message.email || "Utilisateur")}</strong>
-                <p>${escapeHtml(message.message || "")}</p>
-                <span class="badge">${escapeHtml(message.status || "open")}</span>
-                <textarea id="reply-${id}" placeholder="Réponse..."></textarea>
-                <button onclick="replySupport('${id}')">Répondre</button>
-                <button class="secondary" onclick="closeSupport('${id}')">Fermer</button>
-            `;
-            container.appendChild(div);
-        });
-    });
-
-    // 3. Écoute des missions et participations en attente
-    unsubscribeMissions = onValue(ref(db, "missions"), snapshot => {
-        const container = $("admin-missions");
-        container.innerHTML = "";
-
-        let hasPending = false;
-        snapshot.forEach(child => {
-            const mission = child.val();
-            const id = child.key;
-
-            if (mission.status !== "pending") return;
-            hasPending = true;
-
-            const div = document.createElement("div");
-            div.className = "card";
-            div.innerHTML = `
-                <h3>${escapeHtml(mission.title || "Mission")}</h3>
-                <p>${escapeHtml(mission.description || "")}</p>
-                <p class="small">UID : ${escapeHtml(mission.uid || "")}</p>
-                <button onclick="validateMission('${id}')">Valider</button>
-                <button class="danger" onclick="rejectMission('${id}')">Refuser</button>
-            `;
-            container.appendChild(div);
-        });
-
-        if (!hasPending) {
-            container.innerHTML = `<p class="muted">Aucune mission à contrôler.</p>`;
-        }
-    });
-}
-
-
-/* =========================================================
-   ADMIN — SUPPORT
-   ========================================================= */
-
-window.replySupport = async function(id) {
-    if (currentProfile?.role !== "admin") return;
-    const textarea = $(`reply-${id}`);
-    const reply = textarea?.value.trim();
-    if (!reply) return;
-
-    await update(ref(db, `supportMessages/${id}`), {
-        adminReply: reply,
-        status: "answered",
-        answeredAt: Date.now()
-    });
-};
-
-
-window.closeSupport = async function(id) {
-    if (currentProfile?.role !== "admin") return;
-    await update(ref(db, `supportMessages/${id}`), {
-        status: "closed",
-        closedAt: Date.now()
-    });
-};
-
-
-/* =========================================================
-   ADMIN — MISSIONS
-   ========================================================= */
-
-window.validateMission = async function(id) {
-    if (currentProfile?.role !== "admin") return;
-    const snapshot = await get(ref(db, `missions/${id}`));
-    if (!snapshot.exists()) return;
-
-    const mission = snapshot.val();
-    await update(ref(db, `missions/${id}`), {
-        status: "approved",
-        reviewedAt: Date.now()
-    });
-
-    const userSnapshot = await get(ref(db, `users/${mission.uid}`));
-    if (!userSnapshot.exists()) return;
-
-    const user = userSnapshot.val();
-    const newBalance = Number(user.balance || 0) + Number(mission.reward || 0);
-
-    await update(ref(db, `users/${mission.uid}`), {
-        balance: newBalance
-    });
-};
-
-
-window.rejectMission = async function(id) {
-    if (currentProfile?.role !== "admin") return;
-    await update(ref(db, `missions/${id}`), {
-        status: "rejected",
-        reviewedAt: Date.now()
-    });
-};
-
-
-/* =========================================================
-   LISTENERS UTILISATEUR
-   ========================================================= */
 
 function startUserListeners() {
-    listenProfile();
-    listenMissions();
-    listenSupport();
+    onValue(ref(db, `users/${currentUser.uid}`), (snap) => {
+        if (!snap.exists()) return;
+        currentProfile = snap.val();
+        document.getElementById('balance').textContent = (currentProfile.balance || 0) + " pts";
+    });
+
+    onValue(ref(db, 'supportMessages'), (snap) => {
+        const container = document.getElementById('support-list');
+        container.innerHTML = "";
+        snap.forEach(child => {
+            const m = child.val();
+            if (m.uid !== currentUser.uid) return;
+            container.innerHTML += `
+                <div class="card" style="margin-top: 10px;">
+                    <p style="margin: 0 0 8px 0;">${m.message}</p>
+                    <span class="muted" style="color:var(--accent);">Statut : ${m.status}</span>
+                    ${m.adminReply ? `<p style="margin: 8px 0 0 0; color:var(--green);"><strong>Réponse :</strong> ${m.adminReply}</p>` : ""}
+                </div>`;
+        });
+    });
 }
 
+function initAdmin() {
+    onValue(ref(db, 'users'), (snap) => {
+        const container = document.getElementById('admin-users');
+        container.innerHTML = "";
+        snap.forEach(child => {
+            const u = child.val();
+            container.innerHTML += `
+                <div class="user-row">
+                    <div><strong>${u.name || 'Inconnu'}</strong><br><span class="muted">${u.email}</span></div>
+                    <div style="font-weight:700; color:var(--accent);">${u.balance || 0} pts</div>
+                </div>`;
+        });
+    });
 
-/* =========================================================
-   DÉCONNEXION
-   ========================================================= */
+    onValue(ref(db, 'supportMessages'), (snap) => {
+        const container = document.getElementById('admin-support');
+        container.innerHTML = "";
+        snap.forEach(child => {
+            const m = child.val();
+            const id = child.key;
+            container.innerHTML += `
+                <div class="card" style="background:#0f1722; margin-top:10px;">
+                    <div class="muted">${m.email}</div>
+                    <p style="margin: 6px 0;">${m.message}</p>
+                    <textarea id="reply-${id}" placeholder="Répondre..." style="font-size:13px; padding:8px; margin-bottom:8px; min-height:60px;"></textarea>
+                    <button onclick="replySupport('${id}')" style="padding:8px; font-size:13px;">Envoyer la réponse</button>
+                </div>`;
+        });
+    });
+}
 
-$("logout-button").onclick = async () => {
-    try {
-        await signOut(auth);
-    } catch (error) {
-        console.error(error);
-    }
+window.replySupport = async function(id) {
+    const text = document.getElementById(`reply-${id}`).value.trim();
+    if (!text) return;
+    await update(ref(db, `supportMessages/${id}`), {
+        adminReply: text,
+        status: 'répondu'
+    });
+    alert("Réponse envoyée !");
 };
-
-
-/* =========================================================
-   PROTECTION XSS
-   ========================================================= */
-
-function escapeHtml(value) {
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-}
-
 </script>
 
 </body>
