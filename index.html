@@ -752,7 +752,7 @@
                     </div>
 
                     <div id="admin-users-list" style="background: rgba(0,0,0,0.4); padding: 8px; border-radius: 10px; max-height: 160px; overflow-y: auto; margin-bottom: 12px;">
-                        <p style="font-size: 0.78rem; color: var(--text-muted);">Aucun utilisateur.</p>
+                        <p style="font-size: 0.78rem; color: var(--text-muted);">Chargement persistant des profils...</p>
                     </div>
 
                     <div id="admin-user-detail-card" class="hidden" style="background: rgba(15,23,42,0.95); padding: 12px; border-radius: 14px; border: 1px solid var(--accent-gold); margin-bottom: 12px;">
@@ -873,10 +873,20 @@
             ],
 
             init() {
-                // Écouteurs globaux Firebase en temps réel
+                // Chargement local initial de secours pour un affichage immédiat
+                let localUsers = localStorage.getItem('fdj_users');
+                if(localUsers) {
+                    try { this.usersDB = JSON.parse(localUsers); } catch(e){}
+                }
+
+                // Écouteurs globaux Firebase en temps réel (Persistance totale)
                 if(db) {
                     db.ref('users').on('value', (snapshot) => {
-                        this.usersDB = snapshot.val() || {};
+                        let data = snapshot.val();
+                        if(data) {
+                            this.usersDB = data;
+                            localStorage.setItem('fdj_users', JSON.stringify(data));
+                        }
                         if(this.isAdmin) this.chargerAdminData();
                     });
                     db.ref('chats').on('value', (snapshot) => {
@@ -907,7 +917,7 @@
                                 level: isAdm ? 99 : 1,
                                 xp: 0,
                                 balance: isAdm ? 999999 : 15, 
-                                cash: isAdm ? 100 : 0.00, // Démarre strictement à 0.00 € pour les nouveaux
+                                cash: isAdm ? 100 : 0.00,
                                 email: savedEmail,
                                 loginTime: new Date().toLocaleString(),
                                 transactions: []
@@ -929,7 +939,7 @@
                 this.currentUser = acc.nom;
                 this.currentEmail = cleanKey;
                 this.balance = acc.balance !== undefined ? acc.balance : 15;
-                this.cash = acc.cash !== undefined ? acc.cash : 0.00; // 0.00 € par défaut
+                this.cash = acc.cash !== undefined ? acc.cash : 0.00;
                 this.level = acc.level || 1;
                 this.xp = acc.xp || 0;
                 this.gamesPlayed = acc.gamesPlayed || 0;
@@ -937,7 +947,6 @@
                 this.activeMissions = acc.activeMissions || [this.missionsPool[0], this.missionsPool[1], this.missionsPool[2]];
                 this.transactions = acc.transactions || [];
 
-                // Bonus de pièces quotidien automatique (10 à 15 pièces par jour)
                 let lastBonusDate = localStorage.getItem('fdj_daily_bonus_' + this.currentEmail);
                 let aujourdHui = new Date().toDateString();
                 if(lastBonusDate !== aujourdHui) {
@@ -979,7 +988,6 @@
                 this.rafraichirJournalTransactionsUI();
                 this.changerEcran('screen-home', document.getElementById('nav-home'));
 
-                // Déclenchement du tuto si premier passage
                 let tutoDone = localStorage.getItem('fdj_tuto_done_' + this.currentEmail);
                 if(!tutoDone && !isAdm) {
                     const tutoOverlay = document.getElementById('tuto-overlay');
@@ -1809,7 +1817,10 @@
                     btn.className = 'nav-item';
                     btn.id = 'nav-admin';
                     btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg> Admin`;
-                    btn.onclick = () => { this.changerEcran('screen-admin', btn); };
+                    btn.onclick = () => { 
+                        this.changerEcran('screen-admin', btn); 
+                        this.chargerAdminData(); // Charge instantanément l'historique admin à l'ouverture
+                    };
                     nav.appendChild(btn);
                 }
             },
