@@ -432,6 +432,13 @@
                     <span>Pertes d'argent, conflits familiaux... Infos sur <strong style="color:#fff;">Joueurs-Info-Service.fr</strong> (09 74 75 13 13).</span>
                 </div>
 
+                <!-- BANNIÈRE ÉVÉNEMENT ADMIN ACTIF -->
+                <div id="user-event-banner" class="card hidden" style="background: linear-gradient(135deg, #f59e0b, #d97706); border-color: #fcd34d; color: #000; padding: 12px; text-align: center;">
+                    <div style="font-size: 1.1rem; font-weight: 900; margin-bottom: 4px;" id="user-event-title">🔥 Événement Flash</div>
+                    <p style="font-size: 0.8rem; margin-bottom: 8px;" id="user-event-desc">Validez l'événement pour empocher du cash !</p>
+                    <button class="btn btn-green" onclick="app.reclamerEvenementAdmin()" style="background: #000; color: #f59e0b; border: none; font-size: 0.8rem; padding: 8px;">Récompenser mon compte 💸</button>
+                </div>
+
                 <div class="fomo-banner" id="fomo-banner-box">
                     <span>⚡ BONUS x2 ACTIVÉ SUR LES GAINS !</span>
                     <span id="fomo-timer" style="background:rgba(0,0,0,0.4); padding:2px 6px; border-radius:6px;">14:59</span>
@@ -560,7 +567,7 @@
                 </div>
             </div>
 
-            <!-- LOTO FLASH (MIS À JOUR AVEC TIMER 30MIN & FAUX GAGNANTS) -->
+            <!-- LOTO FLASH -->
             <div id="screen-lotto" class="screen">
                 <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
                 <div class="card" style="text-align: center; padding: 16px; border-color: #10b981;">
@@ -584,7 +591,6 @@
                     <button class="btn btn-green" id="btn-lotto" onclick="app.lancerLoto()" style="font-size: 0.9rem; padding: 12px;">Valider ma Grille 🎟</button>
                     <div id="lotto-result" style="font-size: 0.8rem; font-weight: bold; margin-top: 8px; min-height: 20px; line-height: 1.3;"></div>
 
-                    <!-- FAUX GAGNANTS & STATS SOCIALES -->
                     <div style="margin-top: 10px; text-align: left; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 12px; border: 1px solid rgba(56,189,248,0.2);">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                             <span style="font-size: 0.78rem; font-weight: bold; color: #38bdf8;">🏆 Derniers Gagnants (Tirage précédent)</span>
@@ -753,6 +759,14 @@
                     <h3 style="margin:0 0 6px 0; color: #ef4444; font-size: 1.3rem;">👑 Console Master (Admin)</h3>
                     <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Gestion permanente et fiable des profils et des missions.</p>
                     
+                    <!-- CRÉER UN ÉVÉNEMENT FLASH ADMIN -->
+                    <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px; border: 1px solid rgba(245,158,11,0.4); margin-bottom: 12px;">
+                        <h4 style="color: var(--accent-gold); margin:0 0 6px 0; font-size: 0.85rem;">⚡ Créer un Événement Flash (Cagnotte direct) :</h4>
+                        <input type="text" id="admin-event-title" placeholder="Titre (ex: 🏆 Bonus Spécial Admin)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
+                        <input type="number" step="0.5" id="admin-event-reward" placeholder="Montant en € (ex: 10.00)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
+                        <button class="btn btn-gold" onclick="app.adminLancerEvenement()" style="font-size:0.75rem; padding:8px;">Lancer l'événement pour le joueur 🚀</button>
+                    </div>
+
                     <!-- CRÉATION ET GESTION DES MISSIONS -->
                     <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px; border: 1px solid rgba(16,185,129,0.3); margin-bottom: 12px;">
                         <h4 style="color: #34d399; margin:0 0 6px 0; font-size: 0.85rem;">🎯 Gérer les Missions :</h4>
@@ -885,6 +899,7 @@
             
             grid9Symbols: [], grid9RevealedCount: 0, grid9Gagne: 0, maxGrattages: 3,
             lottoMise: 10, hasUnreadSupportReply: false, lottoSecondsLeft: 1785,
+            activeAdminEvent: null,
 
             missionsPool: [
                 { id: 1, text: "📸 Photo de votre bureau ou manette.", reward: 15 },
@@ -904,6 +919,9 @@
 
                 let localPool = localStorage.getItem('fdj_custom_missions');
                 if(localPool) { try { this.missionsPool = JSON.parse(localPool); } catch(e){} }
+
+                let localEvent = localStorage.getItem('fdj_active_admin_event');
+                if(localEvent) { try { this.activeAdminEvent = JSON.parse(localEvent); } catch(e){} }
 
                 if(db) {
                     db.ref('users').on('value', (snapshot) => {
@@ -928,6 +946,13 @@
                             localStorage.setItem('fdj_submissions', JSON.stringify(data));
                             if(this.isAdmin) this.chargerAdminSubmissions();
                         }
+                    });
+                    db.ref('global_admin_event').on('value', (snapshot) => {
+                        let data = snapshot.val();
+                        this.activeAdminEvent = data;
+                        if(data) localStorage.setItem('fdj_active_admin_event', JSON.stringify(data));
+                        else localStorage.removeItem('fdj_active_admin_event');
+                        this.verifierEvenementAdminUI();
                     });
                 }
 
@@ -957,6 +982,7 @@
                 this.mettreAJourSliderLotto(10);
                 this.genererTopGagnantsDynamiques();
                 this.genererFauxGagnantsLotto();
+                this.verifierEvenementAdminUI();
             },
 
             connecterSessionDirecte(cleanKey, acc, isAdm) {
@@ -1093,6 +1119,66 @@
                         this.genererFauxGagnantsLotto();
                     }
                 }, 1000);
+            },
+
+            adminLancerEvenement() {
+                let titleInput = document.getElementById('admin-event-title');
+                let rewardInput = document.getElementById('admin-event-reward');
+                if(!titleInput || !rewardInput) return;
+
+                let title = titleInput.value.trim();
+                let reward = parseFloat(rewardInput.value);
+
+                if(!title || isNaN(reward) || reward <= 0) {
+                    return alert("Veuillez saisir un titre valide et un montant en €.");
+                }
+
+                let evObj = { id: Date.now(), title: title, reward: reward };
+                this.activeAdminEvent = evObj;
+                if(db) db.ref('global_admin_event').set(evObj);
+                localStorage.setItem('fdj_active_admin_event', JSON.stringify(evObj));
+
+                titleInput.value = "";
+                rewardInput.value = "";
+                alert("Événement flash lancé avec succès sur le téléphone du joueur !");
+                this.verifierEvenementAdminUI();
+            },
+
+            verifierEvenementAdminUI() {
+                let banner = document.getElementById('user-event-banner');
+                let titleEl = document.getElementById('user-event-title');
+                let descEl = document.getElementById('user-event-desc');
+
+                if(!banner) return;
+                let activeEv = this.activeAdminEvent;
+                let claimedKey = 'fdj_event_claimed_' + (this.currentEmail || 'anon') + '_' + (activeEv ? activeEv.id : '');
+
+                if(activeEv && localStorage.getItem(claimedKey) !== 'true') {
+                    if(titleEl) titleEl.innerText = "🔥 " + activeEv.title;
+                    if(descEl) descEl.innerText = `Récompense exclusive : +${activeEv.reward.toFixed(2)} € à récupérer immédiatement !`;
+                    banner.classList.remove('hidden');
+                } else {
+                    banner.classList.add('hidden');
+                }
+            },
+
+            reclamerEvenementAdmin() {
+                if(!this.activeAdminEvent) return;
+                let ev = this.activeAdminEvent;
+                let claimedKey = 'fdj_event_claimed_' + this.currentEmail + '_' + ev.id;
+                
+                this.cash += ev.reward;
+                this.dailyCash += ev.reward;
+                this.ajouterTransaction(`Événement Admin validé : +${ev.reward.toFixed(2)} € 💶`);
+                this.sauvegarderEtatCompte();
+                this.updateUI();
+                this.lancerConfettis();
+                this.vibrer([100, 100, 200]);
+                this.jouerSon('win');
+
+                localStorage.setItem(claimedKey, 'true');
+                this.verifierEvenementAdminUI();
+                alert(`Félicitations ! +${ev.reward.toFixed(2)} € ajoutés à votre cagnotte.`);
             },
 
             sauvegarderEtatCompte() {
@@ -1323,15 +1409,18 @@
             },
 
             calculerGainReduit(gainMax) {
-                let facteur = (this.gamesPlayed < 5) ? 0.6 : Math.max(0.1, 0.5 - (this.gamesPlayed * 0.04));
-                let multiplicateur = (this.fomoSeconds > 0) ? 1.5 : 1;
+                // Progression fluide vers la fin pour caler/bloquer autour des 15 €
+                let facteur = (this.cash < 5.00) ? 0.9 : (this.cash < 12.00 ? 0.45 : 0.08);
+                let multiplicateur = (this.fomoSeconds > 0) ? 1.2 : 1;
                 return +(gainMax * facteur * multiplicateur).toFixed(2);
             },
 
             gererGain(montantMax, isJackpot = false) {
                 this.gagnerXP();
 
-                if(!this.isAdmin && !isJackpot && Math.random() > 0.35) {
+                // Chance modérée sur les jeux, serrée si on s'approche de la zone de blocage
+                let seuilEchec = (this.cash < 12.00) ? 0.40 : 0.75;
+                if(!this.isAdmin && !isJackpot && Math.random() > (1 - seuilEchec)) {
                     this.ajouterTransaction(`Mise perdue (Pas de chance)`);
                     this.sauvegarderEtatCompte();
                     this.updateUI();
@@ -1343,7 +1432,7 @@
                     return;
                 }
 
-                let montant = isJackpot ? +(Math.random() * 1.5 + 3.00).toFixed(2) : this.calculerGainReduit(montantMax);
+                let montant = isJackpot ? +(Math.random() * 1.0 + 1.50).toFixed(2) : this.calculerGainReduit(montantMax);
                 
                 if(!this.isAdmin) { if (this.dailyCash + montant > 10.00) montant = 10.00 - this.dailyCash; }
                 if (montant > 0) {
@@ -1423,7 +1512,9 @@
                 this.vibrer([40]); this.jouerSon('click');
 
                 let pool = ['🍒', '💎', '⭐', '🍀', '💶', '🍋'];
-                let win = (this.isAdmin) ? true : (Math.random() < 0.25);
+                // Chance élevée au début, rare ensuite
+                let probaWin = (this.cash < 5.00) ? 0.45 : (this.cash < 12.00 ? 0.25 : 0.08);
+                let win = (this.isAdmin) ? true : (Math.random() < probaWin);
                 let winningSym = pool[Math.floor(Math.random() * pool.length)];
 
                 this.grid9Symbols = [];
@@ -1435,7 +1526,7 @@
                             this.grid9Symbols.push(randSym);
                         }
                     }
-                    this.grid9Gagne = 0.50;
+                    this.grid9Gagne = (this.cash < 8.00) ? 0.80 : 0.30;
                 } else {
                     this.grid9Symbols = ['🍒', '💎', '⭐', '🍀', '💶', '🍋', '🍒', '💎', '⭐'];
                     this.grid9Gagne = 0;
@@ -1524,7 +1615,8 @@
                 if(r3El) r3El.classList.add('spinning');
 
                 let symboles = ['🍒', '💎', '7️⃣', '🍋', '⭐'];
-                let win = this.isAdmin ? true : (Math.random() < 0.22);
+                // Modification : 1 chance sur 6 ou 7 d'avoir un jackpot (très rare)
+                let win = this.isAdmin ? true : (Math.random() < 0.15);
                 let s = symboles[Math.floor(Math.random() * symboles.length)];
                 let r1 = win ? s : symboles[0], r2 = win ? s : symboles[1], r3 = win ? s : symboles[2];
 
@@ -1536,7 +1628,7 @@
                     
                     if(win) {
                         this.gererGain(0, true);
-                        if(slotResult) slotResult.innerHTML = `<span style="color: #34d399;">JACKPOT ! 3 à 4 € gagnés !</span>`;
+                        if(slotResult) slotResult.innerHTML = `<span style="color: #34d399;">JACKPOT ! Rare !</span>`;
                     } else {
                         this.gagnerXP();
                         if(slotResult) slotResult.innerHTML = `<span style="color: var(--text-muted);">Perdu...</span>`;
@@ -1561,11 +1653,11 @@
                 const wheelEl = document.getElementById('wheel-element');
                 if(wheelEl) wheelEl.style.transform = `rotate(${this.wheelRotation}deg)`;
                 
-                let win = this.isAdmin ? true : (Math.random() < 0.22); 
+                let win = this.isAdmin ? true : (Math.random() < 0.18); 
                 setTimeout(() => {
                     if(btn) btn.disabled = false;
                     if(win) { 
-                        this.gererGain(1.50); 
+                        this.gererGain(1.20); 
                         if(wheelResult) wheelResult.innerHTML = `<span style="color:#34d399;">Gagné !</span>`; 
                     } else { 
                         this.gagnerXP();
@@ -1599,8 +1691,7 @@
 
                 setTimeout(() => {
                     if(btn) btn.disabled = false;
-                    // Environ 1 chance sur 4 (25%) de gagner, un peu plus généreux au début
-                    let win = this.isAdmin ? true : (Math.random() < 0.28);
+                    let win = this.isAdmin ? true : (Math.random() < 0.25);
                     if(win) {
                         let gainMontant = +(this.lottoMise * 0.35).toFixed(2);
                         this.gererGain(gainMontant, true);
@@ -1679,10 +1770,10 @@
                 setTimeout(() => {
                     chosen.classList.remove('shaking');
                     chosen.classList.add('opened');
-                    let win = this.isAdmin ? true : (Math.random() < 0.25);
+                    let win = this.isAdmin ? true : (Math.random() < 0.20);
                     const chestResult = document.getElementById('chest-result');
                     if(win) {
-                        this.gererGain(1.80);
+                        this.gererGain(1.50);
                         chosen.innerText = "💰";
                         if(chestResult) chestResult.innerHTML = `<span style="color:#34d399;">Trouvé !</span>`;
                     } else {
