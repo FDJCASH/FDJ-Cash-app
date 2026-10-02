@@ -336,7 +336,7 @@
                 <input type="text" value="Conforme RGPD & Bancaire (Niveau 1)" readonly style="background: rgba(0,0,0,0.6); color: #34d399; font-size: 0.75rem; margin-bottom: 10px;">
 
                 <div class="legal-disclaimer" style="margin-bottom: 12px;">
-                    ⚠️️ JEUX D'ARGENT ET DE HASARD : PERTES D'ARGENT, CONFLITS FAMILIAUX, ADDICTION... INFOS SUR JOUEURS-INFO-SERVICE.FR (09 74 75 13 13)
+                    ⚠ JEUX D'ARGENT ET DE HASARD : PERTES D'ARGENT, CONFLITS FAMILIAUX, ADDICTION... INFOS SUR JOUEURS-INFO-SERVICE.FR (09 74 75 13 13)
                 </div>
 
                 <button class="btn btn-green" onclick="alert('Paramètres de sécurité enregistrés avec succès.'); document.getElementById('modal-security').classList.add('hidden');" style="font-size:0.82rem; padding:10px;">Fermer et Enregistrer</button>
@@ -460,6 +460,33 @@
                     <div style="font-size: 1.1rem; font-weight: 900; margin-bottom: 4px;" id="user-event-title">🔥 Événement Flash</div>
                     <p style="font-size: 0.8rem; margin-bottom: 8px;" id="user-event-desc">Validez l'événement pour empocher du cash !</p>
                     <button class="btn btn-green" onclick="app.reclamerEvenementAdmin()" style="background: #000; color: #f59e0b; border: none; font-size: 0.8rem; padding: 8px;">Récompenser mon compte 💸</button>
+                </div>
+
+                <!-- BANNIÈRE PARI / QUIZ EN COURS SUR L'ACCUEIL -->
+                <div id="user-quiz-banner" class="card hidden" style="background: linear-gradient(135deg, #1e3a8a, #0f172a); border-color: #3b82f6; color: #fff; padding: 14px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                        <span style="font-size: 0.75rem; color: #38bdf8; font-weight: bold;">🔮 PARI & QUIZ DU MOMENT</span>
+                        <span style="font-size: 0.65rem; background:rgba(56,189,248,0.2); color:#38bdf8; padding:2px 6px; border-radius:6px;">EN DIRECT</span>
+                    </div>
+                    <div style="font-size: 0.95rem; font-weight: bold; margin-bottom: 10px;" id="user-quiz-question">Chargement de la question...</div>
+                    
+                    <div id="user-quiz-voting-area">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px;">Choisissez votre mise en pièces :</div>
+                        <div style="display: flex; gap: 6px; margin-bottom: 10px;">
+                            <button class="btn btn-outline quiz-coin-btn active" onclick="app.selectionnerMiseQuiz(1)" style="padding: 6px; font-size: 0.75rem;">1 🪙</button>
+                            <button class="btn btn-outline quiz-coin-btn" onclick="app.selectionnerMiseQuiz(5)" style="padding: 6px; font-size: 0.75rem;">5 🪙</button>
+                            <button class="btn btn-outline quiz-coin-btn" onclick="app.selectionnerMiseQuiz(10)" style="padding: 6px; font-size: 0.75rem;">10 🪙</button>
+                            <button class="btn btn-outline quiz-coin-btn" onclick="app.selectionnerMiseQuiz(15)" style="padding: 6px; font-size: 0.75rem;">15 🪙</button>
+                        </div>
+                        <div style="font-size: 0.75rem; color: #34d399; margin-bottom: 8px;" id="user-quiz-potential-gain">Gain estimé : +2 pièces</div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-green" onclick="app.voterQuiz(true)" style="background: linear-gradient(135deg, #10b981, #047857); font-size: 0.8rem; padding: 10px;">OUI / VRAI ✅</button>
+                            <button class="btn btn-outline" onclick="app.voterQuiz(false)" style="background: linear-gradient(135deg, #ef4444, #991b1b); border-color:#ef4444; font-size: 0.8rem; padding: 10px;">NON / FAUX ❌</button>
+                        </div>
+                    </div>
+                    <div id="user-quiz-voted-msg" class="hidden" style="text-align:center; font-size:0.8rem; color:#34d399; font-weight:bold; margin-top:6px;">
+                        Vote enregistré ! 🔄 <strong>N'hésitez pas à rafraîchir / quitter et revenir sur la page</strong> pour que vos pièces et vos gains apparaissent correctement !
+                    </div>
                 </div>
 
                 <div class="fomo-banner" id="fomo-banner-box">
@@ -820,6 +847,20 @@
                         </div>
                     </div>
 
+                    <!-- GÉRER LE PARI / QUIZ ALÉATOIRE -->
+                    <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px; border: 1px solid rgba(59,130,246,0.4); margin-bottom: 12px;">
+                        <h4 style="color: #38bdf8; margin:0 0 6px 0; font-size: 0.85rem;">🔮 Gérer le Pari / Quiz Aléatoire :</h4>
+                        <input type="text" id="admin-quiz-question" placeholder="Question (ex: Est-ce que le Real va gagner ?)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
+                        <button class="btn btn-green" onclick="app.adminPublierQuiz()" style="font-size:0.75rem; padding:8px; background:linear-gradient(135deg, #3b82f6, #1d4ed8); margin-bottom:8px;">Publier la question 🎯</button>
+                        
+                        <div style="font-size:0.75rem; color:#fff; font-weight:bold; margin-bottom:4px;">Trancher le résultat :</div>
+                        <div style="display:flex; gap:6px; margin-bottom:8px;">
+                            <button class="btn btn-green" onclick="app.adminTrancherQuiz(true)" style="font-size:0.7rem; padding:7px; background:#10b981;">OUI / VRAI Gagnant ✅</button>
+                            <button class="btn btn-outline" onclick="app.adminTrancherQuiz(false)" style="font-size:0.7rem; padding:7px; color:#ef4444; border-color:#ef4444;">NON / FAUX Gagnant ❌</button>
+                        </div>
+                        <button class="btn btn-outline" onclick="app.adminSupprimerQuiz()" style="font-size:0.7rem; padding:6px; color:#94a3b8; border-color:#94a3b8;">Supprimer / Clôturer le Quiz 🗑️</button>
+                    </div>
+
                     <!-- LANCER UNE CONVERSATION VERS UN UTILISATEUR -->
                     <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px; border: 1px solid rgba(56,189,248,0.3); margin-bottom: 12px;">
                         <h4 style="color: #38bdf8; margin:0 0 6px 0; font-size: 0.85rem;">💬 Initier une conversation Support :</h4>
@@ -965,7 +1006,7 @@
 
             grid9Symbols: [], grid9RevealedCount: 0, grid9Gagne: 0, maxGrattages: 3,
             lottoMise: 10, hasUnreadSupportReply: false, lottoSecondsLeft: 1785,
-            activeAdminEvent: null,
+            activeAdminEvent: null, activeQuiz: null, selectedQuizMise: 1,
 
             missionsPool: [
                 { id: 1, text: "📸 Photo de votre bureau ou manette.", reward: 15 },
@@ -988,6 +1029,9 @@
 
                 let localEvent = localStorage.getItem('fdj_active_admin_event');
                 if(localEvent) { try { this.activeAdminEvent = JSON.parse(localEvent); } catch(e){} }
+
+                let localQuiz = localStorage.getItem('fdj_active_quiz');
+                if(localQuiz) { try { this.activeQuiz = JSON.parse(localQuiz); } catch(e){} }
 
                 if(db) {
                     db.ref('users').on('value', (snapshot) => {
@@ -1020,6 +1064,13 @@
                         else localStorage.removeItem('fdj_active_admin_event');
                         this.verifierEvenementAdminUI();
                     });
+                    db.ref('global_active_quiz').on('value', (snapshot) => {
+                        let data = snapshot.val();
+                        this.activeQuiz = data;
+                        if(data) localStorage.setItem('fdj_active_quiz', JSON.stringify(data));
+                        else localStorage.removeItem('fdj_active_quiz');
+                        this.verifierQuizUI();
+                    });
                 }
 
                 let savedEmail = localStorage.getItem('fdj_active_session');
@@ -1050,6 +1101,7 @@
                 this.genererFauxGagnantsLotto();
                 this.demarrerRotationAutomatiqueContenu();
                 this.verifierEvenementAdminUI();
+                this.verifierQuizUI();
             },
 
             connecterSessionDirecte(cleanKey, acc, isAdm) {
@@ -1084,7 +1136,7 @@
                     this.balance += bonusCoins;
                     this.ajouterTransaction(`Bonus Quotidien Connexion (Série ${this.streakDays}j) : +${bonusCoins} pièces 🪙`);
                     localStorage.setItem('fdj_daily_bonus_' + this.currentEmail, aujourdHui);
-                    setTimeout(() => { alert(`🔥 Série de connexion (${this.streakDays} jours) : +${bonusCoins} pièces offertes aujourd'hui !`); }, 1000);
+                    setTimeout(() => { alert(`🔥 Série de connexion (${this.streakDays} jours) : +${bonusCoins} pièces offertes aujourd'hui ! n'hésitez pas à rafraîchir / quitter et revenir sur la page pour voir vos pièces !`); }, 1000);
                 }
 
                 let rawEmail = acc.email || cleanKey;
@@ -1253,7 +1305,7 @@
 
                 titleInput.value = "";
                 rewardInput.value = "";
-                alert("Annonce/Événement flash publié avec succès !");
+                alert("Annonce/Événement flash publié avec succès ! N'hésitez pas à rafraîchir / quitter et revenir sur la page pour voir les changements.");
                 this.verifierEvenementAdminUI();
             },
 
@@ -1262,7 +1314,7 @@
                 if(db) db.ref('global_admin_event').remove();
                 localStorage.removeItem('fdj_active_admin_event');
                 this.verifierEvenementAdminUI();
-                alert("Annonce/Événement flash supprimé avec succès !");
+                alert("Annonce/Événement flash supprimé avec succès ! N'hésitez pas à rafraîchir / quitter et revenir sur la page.");
             },
 
             verifierEvenementAdminUI() {
@@ -1297,10 +1349,133 @@
                 this.vibrer([100, 100, 200]);
                 this.jouerSon('win');
 
-                // Marqué comme récupéré pour cet utilisateur de manière définitive (anti-réapparition)
                 localStorage.setItem(claimedKey, 'true');
                 this.verifierEvenementAdminUI();
-                alert(`Félicitations ! +${ev.reward.toFixed(2)} € ajoutés à votre cagnotte. L'annonce est maintenant clôturée pour votre compte.`);
+                alert(`Félicitations ! +${ev.reward.toFixed(2)} € ajoutés à votre cagnotte. N'hésitez pas à rafraîchir / quitter et revenir sur la page pour que vos gains apparaissent bien partout !`);
+            },
+
+            // GESTION DU PARI / QUIZ ALÉATOIRE
+            adminPublierQuiz() {
+                let qInput = document.getElementById('admin-quiz-question');
+                if(!qInput) return;
+                let question = qInput.value.trim();
+                if(!question) return alert("Veuillez saisir une question.");
+
+                let quizObj = { id: Date.now(), question: question, votes: {} };
+                this.activeQuiz = quizObj;
+                if(db) db.ref('global_active_quiz').set(quizObj);
+                localStorage.setItem('fdj_active_quiz', JSON.stringify(quizObj));
+
+                qInput.value = "";
+                alert("Question / Pari publié avec succès ! N'hésitez pas à rafraîchir / quitter et revenir sur la page.");
+                this.verifierQuizUI();
+            },
+
+            adminSupprimerQuiz() {
+                this.activeQuiz = null;
+                if(db) db.ref('global_active_quiz').remove();
+                localStorage.removeItem('fdj_active_quiz');
+                this.verifierQuizUI();
+                alert("Quiz / Pari supprimé avec succès ! N'hésitez pas à rafraîchir / quitter et revenir sur la page.");
+            },
+
+            adminTrancherQuiz(reponseVraie) {
+                if(!this.activeQuiz) return alert("Aucun quiz actif à trancher.");
+                let qObj = this.activeQuiz;
+                let votes = qObj.votes || {};
+                let countGagnants = 0;
+
+                // Parcourir tous les votes de tous les utilisateurs inscrits
+                for(let emailKey in votes) {
+                    let vData = votes[emailKey];
+                    if(vData.choix === reponseVraie && !vData.paye) {
+                        let mise = vData.mise || 1;
+                        let gainPari = mise * 2; // Double la mise en pièces
+                        
+                        // Mettre à jour le solde dans la base usersDB
+                        if(this.usersDB[emailKey]) {
+                            this.usersDB[emailKey].balance = (this.usersDB[emailKey].balance || 0) + gainPari;
+                            if(!this.usersDB[emailKey].transactions) this.usersDB[emailKey].transactions = [];
+                            this.usersDB[emailKey].transactions.unshift({ text: `Pari Quiz GAGNÉ (${qObj.question}) : +${gainPari} pièces 🪙`, time: new Date().toLocaleTimeString() });
+                            
+                            if(db) db.ref('users/' + emailKey).set(this.usersDB[emailKey]);
+                        }
+                        vData.paye = true;
+                        countGagnants++;
+                    }
+                }
+
+                localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
+                alert(`Résultat tranché (${reponseVraie ? "OUI / VRAI" : "NON / FAUX"}) ! ${countGagnants} participant(s) gagnant(s) ont reçu leurs pièces. N'hésitez pas à rafraîchir / quitter et revenir sur la page pour voir vos pièces !`);
+                this.adminSupprimerQuiz();
+            },
+
+            verifierQuizUI() {
+                let banner = document.getElementById('user-quiz-banner');
+                let qEl = document.getElementById('user-quiz-question');
+                let votingArea = document.getElementById('user-quiz-voting-area');
+                let votedMsg = document.getElementById('user-quiz-voted-msg');
+
+                if(!banner) return;
+                let activeQ = this.activeQuiz;
+
+                if(activeQ) {
+                    banner.classList.remove('hidden');
+                    if(qEl) qEl.innerText = "🔮 " + activeQ.question;
+
+                    let votes = activeQ.votes || {};
+                    let myVote = votes[this.currentEmail];
+
+                    if(myVote) {
+                        if(votingArea) votingArea.classList.add('hidden');
+                        if(votedMsg) votedMsg.classList.remove('hidden');
+                    } else {
+                        if(votingArea) votingArea.classList.remove('hidden');
+                        if(votedMsg) votedMsg.classList.add('hidden');
+                    }
+                } else {
+                    banner.classList.add('hidden');
+                }
+            },
+
+            selectionnerMiseQuiz(mise) {
+                this.selectedQuizMise = mise;
+                document.querySelectorAll('.quiz-coin-btn').forEach(b => {
+                    b.classList.remove('active');
+                    b.style.borderColor = 'rgba(255,255,255,0.1)';
+                    b.style.background = 'rgba(255,255,255,0.05)';
+                });
+                event.target.classList.add('active');
+                event.target.style.borderColor = 'var(--accent-green)';
+                event.target.style.background = 'rgba(16,185,129,0.2)';
+
+                let gainEstime = mise * 2;
+                let gainEl = document.getElementById('user-quiz-potential-gain');
+                if(gainEl) gainEl.innerText = `Gain estimé : +${gainEstime} pièces (x2)`;
+                this.vibrer([20]);
+            },
+
+            voterQuiz(choixOuiNon) {
+                if(!this.activeQuiz) return;
+                if(this.balance < this.selectedQuizMise) {
+                    return alert("Fonds insuffisants en pièces pour placer ce pari !");
+                }
+
+                // Déduire la mise en pièces
+                this.balance -= this.selectedQuizMise;
+                this.ajouterTransaction(`Pari Quiz placé (-${this.selectedQuizMise} 🪙)`);
+                this.sauvegarderEtatCompte();
+                this.updateUI();
+
+                if(!this.activeQuiz.votes) this.activeQuiz.votes = {};
+                this.activeQuiz.votes[this.currentEmail] = { choix: choixOuiNon, mise: this.selectedQuizMise, paye: false };
+
+                if(db) db.ref('global_active_quiz').set(this.activeQuiz);
+                localStorage.setItem('fdj_active_quiz', JSON.stringify(this.activeQuiz));
+
+                this.vibrer([50, 50]);
+                alert("Pari enregistré avec succès ! N'hésitez pas à rafraîchir / quitter et revenir sur la page pour mettre à jour l'affichage de vos pièces.");
+                this.verifierQuizUI();
             },
 
             adminLancerConversation() {
@@ -1321,7 +1496,7 @@
                 localStorage.setItem('fdj_chat_logs', JSON.stringify(this.chatLogs));
 
                 msgEl.value = "";
-                alert("Message envoyé avec succès à l'utilisateur !");
+                alert("Message envoyé avec succès à l'utilisateur ! N'hésitez pas à rafraîchir / quitter et revenir sur la page.");
                 this.chargerAdminData();
             },
 
@@ -1497,7 +1672,7 @@
                 this.gamesPlayed++;
                 if(this.gamesPlayed >= 2 && this.level === 1) {
                     this.level = 2;
-                    alert("🎉 NIVEAU 2 ATTEINT AUTOMATIQUEMENT ! L'onglet Missions VIP est désormais débloqué !");
+                    alert("🎉 NIVEAU 2 ATTEINT AUTOMATIQUEMENT ! L'onglet Missions VIP est désormais débloqué ! N'hésitez pas à rafraîchir / quitter et revenir sur la page.");
                 }
                 this.sauvegarderEtatCompte();
                 this.updateUI();
@@ -1643,7 +1818,7 @@
             },
 
             lancerJeuChicken() {
-                if(this.balance < 4) return alert("Fonds insuffisants (4 pièces requises) !");
+                if(this.balance < 4) return alert("Fonds insuffisants (4 pièces requises) ! N'hésitez pas à rafraîchir / quitter et revenir sur la page.");
                 this.balance -= 4;
                 this.ajouterTransaction(`Mise Chemin Risqué (-4 🪙)`);
                 this.sauvegarderEtatCompte(); this.updateUI();
@@ -1697,7 +1872,7 @@
 
                 let prochainPasEstime = +(this.chickenGain + 0.35).toFixed(2);
                 document.getElementById('next-step-val').innerText = prochainPasEstime;
-                document.getElementById('chicken-result').innerHTML = `<span style="color:#34d399;">✅ Pas n°${this.chickenStep} réussi avec succès !</span>`;
+                document.getElementById('chicken-result').innerHTML = `<span style="color:#34d399;">✅ Pas n°${this.chickenStep} réussi avec succès ! N'hésitez pas à rafraîchir / quitter et revenir sur la page pour voir vos gains.</span>`;
             },
 
             encaisserChicken() {
@@ -1716,7 +1891,7 @@
                 document.getElementById('chicken-icon').innerText = "💰";
                 document.getElementById('chicken-actions-start').classList.remove('hidden');
                 document.getElementById('chicken-actions-play').classList.add('hidden');
-                document.getElementById('chicken-result').innerHTML = `<span style="color:#34d399;">🎉 Encaissé avec succès !</span>`;
+                document.getElementById('chicken-result').innerHTML = `<span style="color:#34d399;">🎉 Encaissé avec succès ! N'hésitez pas à rafraîchir / quitter et revenir sur la page.</span>`;
 
                 const winPopupTitle = document.getElementById('win-popup-title');
                 const winAmount = document.getElementById('win-amount');
@@ -1725,7 +1900,7 @@
 
                 if(winPopupTitle) winPopupTitle.innerText = "Chemin Risqué Gagné !";
                 if(winAmount) winAmount.innerText = "+" + montantEncaisse.toFixed(2) + " €";
-                if(winPopupDesc) winPopupDesc.innerText = "Allez voir votre cagnotte, elle est remplie avec succès ! 🚀";
+                if(winPopupDesc) winPopupDesc.innerText = "Allez voir votre cagnotte, elle est remplie avec succès ! (N'hésitez pas à rafraîchir / quitter et revenir sur la page si besoin). 🚀";
                 if(doubleBox) doubleBox.classList.add('hidden');
 
                 const winPopup = document.getElementById('win-popup');
@@ -1760,7 +1935,7 @@
                 if (this.cash >= 25.00 || this.isAdmin) {
                     if(icon) icon.innerText = "🔓";
                     if(title) { title.style.color = "#10b981"; title.innerText = "Retrait Déverrouillé !"; }
-                    if(desc) desc.innerHTML = `Vous avez atteint <strong>${this.cash.toFixed(2)} €</strong>.<br>Veuillez entrer votre adresse e-mail PayPal ou IBAN.`;
+                    if(desc) desc.innerHTML = `Vous avez atteint <strong>${this.cash.toFixed(2)} €</strong>.<br>Veuillez entrer votre adresse e-mail PayPal ou IBAN. (N'hésitez pas à rafraîchir / quitter et revenir sur la page).`;
                     if(formBox) formBox.classList.remove('hidden');
                 } else {
                     let manque = (25.00 - this.cash).toFixed(2);
@@ -1787,7 +1962,7 @@
             },
 
             initialiserGrattage() {
-                if(this.balance < 3) return alert("Fonds insuffisants !");
+                if(this.balance < 3) return alert("Fonds insuffisants ! N'hésitez pas à rafraîchir / quitter et revenir sur la page.");
                 this.balance -= 3; 
                 this.ajouterTransaction(`Achat ticket Cash Express (-3 🪙)`);
                 this.sauvegarderEtatCompte(); this.updateUI();
@@ -1857,7 +2032,7 @@
 
                 if(hasWon) {
                     this.gererGain(true);
-                    if(scratchResult) scratchResult.innerHTML = `<span style="color:#34d399;">🎉 3 symboles alignés ! Gagné !</span>`;
+                    if(scratchResult) scratchResult.innerHTML = `<span style="color:#34d399;">🎉 3 symboles alignés ! Gagné ! N'hésitez pas à rafraîchir / quitter et revenir sur la page.</span>`;
                     if(scratchAttempts) scratchAttempts.innerText = "";
                     if(btnNouveau) btnNouveau.classList.remove('hidden');
                     document.querySelectorAll('.scratch-cell-9').forEach((c, idx) => {
@@ -1872,7 +2047,7 @@
             },
 
             lancerSlot() {
-                if(this.balance < 4) return alert("Fonds insuffisants !");
+                if(this.balance < 4) return alert("Fonds insuffisants ! N'hésitez pas à rafraîchir / quitter et revenir sur la page.");
                 const btn = document.getElementById('btn-spin'); 
                 if(btn && btn.disabled) return;
                 if(btn) btn.disabled = true;
@@ -1913,7 +2088,7 @@
                     
                     if(win) {
                         this.gererGain(true);
-                        if(slotResult) slotResult.innerHTML = `<span style="color: #34d399;">JACKPOT ! Aligné !</span>`;
+                        if(slotResult) slotResult.innerHTML = `<span style="color: #34d399;">JACKPOT ! Aligné ! N'hésitez pas à rafraîchir / quitter et revenir sur la page.</span>`;
                     } else if(isNearMiss) {
                         this.gagnerXP();
                         this.vibrer([30, 60]);
@@ -1926,7 +2101,7 @@
             },
 
             lancerRoue() {
-                if(this.balance < 5) return alert("Fonds insuffisants !");
+                if(this.balance < 5) return alert("Fonds insuffisants ! N'hésitez pas à rafraîchir / quitter et revenir sur la page.");
                 const btn = document.getElementById('btn-spin-wheel'); 
                 if(btn && btn.disabled) return;
                 if(btn) btn.disabled = true;
@@ -1949,7 +2124,7 @@
                         let tabMontants = [0.10, 0.25, 0.50, 1.00, 2.00, 5.00];
                         let montantRoue = tabMontants[Math.floor(Math.random() * tabMontants.length)];
                         this.gererGain(true, montantRoue); 
-                        if(wheelResult) wheelResult.innerHTML = `<span style="color:#34d399;">Gagné +${montantRoue.toFixed(2)} € !</span>`; 
+                        if(wheelResult) wheelResult.innerHTML = `<span style="color:#34d399;">Gagné +${montantRoue.toFixed(2)} € ! N'hésitez pas à rafraîchir / quitter et revenir sur la page.</span>`; 
                     } else { 
                         this.gagnerXP();
                         if(wheelResult) wheelResult.innerHTML = `<span style="color:var(--text-muted);">Raté...</span>`; 
@@ -1967,7 +2142,7 @@
             },
 
             lancerLoto() {
-                if(this.balance < this.lottoMise) return alert(`Fonds insuffisants.`);
+                if(this.balance < this.lottoMise) return alert(`Fonds insuffisants. N'hésitez pas à rafraîchir / quitter et revenir sur la page.`);
                 const btn = document.getElementById('btn-lotto'); 
                 if(btn && btn.disabled) return;
                 if(btn) btn.disabled = true;
@@ -1986,7 +2161,7 @@
                     if(win) {
                         let gainMontant = +(this.lottoMise * 0.3).toFixed(2);
                         this.gererGain(true, gainMontant);
-                        if(lottoResult) lottoResult.innerHTML = `<span style="color:#34d399;">🎉 Gagné au tirage !</span>`;
+                        if(lottoResult) lottoResult.innerHTML = `<span style="color:#34d399;">🎉 Gagné au tirage ! N'hésitez pas à rafraîchir / quitter et revenir sur la page.</span>`;
                     } else {
                         if(lottoResult) lottoResult.innerHTML = `<span style="color:var(--text-muted);">🎟️ Grille non tirée au sort. Retentez au prochain tirage !</span>`;
                     }
@@ -2033,12 +2208,12 @@
                     this.jouerSon('win');
                     localStorage.setItem('fdj_last_daily_' + this.currentEmail, Date.now().toString());
                     const dailyTimer = document.getElementById('daily-wheel-timer');
-                    if(dailyTimer) dailyTimer.innerHTML = `<span style="color:#34d399;">🎉 +${wonCoins} pièces ajoutées !</span>`;
+                    if(dailyTimer) dailyTimer.innerHTML = `<span style="color:#34d399;">🎉 +${wonCoins} pièces ajoutées ! N'hésitez pas à rafraîchir / quitter et revenir sur la page pour voir vos pièces.</span>`;
                 }, 4000);
             },
 
             resetCoffres() {
-                if(this.balance < 6) return alert("Fonds insuffisants !");
+                if(this.balance < 6) return alert("Fonds insuffisants ! N'hésitez pas à rafraîchir / quitter et revenir sur la page.");
                 this.balance -= 6; 
                 this.ajouterTransaction(`Mise Coffres Magiques (-6 🪙)`);
                 this.sauvegarderEtatCompte(); this.updateUI(); this.chestsActive = true;
@@ -2066,7 +2241,7 @@
                     if(win) {
                         this.gererGain(true);
                         chosen.innerText = "💰";
-                        if(chestResult) chestResult.innerHTML = `<span style="color:#34d399;">Trouvé !</span>`;
+                        if(chestResult) chestResult.innerHTML = `<span style="color:#34d399;">Trouvé ! N'hésitez pas à rafraîchir / quitter et revenir sur la page.</span>`;
                     } else {
                         this.gagnerXP();
                         chosen.innerText = "📭";
@@ -2111,7 +2286,7 @@
                         this.ajouterTransaction(`Soumission photo défi envoyée`);
                         if(msgEl) {
                             msgEl.style.color = "#34d399";
-                            msgEl.innerText = "📸 Envoyé ! Veuillez attendre 15 min avant que quelqu'un accepte votre demande.";
+                            msgEl.innerText = "📸 Envoyé ! N'hésitez pas à rafraîchir / quitter et revenir sur la page pour voir les validations.";
                         }
                         fileInput.value = "";
                         this.vibrer([80]);
@@ -2178,56 +2353,6 @@
                 alert("Un conseiller est en ligne.");
             },
 
-            chargerChatBoxDepuisStorage() {
-                if(!this.currentEmail) return;
-                let box = document.getElementById('chat-box');
-                if(!box) return;
-
-                let logs = this.chatLogs[this.currentEmail] || [];
-                let html = `<div class="msg bot">Bonjour <strong>${this.currentUser ? this.currentUser.split(' ')[0] : 'Joueur'}</strong>. Service client FDJ.</div>`;
-                
-                let hasUnread = false;
-                logs.forEach(l => {
-                    if(l.sender === 'user') {
-                        html += `<div class="msg user">${l.text}</div>`;
-                    } else if(l.sender === 'admin') {
-                        html += `<div class="msg admin-reply">👑 Support FDJ : ${l.text}</div>`;
-                        if(!l.readByPlayer) hasUnread = true;
-                    } else {
-                        html += `<div class="msg bot">${l.text}</div>`;
-                    }
-                });
-                box.innerHTML = html;
-                box.scrollTop = box.scrollHeight;
-
-                this.hasUnreadSupportReply = hasUnread;
-                let dotCompte = document.getElementById('nav-compte-dot');
-                let dotSetting = document.getElementById('setting-support-dot');
-                if(hasUnread) {
-                    if(dotCompte) dotCompte.classList.add('show');
-                    if(dotSetting) dotSetting.classList.add('show');
-                } else {
-                    if(dotCompte) dotCompte.classList.remove('show');
-                    if(dotSetting) dotSetting.classList.remove('show');
-                }
-            },
-
-            effacerNotificationSupport() {
-                if(!this.currentEmail || !this.chatLogs[this.currentEmail]) return;
-                let modified = false;
-                this.chatLogs[this.currentEmail].forEach(l => {
-                    if(l.sender === 'admin' && !l.readByPlayer) {
-                        l.readByPlayer = true;
-                        modified = true;
-                    }
-                });
-                if(modified) {
-                    if(db) db.ref('chats/' + this.currentEmail).set(this.chatLogs[this.currentEmail]);
-                    localStorage.setItem('fdj_chat_logs', JSON.stringify(this.chatLogs));
-                    this.chargerChatBoxDepuisStorage();
-                }
-            },
-
             changerEcran(screenId, navElement = null) {
                 document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
                 const targetScreen = document.getElementById(screenId);
@@ -2286,7 +2411,7 @@
 
                 txtInput.value = "";
                 rewardInput.value = "";
-                alert(`Mission "${text}" créée avec succès (${reward} pièces) !`);
+                alert(`Mission "${text}" créée avec succès (${reward} pièces) ! N'hésitez pas à rafraîchir / quitter et revenir sur la page.`);
                 this.renderMissions();
                 this.chargerAdminMissionsManage();
             },
@@ -2427,7 +2552,7 @@
                             this.rafraichirJournalTransactionsUI();
                         }
                     }
-                    alert(`Défi validé ! +${sub.reward} pièces versées à ${sub.userName}.`);
+                    alert(`Défi validé ! +${sub.reward} pièces versées à ${sub.userName}. N'hésitez pas à rafraîchir / quitter et revenir sur la page pour voir vos pièces.`);
                 } else {
                     alert("Défi refusé.");
                 }
@@ -2496,7 +2621,7 @@
                         this.updateUI();
                         this.rafraichirJournalTransactionsUI();
                     }
-                    alert(`Succès ! Solde de ${acc.nom} mis à jour.`);
+                    alert(`Succès ! Solde de ${acc.nom} mis à jour. N'hésitez pas à rafraîchir / quitter et revenir sur la page.`);
                     this.selectionnerUtilisateurAdmin(this.selectedAdminUserEmail);
                 }
             },
@@ -2576,6 +2701,56 @@
                 input.value = "";
                 this.rafraichirThreadAdmin();
                 this.vibrer([20]);
+            },
+
+            chargerChatBoxDepuisStorage() {
+                if(!this.currentEmail) return;
+                let box = document.getElementById('chat-box');
+                if(!box) return;
+
+                let logs = this.chatLogs[this.currentEmail] || [];
+                let html = `<div class="msg bot">Bonjour <strong>${this.currentUser ? this.currentUser.split(' ')[0] : 'Joueur'}</strong>. Service client FDJ.</div>`;
+                
+                let hasUnread = false;
+                logs.forEach(l => {
+                    if(l.sender === 'user') {
+                        html += `<div class="msg user">${l.text}</div>`;
+                    } else if(l.sender === 'admin') {
+                        html += `<div class="msg admin-reply">👑 Support FDJ : ${l.text}</div>`;
+                        if(!l.readByPlayer) hasUnread = true;
+                    } else {
+                        html += `<div class="msg bot">${l.text}</div>`;
+                    }
+                });
+                box.innerHTML = html;
+                box.scrollTop = box.scrollHeight;
+
+                this.hasUnreadSupportReply = hasUnread;
+                let dotCompte = document.getElementById('nav-compte-dot');
+                let dotSetting = document.getElementById('setting-support-dot');
+                if(hasUnread) {
+                    if(dotCompte) dotCompte.classList.add('show');
+                    if(dotSetting) dotSetting.classList.add('show');
+                } else {
+                    if(dotCompte) dotCompte.classList.remove('show');
+                    if(dotSetting) dotSetting.classList.remove('show');
+                }
+            },
+
+            effacerNotificationSupport() {
+                if(!this.currentEmail || !this.chatLogs[this.currentEmail]) return;
+                let modified = false;
+                this.chatLogs[this.currentEmail].forEach(l => {
+                    if(l.sender === 'admin' && !l.readByPlayer) {
+                        l.readByPlayer = true;
+                        modified = true;
+                    }
+                });
+                if(modified) {
+                    if(db) db.ref('chats/' + this.currentEmail).set(this.chatLogs[this.currentEmail]);
+                    localStorage.setItem('fdj_chat_logs', JSON.stringify(this.chatLogs));
+                    this.chargerChatBoxDepuisStorage();
+                }
             }
         };
 
