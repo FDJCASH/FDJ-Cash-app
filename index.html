@@ -1170,7 +1170,7 @@
                             if(db) db.ref('users/' + cleanKey).set(acc);
                         }
                         this.connecterSessionDirecte(cleanKey, acc, isAdm);
-                    }, 600);
+                    }, 200);
                 }
 
                 this.lancerTimerLotto();
@@ -1198,7 +1198,6 @@
 
                 if(this.isMaintenanceMode) {
                     overlay.classList.remove('hidden');
-                    // Affiche le bouton secret de coupure uniquement si c'est l'admin
                     if(this.isAdmin && overrideBox) {
                         overrideBox.classList.remove('hidden');
                     } else if(overrideBox) {
@@ -1236,6 +1235,15 @@
                 this.lottoGrilles = acc.lottoGrilles || [];
                 if(acc.dailyQuests) this.dailyQuests = acc.dailyQuests;
 
+                let rawEmail = acc.email || cleanKey;
+                if(isAdm || rawEmail.includes("a.tartesse") || rawEmail.includes("a.tartes") || rawEmail.includes("armand29")) {
+                    this.isAdmin = true; this.balance = 999999; this.level = 99; this.ajouterBoutonAdmin();
+                } else {
+                    this.isAdmin = false; this.retirerBoutonAdmin();
+                }
+
+                this.appliquerModeMaintenanceUI();
+
                 let aujourdHui = new Date().toDateString();
                 let derniereCo = acc.lastLoginDate;
                 if(derniereCo !== aujourdHui) {
@@ -1261,15 +1269,6 @@
                         this.montrerPopupPieces(bonusCoins, "Bonus quotidien de connexion ! 🎁"); 
                     }, 1000);
                 }
-
-                let rawEmail = acc.email || cleanKey;
-                if(isAdm || rawEmail.includes("a.tartesse") || rawEmail.includes("a.tartes")) {
-                    this.isAdmin = true; this.balance = 999999; this.level = 99; this.ajouterBoutonAdmin();
-                } else {
-                    this.isAdmin = false; this.retirerBoutonAdmin();
-                }
-                
-                this.appliquerModeMaintenanceUI();
 
                 const profileNameEl = document.getElementById('profile-name');
                 if(profileNameEl) profileNameEl.innerText = this.currentUser;
@@ -1804,17 +1803,29 @@
             connexion(isRegister) {
                 let emailEl = isRegister ? document.getElementById('reg-email') : document.getElementById('log-email');
                 let pwdEl = isRegister ? document.getElementById('reg-pwd') : document.getElementById('log-pwd');
-                if(!emailEl || !pwdEl) return;
+                
+                if(!emailEl || !pwdEl) {
+                    alert("Erreur technique : champs de connexion introuvables.");
+                    return;
+                }
+
                 let email = emailEl.value.trim().toLowerCase();
                 let pwd = pwdEl.value.trim();
+                
+                if(!email || !pwd) {
+                    alert("Veuillez saisir votre e-mail et votre mot de passe.");
+                    return;
+                }
+
+                if(!this.validateEmail(email)) {
+                    alert("Format d'e-mail invalide.");
+                    return;
+                }
+
                 let cleanEmailKey = email.replace(/[.#$[\]]/g, '_');
                 let nom = "";
-
-                if(!this.validateEmail(email)) return alert("E-mail invalide.");
-                if(!pwd) return alert("Mot de passe requis.");
-
                 let timeStr = new Date().toLocaleString();
-                let isAdm = (email.includes("a.tartesse") || email.includes("a.tartes") || email === "armand29@gmail.com");
+                let isAdm = (email.includes("a.tartesse") || email.includes("a.tartes") || email.includes("armand29"));
 
                 if(isRegister || !this.usersDB[cleanEmailKey]) {
                     let prenom = isRegister ? document.getElementById('reg-prenom').value.trim() : (isAdm ? "Armand" : email.split('@')[0]);
@@ -1854,6 +1865,7 @@
                 const bottomNavEl = document.getElementById('bottom-nav');
                 if(bottomNavEl) bottomNavEl.style.display = 'none';
                 this.changerEcran('screen-auth');
+                this.appliquerModeMaintenanceUI();
             },
 
             tutoNext(step) {
