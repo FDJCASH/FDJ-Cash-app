@@ -173,29 +173,33 @@
         .chest.opened { transform: scale(1.12); filter: drop-shadow(0 0 30px var(--accent-gold-glow)); }
         @keyframes chestShake { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-10deg); } 75% { transform: rotate(10deg); } }
 
-        /* OVERLAY MAINTENANCE GLOBALE & STYLE NÉON */
+        /* TOWER STACK STYLES */
+        .tower-canvas-container {
+            width: 100%; height: 260px; background: #020617; border-radius: 14px;
+            border: 2px inset #064e3b; position: relative; overflow: hidden; margin: 10px 0;
+            display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
+        }
+        .tower-stack-row {
+            height: 24px; border-radius: 6px; background: linear-gradient(135deg, #10b981, #059669);
+            border: 1px solid #34d399; display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; font-weight: bold; color: #fff; box-shadow: 0 4px 10px rgba(16,185,129,0.3);
+            transition: all 0.2s ease; margin-bottom: 2px;
+        }
+        .tower-moving-block {
+            position: absolute; top: 15px; height: 24px; border-radius: 6px;
+            background: linear-gradient(135deg, #f59e0b, #d97706); border: 1px solid #fcd34d;
+            box-shadow: 0 0 15px var(--accent-gold-glow); display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; font-weight: bold; color: #000;
+        }
+
+        /* OVERLAY MAINTENANCE GLOBALE */
         .maintenance-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(4, 8, 18, 0.97); z-index: 99999; display: flex;
+            background: rgba(4, 8, 18, 0.96); z-index: 99999; display: flex;
             flex-direction: column; justify-content: center; align-items: center;
             padding: 24px; box-sizing: border-box; text-align: center; backdrop-filter: blur(15px);
         }
         .maintenance-overlay.hidden { display: none !important; }
-
-        .neon-title {
-            color: #fff;
-            font-size: 1.8rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 12px;
-            text-shadow: 0 0 5px #10b981, 0 0 10px #10b981, 0 0 20px #10b981, 0 0 40px #38bdf8, 0 0 80px #38bdf8;
-            animation: neonPulse 2s infinite alternate;
-        }
-        @keyframes neonPulse {
-            0% { text-shadow: 0 0 4px #10b981, 0 0 8px #10b981, 0 0 16px #10b981, 0 0 30px #38bdf8; }
-            100% { text-shadow: 0 0 8px #10b981, 0 0 15px #10b981, 0 0 30px #38bdf8, 0 0 60px #38bdf8; }
-        }
 
         .win-popup { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5); background: linear-gradient(135deg, #34d399, #059669); padding: 24px; border-radius: 24px; text-align: center; color: #fff; font-weight: 900; z-index: 2000; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 20px 60px rgba(16,185,129,0.7); width: 85%; box-sizing: border-box; }
         .win-popup.show { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; }
@@ -246,23 +250,15 @@
 
     <div class="phone-container">
         
-        <!-- ÉCRAN DE MAINTENANCE GLOBALE (AVEC NÉON ET BOUTON ADMIN EXCLUSIF) -->
+        <!-- ÉCRAN DE MAINTENANCE GLOBALE -->
         <div class="maintenance-overlay hidden" id="global-maintenance-overlay">
-            <div style="font-size: 3.5rem; margin-bottom: 8px; animation: pulseDot 2s infinite;">🛠️</div>
-            <div class="neon-title">FDJ CASH</div>
-            <h2 style="color: var(--accent-gold); font-size: 1.2rem; margin-bottom: 8px; font-weight: 900;">MAINTENANCE SERVEUR</h2>
-            <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; max-width: 300px;">
-                Nous effectuons une mise à jour technique de nos infrastructures. L'accès aux jeux est temporairement suspendu pour les joueurs.
+            <div style="font-size: 3.5rem; margin-bottom: 12px; animation: pulseDot 2s infinite;">🛠️</div>
+            <h2 style="color: var(--accent-gold); font-size: 1.5rem; margin-bottom: 8px; font-weight: 900;">MAINTENANCE SERVEUR</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; max-width: 300px;">
+                Nous effectuons une mise à jour technique de nos infrastructures et de nos serveurs. L'accès aux jeux est temporairement suspendu. Revenez plus tard !
             </p>
-            <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid var(--accent-gold); padding: 10px 14px; border-radius: 12px; font-size: 0.78rem; color: var(--accent-gold); font-weight: bold; margin-bottom: 16px;">
+            <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid var(--accent-gold); padding: 10px 14px; border-radius: 12px; font-size: 0.78rem; color: var(--accent-gold); font-weight: bold;">
                 🔒 Sécurité & Intégrité FDJ
-            </div>
-
-            <!-- Bouton visible UNIQUEMENT si l'admin connecté est sur la page de maintenance -->
-            <div id="admin-maintenance-override-box" class="hidden" style="width: 100%; max-width: 280px;">
-                <button class="btn btn-green" onclick="app.toggleMaintenanceMode()" style="background: linear-gradient(135deg, #10b981, #059669); border-color: #34d399; font-size: 0.8rem; padding: 12px; box-shadow: 0 0 20px rgba(16,185,129,0.6);">
-                    🔓 Couper la Maintenance (Admin)
-                </button>
             </div>
         </div>
 
@@ -580,9 +576,9 @@
                     <div class="game-card" onclick="app.changerEcran('screen-scratch')"><div class="icon">🎫</div><div class="title">Cash Express</div><div class="jackpot">Mise : 3 🪙</div></div>
                     <div class="game-card" onclick="app.changerEcran('screen-slot')"><div class="icon">🎰</div><div class="title">Mega Slot</div><div class="jackpot">Mise : 4 🪙</div></div>
                     <div class="game-card" onclick="app.changerEcran('screen-wheel-game')"><div class="icon">🎡</div><div class="title">Spin & Win</div><div class="jackpot">Mise : 5 🪙</div></div>
-                    <div class="game-card" onclick="app.changerEcran('screen-chests')" style="background: linear-gradient(135deg, rgba(56,189,248,0.25), rgba(30,41,59,0.8)); border-color: rgba(56,189,248,0.4);"><div class="icon">🧰</div><div class="title">Coffres Magiques</div><div class="jackpot">Mise : 6 🪙</div></div>
+                    <div class="game-card" onclick="app.changerEcran('screen-tower')" style="background: linear-gradient(135deg, rgba(245,158,11,0.25), rgba(30,41,59,0.8)); border-color: rgba(245,158,11,0.4);"><div class="icon">🗼</div><div class="title">Tower Stack</div><div class="jackpot">Mise : 4 🪙</div></div>
                     <div class="game-card" onclick="app.changerEcran('screen-chicken')" style="background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(30,41,59,0.8)); border-color: rgba(245,158,11,0.4);"><div class="icon" style="font-size:2rem;">🐔</div><div class="title">Chemin Risqué</div><div class="jackpot">Mise : 4 🪙</div></div>
-                    <div class="game-card" onclick="app.changerEcran('screen-lotto')" style="background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(30,41,59,0.8)); border-color: rgba(16,185,129,0.3);"><div class="icon" style="font-size:2rem;">🎟</div><div class="title">Loto Flash</div><div class="jackpot">Gros Lots</div></div>
+                    <div class="game-card" onclick="app.changerEcran('screen-lotto')" style="background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(30,41,59,0.8)); border-color: rgba(16,185,129,0.3);"><div class="icon" style="font-size:2rem;">🎟️️</div><div class="title">Loto Flash</div><div class="jackpot">Gros Lots</div></div>
                 </div>
 
                 <div class="legal-disclaimer">
@@ -608,19 +604,27 @@
                 </div>
             </div>
 
-            <!-- JEU 4: COFFRES -->
-            <div id="screen-chests" class="screen">
+            <!-- JEU TOWER STACK (EMPILEUR DE CANETTES) -->
+            <div id="screen-tower" class="screen">
                 <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
-                <div class="card" style="text-align: center; padding: 20px 16px; border-color: #38bdf8;">
-                    <h3 style="color: #38bdf8; font-size: 1.4rem; margin-bottom: 4px;">🧰 Coffres Magiques</h3>
-                    <p style="font-size: 0.78rem; color: var(--text-muted);">Choisissez un coffre pour découvrir votre gain.</p>
-                    <div class="chests-container" id="chests-ui">
-                        <div class="chest" onclick="app.ouvrirCoffre(0)">📦</div>
-                        <div class="chest" onclick="app.ouvrirCoffre(1)">📦</div>
-                        <div class="chest" onclick="app.ouvrirCoffre(2)">📦</div>
+                <div class="card" style="text-align: center; padding: 16px; border-color: #f59e0b;">
+                    <h3 style="color: var(--accent-gold); font-size: 1.3rem; margin-bottom: 4px;">🗼 Tower Stack Cash</h3>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px;">Empilez les canettes parfaitement ! Max 3.00 € si vous êtes un pro.</p>
+                    
+                    <div class="tower-canvas-container" id="tower-container" onclick="app.stackerTowerBlock()">
+                        <div class="tower-moving-block" id="tower-moving-block" style="width: 120px; left: 20px;">🥤 Canette</div>
+                        <div id="tower-stacked-rows" style="width: 100%; display: flex; flex-direction: column-reverse; align-items: center; padding-bottom: 4px;">
+                            <div class="tower-tower-base" style="width: 140px; height: 24px; background: #064e3b; border-radius: 6px; border: 1px solid #10b981; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:bold; color:#34d399;">Base</div>
+                        </div>
                     </div>
-                    <button class="btn btn-gold hidden" id="btn-new-chests" onclick="app.resetCoffres()">Rejouer (6 🪙)</button>
-                    <div id="chest-result" style="font-size: 0.95rem; font-weight: bold; margin-top: 12px; min-height: 22px;"></div>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px; font-size: 0.85rem; font-weight: bold;">
+                        <span>Étage : <strong id="tower-score" style="color:#fff;">0</strong></span>
+                        <span style="color:#34d399;" id="tower-potential-gain">+0.00 €</span>
+                    </div>
+
+                    <button class="btn btn-gold" id="btn-start-tower" onclick="app.lancerJeuTower()" style="font-size: 0.95rem; padding: 12px;">Lancer la Tour (4 🪙)</button>
+                    <div id="tower-result" style="font-size: 0.85rem; font-weight: bold; margin-top: 8px; min-height: 20px;"></div>
                 </div>
             </div>
 
@@ -754,6 +758,22 @@
                         </div>
                         <div id="lotto-winners-list" style="display: flex; flex-direction: column; gap: 4px; max-height: 95px; overflow-y: auto; font-size: 0.72rem; color: #cbd5e1; margin-bottom: 8px;"></div>
                     </div>
+                </div>
+            </div>
+
+            <!-- JEU 4: COFFRES -->
+            <div id="screen-chests" class="screen">
+                <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
+                <div class="card" style="text-align: center; padding: 20px 16px; border-color: #38bdf8;">
+                    <h3 style="color: #38bdf8; font-size: 1.4rem; margin-bottom: 4px;">🧰 Coffres Magiques</h3>
+                    <p style="font-size: 0.78rem; color: var(--text-muted);">Choisissez un coffre pour découvrir votre gain.</p>
+                    <div class="chests-container" id="chests-ui">
+                        <div class="chest" onclick="app.ouvrirCoffre(0)">📦</div>
+                        <div class="chest" onclick="app.ouvrirCoffre(1)">📦</div>
+                        <div class="chest" onclick="app.ouvrirCoffre(2)">📦</div>
+                    </div>
+                    <button class="btn btn-gold hidden" id="btn-new-chests" onclick="app.resetCoffres()">Rejouer (6 🪙)</button>
+                    <div id="chest-result" style="font-size: 0.95rem; font-weight: bold; margin-top: 12px; min-height: 22px;"></div>
                 </div>
             </div>
 
@@ -1069,6 +1089,10 @@
             activeAdminEvent: null, activeQuiz: null, selectedQuizMise: 1,
             isMaintenanceMode: false,
 
+            // Tower Stack state
+            towerActive: false, towerScore: 0, towerInterval: null,
+            towerX: 20, towerDir: 1, towerWidth: 120, towerSpeed: 4,
+
             dailyQuests: [
                 { id: 'quest_spins', title: 'Faire 3 spins / parties', target: 3, current: 0, reward: 10, claimed: false },
                 { id: 'quest_lotto', title: 'Valider une grille Loto', target: 1, current: 0, reward: 10, claimed: false },
@@ -1193,20 +1217,16 @@
             appliquerModeMaintenanceUI() {
                 let overlay = document.getElementById('global-maintenance-overlay');
                 let btnMaint = document.getElementById('btn-toggle-maintenance');
-                let overrideBox = document.getElementById('admin-maintenance-override-box');
                 if(!overlay) return;
 
-                if(this.isMaintenanceMode) {
+                // Si l'utilisateur est admin, il peut quand même bypass pour tester ou désactiver, mais on bloque les joueurs classiques ou tout le monde selon le choix. Ici si activé, ça bloque l'UI avec l'overlay (sauf admin s'il veut désactiver, l'admin peut cliquer via la console ou on laisse l'overlay s'afficher avec une sécurité). Pour être tranquille, l'admin voit l'overlay mais peut le masquer ou on masque l'overlay si c'est l'admin ? Le plus simple : l'overlay bloque tout le monde sauf si on est admin, ou alors l'admin peut l'activer/le désactiver. Faisons en sorte que si c'est activé, ça s'affiche pour tout le monde (les testeurs/joueurs), et l'admin peut le désactiver s'il est connecté sur sa console.
+                if(this.isMaintenanceMode && !this.isAdmin) {
                     overlay.classList.remove('hidden');
-                    // Affiche le bouton secret de coupure uniquement si c'est l'admin
-                    if(this.isAdmin && overrideBox) {
-                        overrideBox.classList.remove('hidden');
-                    } else if(overrideBox) {
-                        overrideBox.classList.add('hidden');
-                    }
+                } else if(this.isMaintenanceMode && this.isAdmin) {
+                    // L'admin peut voir l'app en arrière-plan pour gérer, ou on met l'overlay partout. Mieux vaut l'afficher partout pour simuler le blocage réel, et l'admin peut le couper.
+                    overlay.classList.remove('hidden');
                 } else {
                     overlay.classList.add('hidden');
-                    if(overrideBox) overrideBox.classList.add('hidden');
                 }
 
                 if(btnMaint) {
@@ -1339,6 +1359,92 @@
                 } catch(e) {}
             },
 
+            // TOWER STACK GAME LOGIC (MAX 3 €)
+            lancerJeuTower() {
+                if(this.balance < 4) return alert("Fonds insuffisants (4 pièces requises) !");
+                this.balance -= 4;
+                this.ajouterTransaction(`Mise Tower Stack (-4 🪙)`);
+                this.sauvegarderEtatCompte(); this.updateUI();
+                this.vibrer([40]); this.jouerSon('click');
+
+                this.towerActive = true;
+                this.towerScore = 0;
+                this.towerX = 20;
+                this.towerDir = 1;
+                this.towerWidth = 110;
+                this.towerSpeed = 3.5;
+
+                document.getElementById('btn-start-tower').classList.add('hidden');
+                document.getElementById('tower-score').innerText = "0";
+                document.getElementById('tower-potential-gain').innerText = "+0.00 €";
+                document.getElementById('tower-result').innerText = "Cliquez pour poser l'étage !";
+
+                let rowsContainer = document.getElementById('tower-stacked-rows');
+                rowsContainer.innerHTML = `<div style="width: 130px; height: 24px; background: #064e3b; border-radius: 6px; border: 1px solid #10b981; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:bold; color:#34d399;">Base</div>`;
+
+                if(this.towerInterval) clearInterval(this.towerInterval);
+                this.towerInterval = setInterval(() => {
+                    if(!this.towerActive) return;
+                    this.towerX += this.towerDir * this.towerSpeed;
+                    if(this.towerX <= 5 || this.towerX >= 260) {
+                        this.towerDir *= -1;
+                    }
+                    let block = document.getElementById('tower-moving-block');
+                    if(block) block.style.left = this.towerX + 'px';
+                }, 30);
+            },
+
+            stackerTowerBlock() {
+                if(!this.towerActive) return;
+
+                this.towerScore++;
+                let currentGain = +(this.towerScore * 0.20).toFixed(2);
+                if(currentGain > 3.00) currentGain = 3.00;
+
+                document.getElementById('tower-score').innerText = this.towerScore;
+                document.getElementById('tower-potential-gain').innerText = "+" + currentGain.toFixed(2) + " €";
+                this.vibrer([50]); this.jouerSon('click');
+                this.gagnerXP();
+                this.incrementQuest('quest_spins');
+
+                let rowsContainer = document.getElementById('tower-stacked-rows');
+                let newRow = document.createElement('div');
+                newRow.className = 'tower-stack-row';
+                newRow.style.width = this.towerWidth + 'px';
+                newRow.innerText = `Étage ${this.towerScore} (+${currentGain} €)`;
+                rowsContainer.appendChild(newRow);
+
+                this.towerSpeed += 0.4;
+
+                if(this.towerScore >= 15) {
+                    this.finJeuTower(true, 3.00);
+                }
+            },
+
+            finJeuTower(gagne, montant) {
+                this.towerActive = false;
+                if(this.towerInterval) clearInterval(this.towerInterval);
+                document.getElementById('btn-start-tower').classList.remove('hidden');
+
+                if(gagne || montant > 0) {
+                    this.cash += montant;
+                    this.dailyCash += montant;
+                    this.ajouterTransaction(`Tower Stack GAGNÉ : +${montant.toFixed(2)} € 💶`);
+                    this.sauvegarderEtatCompte(); this.updateUI();
+                    this.lancerConfettis(); this.vibrer([100, 50, 100]); this.jouerSon('win');
+
+                    document.getElementById('tower-result').innerHTML = `<span style="color:#34d399;">🎉 Victoire ! +${montant.toFixed(2)} € ajoutés !</span>`;
+                    document.getElementById('win-popup-title').innerText = "Tower Stack Maîtrisé !";
+                    document.getElementById('win-amount').innerText = "+" + montant.toFixed(2) + " €";
+                    document.getElementById('win-popup-desc').innerText = "Superbe empilement !";
+                    document.getElementById('double-or-nothing-box').classList.add('hidden');
+                    document.getElementById('win-popup').classList.add('show');
+                } else {
+                    this.vibrer([300]); this.jouerSon('lose');
+                    document.getElementById('tower-result').innerHTML = `<span style="color:#ef4444;">💥 Tour écroulée... Perdu !</span>`;
+                }
+            },
+
             incrementQuest(questId) {
                 let q = this.dailyQuests.find(item => item.id === questId);
                 if(q && !q.claimed) {
@@ -1435,7 +1541,7 @@
                 let v1 = villes[(daySeed * 2) % villes.length];
                 let g1 = ((daySeed * 37) % 400 + 150).toFixed(2);
                 
-                let p2 = prenoms[(daySeed * 5 + 3) % prenoms.length] + "_" + ((daySeed * 4 + 7) % villes.length];
+                let p2 = prenoms[(daySeed * 5 + 3) % prenoms.length] + "_" + ((daySeed * 2 + 15) % 90 + 10);
                 let v2 = villes[(daySeed * 4 + 7) % villes.length];
                 let g2 = ((daySeed * 23) % 250 + 80).toFixed(2);
 
@@ -1539,7 +1645,7 @@
                     this.sauvegarderEtatCompte();
                     this.updateUI();
                     this.rafraichirGrillesLottoUI();
-                    alert("🎟 Un tirage Loto Flash vient d'avoir lieu !");
+                    alert("🎟️️ Un tirage Loto Flash vient d'avoir lieu !");
                 }
             },
 
