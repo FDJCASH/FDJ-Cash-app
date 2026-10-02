@@ -57,7 +57,7 @@
         .screen.active { display: flex; }
         @keyframes scaleIn { from { opacity: 0; transform: scale(0.97) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 
-        /* NAV BAR AVEC POINT DE NOTIFICATION */
+        /* NAV BAR */
         .nav-bar {
             position: absolute; bottom: 0; left: 0; width: 100%; height: 72px;
             background: rgba(4, 47, 46, 0.95); backdrop-filter: blur(25px);
@@ -73,7 +73,6 @@
         .nav-item.active { color: var(--accent-green); }
         .nav-item.active svg { transform: translateY(-2px) scale(1.1); filter: drop-shadow(0 4px 6px rgba(16,185,129,0.6)); }
 
-        /* POINT DE NOTIFICATION ROUGE */
         .notif-dot {
             position: absolute; top: 2px; right: 8px; width: 9px; height: 9px;
             background: #ef4444; border-radius: 50%; border: 2px solid #042f2e;
@@ -472,7 +471,7 @@
                     <div class="game-card" onclick="app.changerEcran('screen-slot')"><div class="icon">🎰</div><div class="title">Mega Slot</div><div class="jackpot">Mise : 4 🪙</div></div>
                     <div class="game-card" onclick="app.changerEcran('screen-wheel-game')"><div class="icon">🎡</div><div class="title">Spin & Win</div><div class="jackpot">Mise : 5 🪙</div></div>
                     <div class="game-card" onclick="app.changerEcran('screen-chests')"><div class="icon">🧰</div><div class="title">Coffres Magiques</div><div class="jackpot">Mise : 6 🪙</div></div>
-                    <div class="game-card" onclick="app.changerEcran('screen-lotto')" style="grid-column: span 2; background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(30,41,59,0.8)); border-color: rgba(16,185,129,0.4);"><div class="icon" style="font-size:2rem;">🎟️</div><div class="title">Tirage au Sort Loto Flash</div><div class="jackpot">Mise modulable • Jackpot ce soir 20h00</div></div>
+                    <div class="game-card" onclick="app.changerEcran('screen-lotto')" style="grid-column: span 2; background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(30,41,59,0.8)); border-color: rgba(16,185,129,0.4);"><div class="icon" style="font-size:2rem;">🎟️</div><div class="title">Tirage au Sort Loto Flash</div><div class="jackpot">Tirage toutes les 30 min • Gros Lots</div></div>
                 </div>
 
                 <div class="legal-disclaimer">
@@ -561,29 +560,42 @@
                 </div>
             </div>
 
-            <!-- LOTO FLASH -->
+            <!-- LOTO FLASH (MIS À JOUR AVEC TIMER 30MIN & FAUX GAGNANTS) -->
             <div id="screen-lotto" class="screen">
                 <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
-                <div class="card" style="text-align: center; padding: 20px 16px; border-color: #10b981;">
-                    <div style="font-size: 2.6rem; margin-bottom: 4px;">🎟️</div>
-                    <h3 style="color: #34d399; font-size: 1.4rem; margin-bottom: 4px;">Tirage Loto Flash</h3>
-                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 16px;">Choisissez votre mise en glissant le curseur :</p>
+                <div class="card" style="text-align: center; padding: 16px; border-color: #10b981;">
+                    <div style="font-size: 2.2rem; margin-bottom: 2px;">🎟️</div>
+                    <h3 style="color: #34d399; font-size: 1.2rem; margin-bottom: 2px;">Tirage Loto Flash</h3>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px;">Prochain tirage automatique dans : <strong id="lotto-countdown" style="color:var(--accent-gold);">29:45</strong></p>
                     
-                    <div style="background: rgba(0,0,0,0.4); padding: 12px; border-radius: 14px; margin-bottom: 16px; border: 1px solid rgba(16,185,129,0.3);">
-                        <div style="font-size: 1.1rem; font-weight: 900; color: var(--accent-gold); margin-bottom: 6px;">
+                    <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 14px; margin-bottom: 10px; border: 1px solid rgba(16,185,129,0.3);">
+                        <div style="font-size: 1rem; font-weight: 900; color: var(--accent-gold); margin-bottom: 4px;">
                             Mise : <span id="lotto-mise-val">10</span> 🪙
                         </div>
                         <input type="range" id="lotto-slider" min="1" max="50" value="10" oninput="app.mettreAJourSliderLotto(this.value)" style="width: 100%; cursor: pointer; accent-color: var(--accent-gold);">
-                        <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-muted); margin-top: 2px;">
                             <span>1 🪙</span>
                             <span>25 🪙</span>
                             <span>50 🪙</span>
                         </div>
-                        <div id="lotto-gain-potentiel" style="font-size: 0.8rem; color: #34d399; font-weight: bold; margin-top: 10px;">Gain potentiel estimé : +5.00 €</div>
+                        <div id="lotto-gain-potentiel" style="font-size: 0.78rem; color: #34d399; font-weight: bold; margin-top: 6px;">Gain potentiel : +5.00 € (1 chance sur 4 de gagner !)</div>
                     </div>
 
-                    <button class="btn btn-green" id="btn-lotto" onclick="app.lancerLoto()" style="font-size: 1rem;">Valider ma Grille 🎟</button>
-                    <div id="lotto-result" style="font-size: 0.85rem; font-weight: bold; margin-top: 12px; min-height: 22px; line-height: 1.3;"></div>
+                    <button class="btn btn-green" id="btn-lotto" onclick="app.lancerLoto()" style="font-size: 0.9rem; padding: 12px;">Valider ma Grille 🎟</button>
+                    <div id="lotto-result" style="font-size: 0.8rem; font-weight: bold; margin-top: 8px; min-height: 20px; line-height: 1.3;"></div>
+
+                    <!-- FAUX GAGNANTS & STATS SOCIALES -->
+                    <div style="margin-top: 10px; text-align: left; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 12px; border: 1px solid rgba(56,189,248,0.2);">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                            <span style="font-size: 0.78rem; font-weight: bold; color: #38bdf8;">🏆 Derniers Gagnants (Tirage précédent)</span>
+                            <span style="font-size: 0.65rem; color: #10b981; background:rgba(16,185,129,0.2); padding:2px 5px; border-radius:4px;">CERTIFIÉ</span>
+                        </div>
+                        <div id="lotto-winners-list" style="display: flex; flex-direction: column; gap: 4px; max-height: 95px; overflow-y: auto; font-size: 0.72rem; color: #cbd5e1; margin-bottom: 8px;"></div>
+                        
+                        <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 6px; font-size: 0.68rem; color: var(--text-muted); text-align: center;">
+                            📊 Stats mondiales : <strong style="color:#10b981;">3 421 gagnants</strong> • <strong style="color:#ef4444;">4 189 perdants</strong> sur ce tirage.
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -719,7 +731,7 @@
 
                     <div class="setting-item" onclick="app.ouvrirParametresSecurite()">
                         <div class="setting-item-left">
-                            <div class="icon-box" style="color: #34d399;">🛡️</div>
+                            <div class="icon-box" style="color: #34d399;">🛡️️</div>
                             <span>Paramètres de Sécurité</span>
                         </div>
                         <span style="color: var(--text-muted); font-weight: bold;">›</span>
@@ -739,15 +751,19 @@
             <div id="screen-admin" class="screen">
                 <div class="card" style="border-color: #ef4444; background: linear-gradient(180deg, rgba(239,68,68,0.15), rgba(0,0,0,0));">
                     <h3 style="margin:0 0 6px 0; color: #ef4444; font-size: 1.3rem;">👑 Console Master (Admin)</h3>
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Gestion permanente et fiable des profils.</p>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Gestion permanente et fiable des profils et des missions.</p>
                     
+                    <!-- CRÉATION ET GESTION DES MISSIONS -->
                     <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px; border: 1px solid rgba(16,185,129,0.3); margin-bottom: 12px;">
-                        <h4 style="color: #34d399; margin:0 0 6px 0; font-size: 0.85rem;">➕ Créer une nouvelle mission :</h4>
+                        <h4 style="color: #34d399; margin:0 0 6px 0; font-size: 0.85rem;">🎯 Gérer les Missions :</h4>
                         <input type="text" id="admin-new-mission-text" placeholder="Intitulé de la mission (ex: 📸 Photo de ton chat)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
-                        <div style="display:flex; gap:6px;">
+                        <div style="display:flex; gap:6px; margin-bottom: 8px;">
                             <input type="number" id="admin-new-mission-reward" placeholder="Pièces (ex: 30)" style="margin:0; font-size:0.75rem; padding:7px;">
                             <button class="btn btn-green" onclick="app.adminCreerMission()" style="font-size:0.7rem; padding:7px; width:auto;">Ajouter 🚀</button>
                         </div>
+                        
+                        <div style="font-size:0.75rem; color:#38bdf8; font-weight:bold; margin-bottom:4px;">Liste des missions actives (Supprimables) :</div>
+                        <div id="admin-missions-list-manage" style="max-height: 120px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px;"></div>
                     </div>
 
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
@@ -820,7 +836,7 @@
 
         </div>
 
-        <!-- BARRE DE NAVIGATION AVEC NOTIFICATION COMPTE -->
+        <!-- BARRE DE NAVIGATION -->
         <div class="nav-bar" id="bottom-nav" style="display:none;">
             <button class="nav-item active" id="nav-home" onclick="app.changerEcran('screen-home', this)">
                 <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg> Accueil
@@ -868,7 +884,7 @@
             adminSortMode: 'recent', transactions: [],
             
             grid9Symbols: [], grid9RevealedCount: 0, grid9Gagne: 0, maxGrattages: 3,
-            lottoMise: 10, hasUnreadSupportReply: false,
+            lottoMise: 10, hasUnreadSupportReply: false, lottoSecondsLeft: 1785,
 
             missionsPool: [
                 { id: 1, text: "📸 Photo de votre bureau ou manette.", reward: 15 },
@@ -876,8 +892,7 @@
                 { id: 3, text: "🍳 Embrasser une poêle ou un balai.", reward: 35 },
                 { id: 4, text: "🥷 Mettre un slip sur la tête façon ninja.", reward: 50 },
                 { id: 5, text: "☕ Photo de votre tasse de café ou boisson.", reward: 20 },
-                { id: 6, text: "👟 Prendre vos chaussures sous un angle artistique.", reward: 30 },
-                { id: 7, text: "📚 Photo d'un livre ouvert à l'envers.", reward: 40 }
+                { id: 6, text: "👟 Prendre vos chaussures sous un angle artistique.", reward: 30 }
             ],
 
             init() {
@@ -904,7 +919,7 @@
                     });
                     db.ref('global_missions_pool').on('value', (snapshot) => {
                         let data = snapshot.val();
-                        if(data) { this.missionsPool = data; localStorage.setItem('fdj_custom_missions', JSON.stringify(data)); this.renderMissions(); }
+                        if(data) { this.missionsPool = data; localStorage.setItem('fdj_custom_missions', JSON.stringify(data)); this.renderMissions(); if(this.isAdmin) this.chargerAdminMissionsManage(); }
                     });
                     db.ref('submissions').on('value', (snapshot) => {
                         let data = snapshot.val();
@@ -938,8 +953,10 @@
                 }
 
                 this.lancerTimerFomo();
+                this.lancerTimerLotto();
                 this.mettreAJourSliderLotto(10);
                 this.genererTopGagnantsDynamiques();
+                this.genererFauxGagnantsLotto();
             },
 
             connecterSessionDirecte(cleanKey, acc, isAdm) {
@@ -1042,6 +1059,40 @@
                         <span style="color: #10b981; font-weight: 900;">+${g2} €</span>
                     </div>
                 `;
+            },
+
+            genererFauxGagnantsLotto() {
+                let listEl = document.getElementById('lotto-winners-list');
+                if(!listEl) return;
+                let prenoms = ["Alexandre", "Sarah", "Lucas", "Marine", "Romain", "Julie", "Nicolas", "Pauline", "Maxime", "Camille"];
+                let html = "";
+                for(let i=0; i<10; i++) {
+                    let name = prenoms[i] + "_" + (Math.floor(Math.random() * 89) + 10);
+                    let pari = Math.floor(Math.random() * 40) + 10;
+                    let gagne = (pari * (Math.random() * 2 + 1.5)).toFixed(2);
+                    html += `
+                        <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.3); padding:4px 6px; border-radius:4px;">
+                            <span>👤 <strong>${name}</strong> (Mise : ${pari} 🪙)</span>
+                            <span style="color:#10b981; font-weight:bold;">+${gagne} €</span>
+                        </div>
+                    `;
+                }
+                listEl.innerHTML = html;
+            },
+
+            lancerTimerLotto() {
+                setInterval(() => {
+                    if(this.lottoSecondsLeft > 0) {
+                        this.lottoSecondsLeft--;
+                        let m = Math.floor(this.lottoSecondsLeft / 60);
+                        let s = this.lottoSecondsLeft % 60;
+                        let cdEl = document.getElementById('lotto-countdown');
+                        if(cdEl) cdEl.innerText = `${m < 10 ? '0':''}${m}:${s < 10 ? '0':''}${s}`;
+                    } else {
+                        this.lottoSecondsLeft = 1800; // Reset 30 min
+                        this.genererFauxGagnantsLotto();
+                    }
+                }, 1000);
             },
 
             sauvegarderEtatCompte() {
@@ -1199,7 +1250,7 @@
                 const modalCb = document.getElementById('modal-cb');
                 if(modalCb) modalCb.classList.add('hidden');
                 this.vibrer([100, 150, 200]);
-                alert("⚠️️ Erreur 3D Secure / Refus Banque : Transaction rejetée.");
+                alert("⚠ Erreur 3D Secure / Refus Banque : Transaction rejetée.");
             },
 
             ouvrirParametresSecurite() {
@@ -1527,9 +1578,9 @@
                 this.lottoMise = parseInt(val);
                 const miseValEl = document.getElementById('lotto-mise-val');
                 if(miseValEl) miseValEl.innerText = this.lottoMise;
-                let gainEstime = (this.lottoMise * 0.3).toFixed(2);
+                let gainEstime = (this.lottoMise * 0.4).toFixed(2);
                 const gainPotEl = document.getElementById('lotto-gain-potentiel');
-                if(gainPotEl) gainPotEl.innerText = `Gain potentiel estimé : +${gainEstime} €`;
+                if(gainPotEl) gainPotEl.innerText = `Gain potentiel : +${gainEstime} € (1 chance sur 4 de gagner !)`;
             },
 
             lancerLoto() {
@@ -1544,10 +1595,19 @@
                 this.gagnerXP();
                 
                 const lottoResult = document.getElementById('lotto-result');
-                if(lottoResult) lottoResult.innerText = "Enregistrement...";
+                if(lottoResult) lottoResult.innerText = "Tirage au sort en cours...";
+
                 setTimeout(() => {
                     if(btn) btn.disabled = false;
-                    if(lottoResult) lottoResult.innerHTML = `<span style="color:#f59e0b;">🎟️ Grille validée ! Résultat ce soir à 20h00.</span>`;
+                    // Environ 1 chance sur 4 (25%) de gagner, un peu plus généreux au début
+                    let win = this.isAdmin ? true : (Math.random() < 0.28);
+                    if(win) {
+                        let gainMontant = +(this.lottoMise * 0.35).toFixed(2);
+                        this.gererGain(gainMontant, true);
+                        if(lottoResult) lottoResult.innerHTML = `<span style="color:#34d399;">🎉 Gagné au tirage ! +${gainMontant} €</span>`;
+                    } else {
+                        if(lottoResult) lottoResult.innerHTML = `<span style="color:var(--text-muted);">🎟️ Grille non tirée au sort. Retentez au prochain tirage !</span>`;
+                    }
                 }, 2000);
             },
 
@@ -1704,11 +1764,8 @@
 
                 let acc = this.usersDB[this.currentEmail];
                 let logs = this.chatLogs[this.currentEmail];
-                
-                // Vérifie si l'admin a déjà répondu dans cette discussion
                 let adminAlreadyReplied = logs.some(l => l.sender === 'admin');
 
-                // Si l'admin a déjà répondu, PAS de réponse automatique du bot pour éviter l'incohérence
                 if (adminAlreadyReplied || (acc && acc.humanSupport)) return;
 
                 const typingEl = document.getElementById('typing-indicator');
@@ -1761,7 +1818,6 @@
                 box.innerHTML = html;
                 box.scrollTop = box.scrollHeight;
 
-                // Afficher les points de notification si l'admin a répondu
                 this.hasUnreadSupportReply = hasUnread;
                 let dotCompte = document.getElementById('nav-compte-dot');
                 let dotSetting = document.getElementById('setting-support-dot');
@@ -1848,8 +1904,36 @@
 
                 txtInput.value = "";
                 rewardInput.value = "";
-                alert(`Mission "${text}" créée et synchronisée avec succès (${reward} pièces) !`);
+                alert(`Mission "${text}" créée avec succès (${reward} pièces) !`);
                 this.renderMissions();
+                this.chargerAdminMissionsManage();
+            },
+
+            adminSupprimerMission(index) {
+                if(confirm("Voulez-vous supprimer cette mission ?")) {
+                    this.missionsPool.splice(index, 1);
+                    if(db) db.ref('global_missions_pool').set(this.missionsPool);
+                    localStorage.setItem('fdj_custom_missions', JSON.stringify(this.missionsPool));
+                    this.renderMissions();
+                    this.chargerAdminMissionsManage();
+                }
+            },
+
+            chargerAdminMissionsManage() {
+                let listManage = document.getElementById('admin-missions-list-manage');
+                if(!listManage) return;
+
+                if(!this.missionsPool || this.missionsPool.length === 0) {
+                    listManage.innerHTML = `<p style="font-size:0.75rem; color:var(--text-muted);">Aucune mission active.</p>`;
+                    return;
+                }
+
+                listManage.innerHTML = this.missionsPool.map((m, idx) => `
+                    <div style="background:rgba(0,0,0,0.5); padding:6px 8px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; font-size:0.75rem;">
+                        <span style="color:#fff; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:210px;">${m.text} (${m.reward} 🪙)</span>
+                        <button class="btn btn-outline" style="width:auto; padding:2px 6px; font-size:0.68rem; color:#ef4444; border-color:#ef4444;" onclick="app.adminSupprimerMission(${idx})">✕ Supprimer</button>
+                    </div>
+                `).join('');
             },
 
             chargerAdminData() {
@@ -1905,6 +1989,7 @@
                         }).join('');
                     }
                 }
+                this.chargerAdminMissionsManage();
                 this.chargerAdminSubmissions();
             },
 
@@ -2092,7 +2177,6 @@
                 if(!txt || !this.activeAdminTargetEmail) return;
 
                 if(!this.chatLogs[this.activeAdminTargetEmail]) this.chatLogs[this.activeAdminTargetEmail] = [];
-                // Envoi du message par l'admin avec readByPlayer: false pour déclencher la notification
                 this.chatLogs[this.activeAdminTargetEmail].push({ sender: 'admin', text: txt, time: new Date().toLocaleTimeString(), readByPlayer: false });
                 
                 if(db) db.ref('chats/' + this.activeAdminTargetEmail).set(this.chatLogs[this.activeAdminTargetEmail]);
