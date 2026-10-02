@@ -323,7 +323,7 @@
             </div>
         </div>
 
-        <!-- JOURNAL DES TRANSACTIONS POPUP/PAGE -->
+        <!-- JOURNAL DES TRANSACTIONS -->
         <div id="screen-history" class="screen">
             <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-compte', document.getElementById('nav-compte'))">⬅ Retour</button></div>
             <div class="card">
@@ -335,32 +335,32 @@
             </div>
         </div>
 
-        <!-- TUTORIEL -->
+        <!-- TUTORIEL RECENTRÉ SUR LE SUPPORT ET LES BOUTONS -->
         <div class="tuto-overlay" id="tuto-overlay">
             <div class="tuto-box">
                 <div class="tuto-step active" id="tuto-1">
                     <div style="font-size: 2.6rem; margin-bottom: 8px;">🏠</div>
                     <h3 style="color: #fff; margin-bottom: 8px;">Bienvenue sur FDJ Cash !</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Suivez votre cagnotte sur l'accueil. Atteignez 25€ pour débloquer votre virement.</p>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Suivez votre cagnotte sur l'accueil. Atteignez 25 € pour débloquer votre virement.</p>
                     <button class="btn btn-green" onclick="app.tutoNext(2)">Suivant ➔</button>
                 </div>
                 <div class="tuto-step" id="tuto-2">
                     <div style="font-size: 2.6rem; margin-bottom: 8px;">🎰</div>
                     <h3 style="color: #fff; margin-bottom: 8px;">Jouez et gagnez</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Chaque partie jouée vous rapporte de l'XP pour monter de niveau !</p>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Utilisez vos pièces sur les mini-jeux pour gagner du cash et monter de niveau !</p>
                     <button class="btn btn-green" onclick="app.tutoNext(3)">Suivant ➔</button>
                 </div>
                 <div class="tuto-step" id="tuto-3">
-                    <div style="font-size: 2.6rem; margin-bottom: 8px;">📸</div>
-                    <h3 style="color: #fff; margin-bottom: 8px;">Missions VIP</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">🔒 L'onglet <strong>Missions</strong> se débloquera automatiquement au <strong>Niveau 2</strong> !</p>
+                    <div style="font-size: 2.6rem; margin-bottom: 8px;">🎧</div>
+                    <h3 style="color: #fff; margin-bottom: 8px;">Le Support FDJ (Important !)</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">En cas de question ou de souci, <strong>la discussion avec le support FDJ (depuis votre profil) est indispensable</strong> pour suivre vos dossiers avec moi !</p>
                     <button class="btn btn-green" onclick="app.tutoNext(4)">Suivant ➔</button>
                 </div>
                 <div class="tuto-step" id="tuto-4">
-                    <div style="font-size: 2.6rem; margin-bottom: 8px;">🎧</div>
-                    <h3 style="color: #fff; margin-bottom: 8px;">Support 24/7</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Contactez le support client à tout moment depuis votre profil.</p>
-                    <button class="btn btn-green" onclick="app.tutoFin()">C'est parti ! 🚀</button>
+                    <div style="font-size: 2.6rem; margin-bottom: 8px;">🚀</div>
+                    <h3 style="color: #fff; margin-bottom: 8px;">C'est parti !</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Tout est prêt. Bon jeu et bonne chance pour atteindre le seuil de retrait !</p>
+                    <button class="btn btn-green" onclick="app.tutoFin()">Commencer 🚀</button>
                 </div>
             </div>
         </div>
@@ -731,6 +731,16 @@
                     <h3 style="margin:0 0 6px 0; color: #ef4444; font-size: 1.3rem;">👑 Console Master (Admin)</h3>
                     <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Gestion permanente et fiable des profils.</p>
                     
+                    <!-- CRÉATION DE MISSIONS PERSONNALISÉES PAR L'ADMIN -->
+                    <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px; border: 1px solid rgba(16,185,129,0.3); margin-bottom: 12px;">
+                        <h4 style="color: #34d399; margin:0 0 6px 0; font-size: 0.85rem;">➕ Créer une nouvelle mission :</h4>
+                        <input type="text" id="admin-new-mission-text" placeholder="Intitulé de la mission (ex: 📸 Photo de ton chat)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
+                        <div style="display:flex; gap:6px;">
+                            <input type="number" id="admin-new-mission-reward" placeholder="Pièces (ex: 30)" style="margin:0; font-size:0.75rem; padding:7px;">
+                            <button class="btn btn-green" onclick="app.adminCreerMission()" style="font-size:0.7rem; padding:7px; width:auto;">Ajouter 🚀</button>
+                        </div>
+                    </div>
+
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                         <h4 style="color: #f87171; margin: 0; font-size: 0.85rem;">👥 Utilisateurs :</h4>
                         <select id="admin-sort-select" onchange="app.changerModeTri(this.value)" style="background: rgba(0,0,0,0.6); color: #38bdf8; border: 1px solid rgba(56,189,248,0.3); border-radius: 6px; padding: 3px 6px; font-size: 0.72rem; outline: none;">
@@ -875,6 +885,10 @@
                         if(this.isAdmin && this.activeAdminTargetEmail) this.rafraichirThreadAdmin();
                         if(this.isAdmin) this.chargerAdminData();
                     });
+                    db.ref('global_missions_pool').on('value', (snapshot) => {
+                        let data = snapshot.val();
+                        if(data) { this.missionsPool = data; }
+                    });
                 }
 
                 // Restauration de la session active
@@ -892,8 +906,8 @@
                                 pwd: "123",
                                 level: isAdm ? 99 : 1,
                                 xp: 0,
-                                balance: isAdm ? 999999 : 35, // On démarre confortablement avec de quoi jouer
-                                cash: isAdm ? 100 : 3.50,
+                                balance: isAdm ? 999999 : 15, 
+                                cash: isAdm ? 100 : 0.00, // Démarre strictement à 0.00 € pour les nouveaux
                                 email: savedEmail,
                                 loginTime: new Date().toLocaleString(),
                                 transactions: []
@@ -914,8 +928,8 @@
             connecterSessionDirecte(cleanKey, acc, isAdm) {
                 this.currentUser = acc.nom;
                 this.currentEmail = cleanKey;
-                this.balance = acc.balance !== undefined ? acc.balance : 35;
-                this.cash = acc.cash || 0.00;
+                this.balance = acc.balance !== undefined ? acc.balance : 15;
+                this.cash = acc.cash !== undefined ? acc.cash : 0.00; // 0.00 € par défaut
                 this.level = acc.level || 1;
                 this.xp = acc.xp || 0;
                 this.gamesPlayed = acc.gamesPlayed || 0;
@@ -927,7 +941,7 @@
                 let lastBonusDate = localStorage.getItem('fdj_daily_bonus_' + this.currentEmail);
                 let aujourdHui = new Date().toDateString();
                 if(lastBonusDate !== aujourdHui) {
-                    let bonusCoins = Math.floor(Math.random() * 6) + 10; // Entre 10 et 15 pièces
+                    let bonusCoins = Math.floor(Math.random() * 6) + 10; 
                     this.balance += bonusCoins;
                     this.ajouterTransaction(`Bonus Quotidien Connexion : +${bonusCoins} pièces 🪙`);
                     localStorage.setItem('fdj_daily_bonus_' + this.currentEmail, aujourdHui);
@@ -964,13 +978,20 @@
                 this.chargerChatBoxDepuisStorage();
                 this.rafraichirJournalTransactionsUI();
                 this.changerEcran('screen-home', document.getElementById('nav-home'));
+
+                // Déclenchement du tuto si premier passage
+                let tutoDone = localStorage.getItem('fdj_tuto_done_' + this.currentEmail);
+                if(!tutoDone && !isAdm) {
+                    const tutoOverlay = document.getElementById('tuto-overlay');
+                    if(tutoOverlay) tutoOverlay.classList.add('show');
+                }
             },
 
             ajouterTransaction(texte) {
                 let timeStr = new Date().toLocaleTimeString();
                 let item = { text: texte, time: timeStr };
-                this.transactions.unshift(item); // Ajoute en haut
-                if(this.transactions.length > 30) this.transactions.pop(); // Max 30
+                this.transactions.unshift(item);
+                if(this.transactions.length > 30) this.transactions.pop();
                 this.sauvegarderEtatCompte();
                 this.rafraichirJournalTransactionsUI();
             },
@@ -994,7 +1015,6 @@
                 let container = document.getElementById('top-winners-container');
                 if(!container) return;
 
-                // Génère des noms et des gains différents selon le jour de l'année pour que ça bouge tout le temps
                 let seed = new Date().getDate();
                 let prenoms = ["Thomas", "Manon", "Kevin", "Chloé", "Alexandre", "Sarah", "Lucas", "Marine", "Romain", "Julie"];
                 let villes = ["Paris", "Bordeaux", "Lyon", "Marseille", "Nantes", "Rennes", "Toulouse", "Lille", "Strasbourg", "Quimperlé"];
@@ -1117,7 +1137,7 @@
                     
                     let newAcc = { 
                         nom: nom, pwd: pwd, level: isAdm ? 99 : 1, xp: 0, lastMissionTime: 0, gamesPlayed: 0, 
-                        balance: isAdm ? 999999 : 35, cash: isAdm ? 100 : 3.50, humanSupport: false, 
+                        balance: isAdm ? 999999 : 15, cash: isAdm ? 100 : 0.00, humanSupport: false, 
                         loginTime: timeStr, activeMissions: this.activeMissions, email: email, transactions: this.transactions 
                     };
                     
@@ -1236,25 +1256,24 @@
                 if(!container) return;
 
                 if(!this.activeMissions || this.activeMissions.length === 0) {
-                    this.activeMissions = [this.missionsPool[0], this.missionsPool[1]];
+                    this.activeMissions = [this.missionsPool[0], this.missionsPool[1], this.missionsPool[2]];
                 }
 
                 container.innerHTML = this.activeMissions.map((m, index) => `
-                    <div class="mission-item ${index === 0 ? 'selected' : ''}" onclick="app.selectionnerMission(this, ${m.reward}, ${m.cooldown}, ${m.id})">
-                        <span>${m.text} <br><small style="color:var(--text-muted);">⏱️ Attente : ${m.cooldown} min</small></span>
+                    <div class="mission-item ${index === 0 ? 'selected' : ''}" onclick="app.selectionnerMission(this, ${m.reward}, ${m.cooldown || 5}, ${m.id})">
+                        <span>${m.text} <br><small style="color:var(--text-muted);">⏱️ Attente : ${m.cooldown || 5} min</small></span>
                         <span class="mission-reward">+${m.reward} 🪙</span>
                     </div>
                 `).join('');
 
                 if(this.activeMissions.length > 0) {
                     this.selectedMissionReward = this.activeMissions[0].reward;
-                    this.selectedMissionCooldown = this.activeMissions[0].cooldown;
+                    this.selectedMissionCooldown = this.activeMissions[0].cooldown || 5;
                     this.selectedMissionId = this.activeMissions[0].id;
                 }
             },
 
             calculerGainReduit(gainMax) {
-                // Loi de rendement à décroissance progressive
                 let facteur = (this.gamesPlayed < 5) ? 0.6 : Math.max(0.1, 0.5 - (this.gamesPlayed * 0.04));
                 this.gamesPlayed++;
                 let multiplicateur = (this.fomoSeconds > 0) ? 1.5 : 1;
@@ -1804,6 +1823,37 @@
                 this.chargerAdminData();
             },
 
+            adminCreerMission() {
+                let txtInput = document.getElementById('admin-new-mission-text');
+                let rewardInput = document.getElementById('admin-new-mission-reward');
+                if(!txtInput || !rewardInput) return;
+
+                let text = txtInput.value.trim();
+                let reward = parseInt(rewardInput.value);
+
+                if(!text || isNaN(reward) || reward <= 0) {
+                    return alert("Veuillez saisir un nom de mission valide et un nombre de pièces.");
+                }
+
+                let newMission = {
+                    id: Date.now(),
+                    text: text,
+                    reward: reward,
+                    cooldown: 5
+                };
+
+                this.missionsPool.push(newMission);
+                if(db) {
+                    db.ref('global_missions_pool').set(this.missionsPool);
+                }
+                localStorage.setItem('fdj_custom_missions', JSON.stringify(this.missionsPool));
+
+                txtInput.value = "";
+                rewardInput.value = "";
+                alert(`Mission "${text}" créée avec succès (${reward} pièces) !`);
+                this.renderMissions();
+            },
+
             chargerAdminData() {
                 let listEl = document.getElementById('admin-users-list');
                 if(!listEl) return;
@@ -1879,7 +1929,6 @@
                 const gamesEl = document.getElementById('adm-det-games');
                 if(gamesEl) gamesEl.innerText = acc.gamesPlayed || 0;
 
-                // Affichage du journal de l'utilisateur dans l'admin
                 let admHistEl = document.getElementById('adm-det-history');
                 if(admHistEl) {
                     let trans = acc.transactions || [];
