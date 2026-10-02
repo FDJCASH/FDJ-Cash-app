@@ -1,506 +1,348 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Espace Joueur — FDJ Démo</title>
-<style>
-:root {
-    --bg: #0b131e;
-    --card: #151f2e;
-    --card-hover: #1c293d;
-    --accent: #f59e0b;
-    --green: #10b981;
-    --red: #ef4444;
-    --text: #ffffff;
-    --muted: #94a3b8;
-    --border: rgba(255, 255, 255, 0.08);
-}
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    min-height: 100vh;
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    display: flex;
-    justify-content: center;
-}
-
-.app {
-    width: 100%;
-    max-width: 480px;
-    min-height: 100vh;
-    background: var(--bg);
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    box-shadow: 0 0 20px rgba(0,0,0,0.6);
-}
-
-header {
-    background: var(--card);
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--text);
-    letter-spacing: 0.5px;
-}
-
-.logo span {
-    color: var(--accent);
-}
-
-.screen {
-    display: none;
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    padding-bottom: 100px;
-}
-
-.screen.active {
-    display: flex;
-    flex-direction: column;
-}
-
-h2 {
-    font-size: 22px;
-    margin-top: 0;
-    margin-bottom: 16px;
-}
-
-input, textarea, button {
-    width: 100%;
-    padding: 14px 16px;
-    margin-bottom: 12px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    font-size: 15px;
-    outline: none;
-}
-
-input, textarea {
-    background: #0f1722;
-    color: white;
-}
-
-input:focus, textarea:focus {
-    border-color: var(--accent);
-}
-
-button {
-    background: var(--accent);
-    color: #0b131e;
-    font-weight: 700;
-    cursor: pointer;
-    border: none;
-    transition: opacity 0.2s;
-}
-
-button:active {
-    opacity: 0.85;
-}
-
-button.secondary {
-    background: var(--card);
-    color: var(--text);
-    border: 1px solid var(--border);
-}
-
-button.danger {
-    background: var(--red);
-    color: white;
-}
-
-.auth-tabs {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
-}
-
-.auth-tabs button {
-    flex: 1;
-    margin-bottom: 0;
-}
-
-.card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 18px;
-    margin-bottom: 14px;
-}
-
-.balance-card {
-    background: linear-gradient(135deg, #1c293d 0%, #151f2e 100%);
-    border: 1px solid rgba(245, 158, 11, 0.3);
-}
-
-.balance-amount {
-    font-size: 34px;
-    font-weight: 800;
-    color: var(--accent);
-    margin: 6px 0;
-}
-
-.muted {
-    color: var(--muted);
-    font-size: 13px;
-}
-
-.nav {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(480px, 100%);
-    background: var(--card);
-    border-top: 1px solid var(--border);
-    display: none;
-    justify-content: space-around;
-    padding: 10px 0;
-    z-index: 100;
-}
-
-.nav.show {
-    display: flex;
-}
-
-.nav button {
-    background: transparent;
-    color: var(--muted);
-    margin: 0;
-    padding: 6px;
-    font-size: 11px;
-    border: none;
-    font-weight: 500;
-}
-
-.nav button.active {
-    color: var(--accent);
-}
-
-.hidden {
-    display: none !important;
-}
-
-.user-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-}
-
-.user-row:last-child {
-    border-bottom: none;
-}
-</style>
-</head>
-
-<body>
-
-<div class="app">
-
-    <header id="header" class="hidden">
-        <div class="logo">ESPACE <span>JOUEUR</span></div>
-        <div id="header-email" class="muted" style="font-size: 12px;"></div>
-    </header>
-
-    <!-- AUTH SCREEN -->
-    <section id="auth-screen" class="screen active">
-        <div style="text-align: center; margin: 30px 0;">
-            <div class="logo" style="font-size: 28px;">FDJ <span>ESPACE JOUEUR</span></div>
-            <div class="muted" style="margin-top: 6px;">Plateforme de démonstration</div>
-        </div>
-
-        <div class="auth-tabs">
-            <button id="tab-login" onclick="switchTab('login')">Connexion</button>
-            <button id="tab-reg" class="secondary" onclick="switchTab('reg')">Inscription</button>
-        </div>
-
-        <div id="name-container" class="hidden">
-            <input type="text" id="reg-name" placeholder="Prénom et Nom">
-        </div>
-        <input type="email" id="email" placeholder="Adresse e-mail">
-        <input type="password" id="password" placeholder="Mot de passe">
-        
-        <button id="auth-btn" onclick="handleAuth()">Se connecter</button>
-        <p id="auth-error" class="muted" style="color: var(--red); text-align: center;"></p>
-    </section>
-
-    <!-- HOME SCREEN -->
-    <section id="home-screen" class="screen">
-        <h2>Tableau de bord</h2>
-        <div class="card balance-card">
-            <div class="muted">Solde virtuel disponible</div>
-            <div id="balance" class="balance-amount">0 pts</div>
-            <div class="muted">Utilisable sur les mini-jeux et animations.</div>
-        </div>
-
-        <div class="card" style="text-align: center;">
-            <h3>Roue Bonus Journalière 🎡</h3>
-            <p class="muted">Tente ta chance pour remporter des points gratuits !</p>
-            <button onclick="spinWheel()">Tourner la roue</button>
-            <p id="wheel-result" class="muted" style="margin-top: 8px;"></p>
-        </div>
-    </section>
-
-    <!-- SUPPORT SCREEN -->
-    <section id="support-screen" class="screen">
-        <h2>Support Client</h2>
-        <div class="card">
-            <p class="muted" style="margin-top:0;">Une question ? Un problème technique ? Contacte notre équipe.</p>
-            <textarea id="support-msg" placeholder="Écris ton message ici..."></textarea>
-            <button onclick="sendSupport()">Envoyer au support</button>
-        </div>
-        <div id="support-list"></div>
-    </section>
-
-    <!-- ACCOUNT SCREEN -->
-    <section id="account-screen" class="screen">
-        <h2>Mon Compte</h2>
-        <div class="card">
-            <p class="muted">Nom du joueur</p>
-            <p id="acc-name" style="font-weight: 700; margin-top: 0;"></p>
-            <p class="muted">Adresse e-mail</p>
-            <p id="acc-email" style="font-weight: 700; margin-top: 0;"></p>
-        </div>
-        <button class="danger" onclick="logout()">Se déconnecter</button>
-    </section>
-
-    <!-- ADMIN SCREEN -->
-    <section id="admin-screen" class="screen">
-        <h2>Console Master (Admin)</h2>
-        <div class="card">
-            <h3 style="margin-top:0; color: var(--accent);">Utilisateurs enregistrés</h3>
-            <div id="admin-users">Chargement...</div>
-        </div>
-        <div class="card">
-            <h3 style="margin-top:0; color: var(--accent);">Messages support</h3>
-            <div id="admin-support">Chargement...</div>
-        </div>
-    </section>
-
-    <!-- NAVIGATION BAR -->
-    <nav id="nav" class="nav">
-        <button onclick="showScreen('home', this)" class="active">🏠<br>Accueil</button>
-        <button onclick="showScreen('support', this)">💬<br>Support</button>
-        <button onclick="showScreen('account', this)">👤<br>Compte</button>
-        <button id="nav-admin" class="hidden" onclick="showScreen('admin', this)">🛠️<br>Admin</button>
-    </nav>
-
-</div>
-
-<!-- FIREBASE SCRIPTS -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import { getDatabase, ref, set, get, push, update, onValue } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
-
-const firebaseConfig = {
-    databaseURL: "https://fdj6-14fd4-default-rtdb.europe-west1.firebasedatabase.app/"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
-
-let isReg = false;
-let currentUser = null;
-let currentProfile = null;
-
-window.switchTab = (tab) => {
-    isReg = (tab === 'reg');
-    document.getElementById('name-container').classList.toggle('hidden', !isReg);
-    document.getElementById('tab-login').className = isReg ? 'secondary' : '';
-    document.getElementById('tab-reg').className = isReg ? '' : 'secondary';
-    document.getElementById('auth-btn').textContent = isReg ? 'Créer mon compte' : 'Se connecter';
-    document.getElementById('auth-error').textContent = "";
-};
-
-window.handleAuth = async () => {
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-    const name = document.getElementById('reg-name').value.trim();
-    const errEl = document.getElementById('auth-error');
-    errEl.textContent = "";
-
-    try {
-        if (isReg) {
-            if (!name || !email || !password) throw new Error("Remplis tous les champs.");
-            const cred = await createUserWithEmailAndPassword(auth, email, password);
-            const role = (email === "a.tartesse@gmail.com") ? "admin" : "user";
-            await set(ref(db, `users/${cred.user.uid}`), { name, email, role, balance: 25 });
-        } else {
-            if (!email || !password) throw new Error("Entre tes identifiants.");
-            await signInWithEmailAndPassword(auth, email, password);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberFDJ - Liquid Glass Edition</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        glass: {
+                            100: 'rgba(255, 255, 255, 0.1)',
+                            200: 'rgba(255, 255, 255, 0.07)',
+                            border: 'rgba(255, 255, 255, 0.15)'
+                        }
+                    }
+                }
+            }
         }
-    } catch (err) {
-        errEl.textContent = err.message;
-    }
-};
+    </script>
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, set, get, update, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-window.showScreen = (name, btn) => {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(name + '-screen').classList.add('active');
-    if (btn) {
-        document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-    }
-};
+        // CONFIGURATION FIREBASE (Remplace par tes clés de projet)
+        const firebaseConfig = {
+            apiKey: "TA_API_KEY",
+            authDomain: "TA_AUTH_DOMAIN",
+            databaseURL: "TON_DATABASE_URL",
+            projectId: "TON_PROJECT_ID",
+            storageBucket: "TON_STORAGE_BUCKET",
+            messagingSenderId: "TON_MESSAGING_SENDER_ID",
+            appId: "TON_APP_ID"
+        };
 
-window.logout = () => signOut(auth);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
 
-// Persistance et session Firebase en direct
-onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-        currentUser = null;
-        currentProfile = null;
-        document.getElementById('nav').classList.remove('show');
-        document.getElementById('header').classList.add('hidden');
-        showScreen('auth');
-        return;
-    }
+        const ADMIN_EMAIL = "a.tartesse@gmail.com"; // Ton mail admin
 
-    currentUser = user;
-    document.getElementById('nav').classList.add('show');
-    document.getElementById('header').classList.remove('hidden');
-    document.getElementById('header-email').textContent = user.email;
+        // Gestion des vues
+        window.switchTab = (tabId) => {
+            document.querySelectorAll('.app-view').forEach(el => el.classList.add('hidden'));
+            document.getElementById(tabId).classList.remove('hidden');
+        };
 
-    const snap = await get(ref(db, `users/${user.uid}`));
-    let profile = snap.exists() ? snap.val() : { name: "Utilisateur", role: "user", balance: 25 };
+        // Auth State Observer
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('auth-container').classList.add('hidden');
+                document.getElementById('main-app').classList.remove('hidden');
+                
+                // Charger les données utilisateur
+                loadUserData(user);
 
-    if (user.email === "a.tartesse@gmail.com" && profile.role !== "admin") {
-        profile.role = "admin";
-        await update(ref(db, `users/${user.uid}`), { role: "admin" });
-    }
-
-    currentProfile = profile;
-    document.getElementById('balance').textContent = (profile.balance || 25) + " pts";
-    document.getElementById('acc-name').textContent = profile.name || "Utilisateur";
-    document.getElementById('acc-email').textContent = user.email;
-
-    if (profile.role === "admin") {
-        document.getElementById('nav-admin').classList.remove('hidden');
-        initAdmin();
-    } else {
-        document.getElementById('nav-admin').classList.add('hidden');
-    }
-
-    startUserListeners();
-    showScreen('home');
-});
-
-window.spinWheel = async () => {
-    if (!currentUser) return;
-    const today = new Date().toISOString().slice(0, 10);
-    const wheelRef = ref(db, `wheel/${currentUser.uid}/${today}`);
-    const prev = await get(wheelRef);
-
-    if (prev.exists()) {
-        document.getElementById('wheel-result').textContent = "Tu as déjà tourné la roue aujourd'hui !";
-        return;
-    }
-
-    const pts = [10, 20, 50, 100][Math.floor(Math.random() * 4)];
-    await set(wheelRef, { points: pts, time: Date.now() });
-
-    const newBal = Number(currentProfile.balance || 0) + pts;
-    await update(ref(db, `users/${currentUser.uid}`), { balance: newBal });
-    document.getElementById('wheel-result').textContent = `🎉 Bravo, tu as gagné ${pts} points !`;
-};
-
-window.sendSupport = async () => {
-    const msg = document.getElementById('support-msg').value.trim();
-    if (!msg) return;
-    await push(ref(db, 'supportMessages'), {
-        uid: currentUser.uid,
-        email: currentUser.email,
-        message: msg,
-        status: 'open',
-        timestamp: Date.now()
-    });
-    document.getElementById('support-msg').value = '';
-    alert("Message envoyé au support avec succès !");
-};
-
-function startUserListeners() {
-    onValue(ref(db, `users/${currentUser.uid}`), (snap) => {
-        if (!snap.exists()) return;
-        currentProfile = snap.val();
-        document.getElementById('balance').textContent = (currentProfile.balance || 0) + " pts";
-    });
-
-    onValue(ref(db, 'supportMessages'), (snap) => {
-        const container = document.getElementById('support-list');
-        container.innerHTML = "";
-        snap.forEach(child => {
-            const m = child.val();
-            if (m.uid !== currentUser.uid) return;
-            container.innerHTML += `
-                <div class="card" style="margin-top: 10px;">
-                    <p style="margin: 0 0 8px 0;">${m.message}</p>
-                    <span class="muted" style="color:var(--accent);">Statut : ${m.status}</span>
-                    ${m.adminReply ? `<p style="margin: 8px 0 0 0; color:var(--green);"><strong>Réponse :</strong> ${m.adminReply}</p>` : ""}
-                </div>`;
+                // Vérifier si admin
+                if (user.email === ADMIN_EMAIL) {
+                    document.getElementById('admin-tab-btn').classList.remove('hidden');
+                    loadAdminPanel();
+                } else {
+                    document.getElementById('admin-tab-btn').classList.add('hidden');
+                }
+            } else {
+                document.getElementById('auth-container').classList.remove('hidden');
+                document.getElementById('main-app').classList.add('hidden');
+            }
         });
-    });
-}
 
-function initAdmin() {
-    onValue(ref(db, 'users'), (snap) => {
-        const container = document.getElementById('admin-users');
-        container.innerHTML = "";
-        snap.forEach(child => {
-            const u = child.val();
-            container.innerHTML += `
-                <div class="user-row">
-                    <div><strong>${u.name || 'Inconnu'}</strong><br><span class="muted">${u.email}</span></div>
-                    <div style="font-weight:700; color:var(--accent);">${u.balance || 0} pts</div>
-                </div>`;
-        });
-    });
+        // Logique Connexion / Inscription
+        window.handleAuth = async (isSignUp) => {
+            const email = document.getElementById('auth-email').value;
+            const pass = document.getElementById('auth-password').value;
+            const errorEl = document.getElementById('auth-error');
+            errorEl.textContent = "";
 
-    onValue(ref(db, 'supportMessages'), (snap) => {
-        const container = document.getElementById('admin-support');
-        container.innerHTML = "";
-        snap.forEach(child => {
-            const m = child.val();
-            const id = child.key;
-            container.innerHTML += `
-                <div class="card" style="background:#0f1722; margin-top:10px;">
-                    <div class="muted">${m.email}</div>
-                    <p style="margin: 6px 0;">${m.message}</p>
-                    <textarea id="reply-${id}" placeholder="Répondre..." style="font-size:13px; padding:8px; margin-bottom:8px; min-height:60px;"></textarea>
-                    <button onclick="replySupport('${id}')" style="padding:8px; font-size:13px;">Envoyer la réponse</button>
-                </div>`;
-        });
-    });
-}
+            try {
+                let userCred;
+                if (isSignUp) {
+                    userCred = await createUserWithEmailAndPassword(auth, email, pass);
+                    // Initialiser les données de l'utilisateur dans la DB
+                    await set(ref(db, 'users/' + userCred.user.uid), {
+                        email: email,
+                        balanceCoins: 0,
+                        fakeMoney: 0.00,
+                        joinedAt: Date.now()
+                    });
+                } else {
+                    userCred = await signInWithEmailAndPassword(auth, email, pass);
+                }
+            } catch (error) {
+                errorEl.textContent = "Erreur : " + error.message;
+            }
+        };
 
-window.replySupport = async function(id) {
-    const text = document.getElementById(`reply-${id}`).value.trim();
-    if (!text) return;
-    await update(ref(db, `supportMessages/${id}`), {
-        adminReply: text,
-        status: 'répondu'
-    });
-    alert("Réponse envoyée !");
-};
-</script>
+        window.handleLogout = () => signOut(auth);
+
+        function loadUserData(user) {
+            document.getElementById('profile-email').textContent = user.email;
+            const userRef = ref(db, 'users/' + user.uid);
+            onValue(userRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    document.getElementById('user-balance').textContent = (data.fakeMoney || 0).toFixed(2) + ' €';
+                    document.getElementById('user-coins').textContent = (data.balanceCoins || 0) + ' Pièces';
+                    // Barre de progression vers les 25€ (ralentie artificiellement pour l'illusion)
+                    const progress = Math.min(((data.fakeMoney || 0) / 25) * 100, 100);
+                    document.getElementById('payout-progress').style.width = progress + '%';
+                }
+            });
+        }
+
+        // Soumission Support Client
+        window.sendSupportMessage = async () => {
+            const msg = document.getElementById('support-msg').value;
+            const user = auth.currentUser;
+            if (!msg || !user) return;
+
+            await push(ref(db, 'support_messages'), {
+                uid: user.uid,
+                email: user.email,
+                message: msg,
+                timestamp: Date.now(),
+                status: 'pending'
+            });
+            document.getElementById('support-msg').value = '';
+            alert("Message envoyé au support ! Réponse estimée : dans 42 ans.");
+        };
+
+        // Soumission Défi Photo
+        window.submitChallenge = async () => {
+            const fileInput = document.getElementById('challenge-file');
+            const user = auth.currentUser;
+            if (fileInput.files.length === 0 || !user) return;
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                await push(ref(db, 'challenges_submissions'), {
+                    uid: user.uid,
+                    email: user.email,
+                    image: e.target.result,
+                    status: 'pending',
+                    timestamp: Date.now()
+                });
+                alert("Défi soumis ! En attente de validation par l'administrateur suprême.");
+                fileInput.value = '';
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        };
+
+        // Panel Admin
+        function loadAdminPanel() {
+            // Charger les messages de support
+            onValue(ref(db, 'support_messages'), (snapshot) => {
+                const container = document.getElementById('admin-support-list');
+                container.innerHTML = '';
+                snapshot.forEach((childSnapshot) => {
+                    const data = childSnapshot.val();
+                    container.innerHTML += `<div class="p-3 bg-white/5 rounded-xl border border-white/10 mb-2">
+                        <p class="text-xs text-purple-300">${data.email}</p>
+                        <p class="text-sm">${data.message}</p>
+                    </div>`;
+                });
+            });
+
+            // Charger les défis en attente
+            onValue(ref(db, 'challenges_submissions'), (snapshot) => {
+                const container = document.getElementById('admin-challenges-list');
+                container.innerHTML = '';
+                snapshot.forEach((childSnapshot) => {
+                    const key = childSnapshot.key;
+                    const data = childSnapshot.val();
+                    if (data.status === 'pending') {
+                        container.innerHTML += `<div class="p-3 bg-white/5 rounded-xl border border-white/10 mb-2 flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-purple-300">${data.email}</p>
+                                <img src="${data.image}" class="w-20 h-20 object-cover rounded mt-2">
+                            </div>
+                            <div class="space-x-2">
+                                <button onclick="validateChallenge('${key}', '${data.uid}', true)" class="px-3 py-1 bg-green-500/20 border border-green-500/40 rounded-lg text-green-300 text-xs">Valider (+0.50€)</button>
+                                <button onclick="validateChallenge('${key}', '${data.uid}', false)" class="px-3 py-1 bg-red-500/20 border border-red-500/40 rounded-lg text-red-300 text-xs">Refuser</button>
+                            </div>
+                        </div>`;
+                    }
+                });
+            });
+        }
+
+        window.validateChallenge = async (subKey, userId, approved) => {
+            await update(ref(db, 'challenges_submissions/' + subKey), { status: approved ? 'approved' : 'rejected' });
+            if (approved) {
+                // Récupérer l'utilisateur pour incrémenter ses gains de manière mesquinement lente
+                const userRef = ref(db, 'users/' + userId);
+                const snapshot = await get(userRef);
+                if (snapshot.exists()) {
+                    const currentMoney = snapshot.val().fakeMoney || 0;
+                    await update(userRef, { fakeMoney: currentMoney + 0.50 }); // 50 centimes par défi validé, courage pour arriver à 25€ !
+                }
+            }
+        };
+
+        // Mini-jeu : La Roue
+        window.spinWheel = async () => {
+            const user = auth.currentUser;
+            if (!user) return;
+            const userRef = ref(db, 'users/' + user.uid);
+            const snapshot = await get(userRef);
+            if (snapshot.exists()) {
+                const currentMoney = snapshot.val().fakeMoney || 0;
+                // La roue donne des miettes microscopiques (ex: 0.01€ ou 0.02€)
+                const win = Math.random() < 0.8 ? 0.01 : 0.05; 
+                await update(userRef, { fakeMoney: currentMoney + win });
+                alert(`La roue a tourne... Tu gagnes ${win.toFixed(2)} € ! (C'est presque assez pour un chwing-gum).`);
+            }
+        };
+    </script>
+</head>
+<body class="bg-gradient-to-br from-slate-950 via-purple-950 to-slate-900 text-slate-100 min-h-screen font-sans antialiased flex flex-col items-center justify-center p-4">
+
+    <!-- AUTHENTIFICATION CONTAINER -->
+    <div id="auth-container" class="w-full max-w-md p-8 backdrop-blur-xl bg-glass-200 border border-glass-border rounded-3xl shadow-2xl">
+        <h1 class="text-2xl font-light text-center tracking-wider mb-6 text-purple-200">CYBER<span class="font-bold text-white">FDJ</span></h1>
+        <div class="space-y-4">
+            <input type="email" id="auth-email" placeholder="Adresse e-mail" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-2xl focus:outline-none focus:border-purple-400 text-sm">
+            <input type="password" id="auth-password" placeholder="Mot de passe" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-2xl focus:outline-none focus:border-purple-400 text-sm">
+            <p id="auth-error" class="text-red-400 text-xs text-center"></p>
+            <div class="flex gap-2 pt-2">
+                <button onclick="handleAuth(false)" class="flex-1 py-3 bg-white/10 hover:bg-white/20 border border-white/15 rounded-2xl text-sm font-medium transition-all">Connexion</button>
+                <button onclick="handleAuth(true)" class="flex-1 py-3 bg-purple-600/40 hover:bg-purple-600/60 border border-purple-400/30 rounded-2xl text-sm font-medium transition-all">Inscription</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="main-app" class="hidden w-full max-w-4xl backdrop-blur-2xl bg-glass-200 border border-glass-border rounded-3xl shadow-2xl overflow-hidden flex flex-col min-h-[600px]">
+        
+        <!-- Navigation / Header -->
+        <header class="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/5">
+            <span class="font-light tracking-widest text-purple-200">CYBER<span class="font-bold text-white">FDJ</span></span>
+            <nav class="flex gap-2">
+                <button onclick="switchTab('tab-games')" class="px-4 py-2 text-xs font-medium rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-white/10">Jeux</button>
+                <button onclick="switchTab('tab-challenges')" class="px-4 py-2 text-xs font-medium rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-white/10">Défis</button>
+                <button onclick="switchTab('tab-profile')" class="px-4 py-2 text-xs font-medium rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-white/10">Profil</button>
+                <button id="admin-tab-btn" onclick="switchTab('tab-admin')" class="hidden px-4 py-2 text-xs font-medium rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-300 transition-all border border-red-500/30">Admin</button>
+            </nav>
+            <button onclick="handleLogout()" class="text-xs text-red-300 hover:text-red-200 underline">Déconnexion</button>
+        </header>
+
+        <!-- Contenu des onglets -->
+        <main class="p-6 flex-1 overflow-y-auto">
+
+            <!-- 1. ESPACE JEUX (Grille de 2 colonnes, Liquid Glass) -->
+            <div id="tab-games" class="app-view space-y-6">
+                <h2 class="text-lg font-light text-purple-200">Espace Jeux</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Carte Jeu 1 : La Roue -->
+                    <div class="p-6 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl flex flex-col justify-between hover:bg-white/10 transition-all">
+                        <div>
+                            <h3 class="font-semibold text-sm text-purple-300">La Roue de la Fortune</h3>
+                            <p class="text-xs text-slate-400 mt-1">Fais tourner la roue pour espérer grappiller quelques centimes vers ton objectif de 25 €.</p>
+                        </div>
+                        <button onclick="spinWheel()" class="mt-6 w-full py-2.5 bg-white/10 hover:bg-white/20 border border-white/15 rounded-xl text-xs font-medium transition-all">Jouer (Gratuit)</button>
+                    </div>
+                    <!-- Carte Jeu 2 : Placeholder -->
+                    <div class="p-6 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl flex flex-col justify-between hover:bg-white/10 transition-all">
+                        <div>
+                            <h3 class="font-semibold text-sm text-purple-300">Grattage Quantique</h3>
+                            <p class="text-xs text-slate-400 mt-1">Gratte pour découvrir que tu as perdu, comme d'habitude.</p>
+                        </div>
+                        <button onclick="alert('Perdu ! Retente ta chance.')" class="mt-6 w-full py-2.5 bg-white/10 hover:bg-white/20 border border-white/15 rounded-xl text-xs font-medium transition-all">Gratter</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. ESPACE DÉFIS DE CONS -->
+            <div id="tab-challenges" class="app-view hidden space-y-6">
+                <h2 class="text-lg font-light text-purple-200">Défis & Preuves</h2>
+                <p class="text-xs text-slate-400">Envoie une photo ridicule pour prouver ton engagement. Si l'administrateur est de bonne humeur, tu gagneras 0,50 €.</p>
+                
+                <div class="p-6 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl space-y-4">
+                    <label class="block text-xs text-purple-300">Uploader la photo du défi</label>
+                    <input type="file" id="challenge-file" accept="image/*" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-white/10 file:text-white hover:file:bg-white/20">
+                    <button onclick="submitChallenge()" class="w-full py-2.5 bg-purple-600/40 hover:bg-purple-600/60 border border-purple-400/30 rounded-xl text-xs font-medium transition-all">Soumettre pour validation</button>
+                </div>
+            </div>
+
+            <!-- 3. PROFIL RÉALISTE & SUPPORT -->
+            <div id="tab-profile" class="app-view hidden space-y-6">
+                <h2 class="text-lg font-light text-purple-200">Mon Profil</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Infos profil -->
+                    <div class="p-6 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl space-y-3">
+                        <p class="text-xs text-slate-400">Email : <span id="profile-email" class="text-white font-mono"></span></p>
+                        <p class="text-xs text-slate-400">Solde fictif : <span id="user-balance" class="text-green-400 font-bold">0.00 €</span></p>
+                        <div class="w-full bg-white/10 h-2 rounded-full overflow-hidden">
+                            <div id="payout-progress" class="bg-purple-500 h-full w-0 transition-all duration-500"></div>
+                        </div>
+                        <p class="text-[10px] text-slate-500">Objectif de retrait : 25,00 € (Seuil requis)</p>
+                        <button onclick="alert('Retrait impossible : Il vous manque encore 25,00 € et beaucoup d’illusions.')" class="w-full py-2 bg-white/10 hover:bg-white/20 border border-white/15 rounded-xl text-xs font-medium mt-2">Demander le retrait</button>
+                    </div>
+
+                    <!-- Support Client -->
+                    <div class="p-6 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl space-y-3 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-xs font-semibold text-purple-300">Contacter le Support</h3>
+                            <p class="text-xs text-slate-400 mt-1">Une réclamation sur tes gains ? Dis-le au taulier.</p>
+                            <textarea id="support-msg" placeholder="Votre message..." class="w-full mt-3 p-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-purple-400 text-xs h-20 resize-none"></textarea>
+                        </div>
+                        <button onclick="sendSupportMessage()" class="w-full py-2 bg-white/10 hover:bg-white/20 border border-white/15 rounded-xl text-xs font-medium">Envoyer</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. ESPACE ADMIN (Visible uniquement pour a.tartesse@gmail.com) -->
+            <div id="tab-admin" class="app-view hidden space-y-6">
+                <h2 class="text-lg font-light text-red-300">Panneau d'Administration Suprême</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Validation des défis -->
+                    <div class="p-6 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl">
+                        <h3 class="text-xs font-semibold text-purple-300 mb-3">Défis en attente de validation</h3>
+                        <div id="admin-challenges-list" class="space-y-2 max-h-60 overflow-y-auto">
+                            <p class="text-xs text-slate-500">Aucun défi en attente.</p>
+                        </div>
+                    </div>
+
+                    <!-- Messages Support reçus -->
+                    <div class="p-6 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl">
+                        <h3 class="text-xs font-semibold text-purple-300 mb-3">Messages du Support</h3>
+                        <div id="admin-support-list" class="space-y-2 max-h-60 overflow-y-auto">
+                            <p class="text-xs text-slate-500">Aucun message pour l'instant.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
 
 </body>
 </html>
