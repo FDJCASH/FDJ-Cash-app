@@ -108,7 +108,7 @@
         .fomo-banner { background: linear-gradient(135deg, #b91c1c, #7f1d1d); border-radius: 12px; padding: 10px 12px; color: white; font-size: 0.78rem; font-weight: bold; text-align: center; box-shadow: 0 6px 20px rgba(185,28,28,0.4); display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         
         .ticker-bar { background: rgba(0,0,0,0.4); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 7px 10px; font-size: 0.75rem; color: #34d399; white-space: nowrap; overflow: hidden; box-sizing: border-box; margin-bottom: 10px; }
-        .ticker-content { display: inline-block; animation: tickerScroll 18s linear infinite; }
+        .ticker-content { display: inline-block; animation: tickerScroll 22s linear infinite; }
         @keyframes tickerScroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
         .legal-disclaimer {
@@ -146,14 +146,15 @@
         .slot-inner.spinning { animation: reelSpin 0.15s linear infinite; filter: blur(2px); }
         @keyframes reelSpin { 0% { transform: translateY(-25px); } 100% { transform: translateY(25px); } }
 
-        .wheel-container { position: relative; width: 220px; height: 220px; margin: 16px auto; }
+        /* ROUE CLAIRE ET LISIBLE */
+        .wheel-container { position: relative; width: 240px; height: 240px; margin: 16px auto; }
         .wheel-pointer { position: absolute; top: -16px; left: 50%; transform: translateX(-50%); font-size: 2rem; z-index: 5; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6)); }
         .wheel { 
             width: 100%; height: 100%; border-radius: 50%; border: 6px solid #064e3b; 
             background: conic-gradient(
                 #10b981 0deg 60deg, #38bdf8 60deg 120deg, 
                 #059669 120deg 180deg, #f59e0b 180deg 240deg, 
-                #3b82f6 240deg 300deg, #14b8a6 300deg 360deg
+                #3b82f6 240deg 300deg, #ef4444 300deg 360deg
             ); 
             transition: transform 4s cubic-bezier(0.1, 0.9, 0.2, 1); 
             box-shadow: 0 0 30px rgba(0,0,0,0.8);
@@ -162,7 +163,8 @@
         .wheel-sector {
             position: absolute; width: 50%; height: 50%; top: 0; left: 50%;
             transform-origin: 0% 100%; display: flex; align-items: center; justify-content: center;
-            font-size: 0.8rem; font-weight: 900; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+            font-size: 0.82rem; font-weight: 900; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+            padding-left: 28px; box-sizing: border-box;
         }
 
         .chests-container { display: flex; justify-content: center; gap: 12px; margin: 20px 0; }
@@ -221,9 +223,19 @@
         <!-- POPUP VICTOIRE -->
         <div class="win-popup" id="win-popup">
             <div style="font-size: 3rem; margin-bottom: 8px;">🎉</div>
-            <div style="font-size: 1.4rem; text-transform: uppercase;">Jackpot !</div>
+            <div style="font-size: 1.4rem; text-transform: uppercase;" id="win-popup-title">Jackpot !</div>
             <div id="win-amount" style="font-size: 2.2rem; color: #fff; margin: 8px 0;">+0.00 €</div>
-            <p style="font-size: 0.8rem; color: #cbd5e1; margin-bottom: 12px;">Ajouté à votre cagnotte avec succès !</p>
+            <p id="win-popup-desc" style="font-size: 0.8rem; color: #cbd5e1; margin-bottom: 12px;">Ajouté à votre cagnotte avec succès ! Allez voir, elle est remplie !</p>
+            
+            <!-- BOUTON QUITTE OU DOUBLE -->
+            <div id="double-or-nothing-box" style="margin-bottom: 12px; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 12px; border: 1px solid rgba(245,158,11,0.4);">
+                <div style="font-size:0.8rem; color:var(--accent-gold); font-weight:bold; margin-bottom:6px;">🔥 Tentez le Double ou Rien !</div>
+                <div style="display:flex; gap:6px;">
+                    <button class="btn btn-gold" onclick="app.quitteOuDouble(true)" style="font-size:0.75rem; padding:8px;">Pile (x2) 🪙</button>
+                    <button class="btn btn-gold" onclick="app.quitteOuDouble(false)" style="font-size:0.75rem; padding:8px;">Face (x2) 🪙</button>
+                </div>
+            </div>
+
             <button class="btn btn-green" onclick="app.fermerPopup()">Continuer à jouer 🚀</button>
         </div>
 
@@ -308,7 +320,7 @@
         <div class="modal-overlay hidden" id="modal-security" style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.88); z-index:1600; display:flex; justify-content:center; align-items:center; padding:16px; box-sizing:border-box;">
             <div class="card" style="width: 100%; max-width: 330px; background: rgba(15,23,42,0.98); border-color: var(--accent-green);">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px;">
-                    <span style="font-weight: 900; color: #34d399; font-size: 0.9rem;">🛡️ Paramètres de Sécurité</span>
+                    <span style="font-weight: 900; color: #34d399; font-size: 0.9rem;">🛡 Paramètres de Sécurité</span>
                     <button class="btn btn-outline" style="width:auto; padding:3px 6px; font-size:0.68rem;" onclick="document.getElementById('modal-security').classList.add('hidden')">✕</button>
                 </div>
                 
@@ -432,6 +444,17 @@
                     <span>Pertes d'argent, conflits familiaux... Infos sur <strong style="color:#fff;">Joueurs-Info-Service.fr</strong> (09 74 75 13 13).</span>
                 </div>
 
+                <!-- WIDGET STREAK / SÉRIE DE CONNEXION -->
+                <div class="card" style="background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(15,23,42,0.9)); border-color: rgba(245,158,11,0.4); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-size: 0.75rem; color: var(--accent-gold); font-weight: 800;">🔥 SÉRIE DE CONNEXION</div>
+                        <div style="font-size: 0.85rem; color: #fff; font-weight: bold;" id="streak-text">Jour 1 consécutif</div>
+                    </div>
+                    <div style="background: rgba(245,158,11,0.2); border: 1px solid var(--accent-gold); padding: 6px 12px; border-radius: 12px; font-weight: 900; color: var(--accent-gold); font-size: 0.9rem;" id="streak-badge">
+                        🔥 1 j
+                    </div>
+                </div>
+
                 <!-- BANNIÈRE ÉVÉNEMENT ADMIN ACTIF -->
                 <div id="user-event-banner" class="card hidden" style="background: linear-gradient(135deg, #f59e0b, #d97706); border-color: #fcd34d; color: #000; padding: 12px; text-align: center;">
                     <div style="font-size: 1.1rem; font-weight: 900; margin-bottom: 4px;" id="user-event-title">🔥 Événement Flash</div>
@@ -445,7 +468,7 @@
                 </div>
 
                 <div class="ticker-bar">
-                    <span class="ticker-content">🔥 Thomas_75 vient de gagner 25.00 € • Manon_33 a validé son virement • Kevin_29 a tiré la Roue Journalière et gagne 30 pièces ! • </span>
+                    <span class="ticker-content" id="ticker-dynamic-text">🔥 Thomas_75 vient de gagner 25.00 € • Manon_33 a validé son virement • Kevin_29 a tiré la Roue et gagne 2.00 € ! • </span>
                 </div>
 
                 <div class="promo-banner">
@@ -478,7 +501,8 @@
                     <div class="game-card" onclick="app.changerEcran('screen-slot')"><div class="icon">🎰</div><div class="title">Mega Slot</div><div class="jackpot">Mise : 4 🪙</div></div>
                     <div class="game-card" onclick="app.changerEcran('screen-wheel-game')"><div class="icon">🎡</div><div class="title">Spin & Win</div><div class="jackpot">Mise : 5 🪙</div></div>
                     <div class="game-card" onclick="app.changerEcran('screen-chests')"><div class="icon">🧰</div><div class="title">Coffres Magiques</div><div class="jackpot">Mise : 6 🪙</div></div>
-                    <div class="game-card" onclick="app.changerEcran('screen-lotto')" style="grid-column: span 2; background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(30,41,59,0.8)); border-color: rgba(16,185,129,0.4);"><div class="icon" style="font-size:2rem;">🎟️</div><div class="title">Tirage au Sort Loto Flash</div><div class="jackpot">Tirage toutes les 30 min • Gros Lots</div></div>
+                    <div class="game-card" onclick="app.changerEcran('screen-chicken')" style="background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(30,41,59,0.8)); border-color: rgba(245,158,11,0.4);"><div class="icon" style="font-size:2rem;">🐔</div><div class="title">Chemin Risqué</div><div class="jackpot">Mise : 4 🪙</div></div>
+                    <div class="game-card" onclick="app.changerEcran('screen-lotto')" style="background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(30,41,59,0.8)); border-color: rgba(16,185,129,0.4);"><div class="icon" style="font-size:2rem;">🎟️</div><div class="title">Loto Flash</div><div class="jackpot">Gros Lots</div></div>
                 </div>
 
                 <div class="legal-disclaimer">
@@ -545,21 +569,47 @@
                 </div>
             </div>
 
-            <!-- JEU 3: ROUE DES JEUX -->
+            <!-- NOUVEAU JEU : LE CHEMIN RISQUÉ (CHICKEN) ALÉATOIRE ET DYNAMIQUE -->
+            <div id="screen-chicken" class="screen">
+                <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
+                <div class="card" style="text-align: center; padding: 20px 16px; border-color: #f59e0b;">
+                    <div style="font-size: 2.8rem; margin-bottom: 4px;" id="chicken-icon">🐔</div>
+                    <h3 style="color: var(--accent-gold); font-size: 1.3rem; margin-bottom: 4px;">Le Chemin Risqué</h3>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Avancez pas à pas. 1 chance sur 4 de tout perdre à chaque pas ! Encaissez à tout moment.</p>
+                    
+                    <div style="background: rgba(0,0,0,0.5); padding: 14px; border-radius: 14px; margin-bottom: 14px; border: 1px solid rgba(245,158,11,0.3);">
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px;">Nombre de pas réussis : <strong id="chicken-step" style="color:#fff;">0</strong></div>
+                        <div style="font-size: 1.5rem; font-weight: 900; color: #34d399;" id="chicken-current-gain">+0.00 €</div>
+                    </div>
+
+                    <div id="chicken-actions-start">
+                        <button class="btn btn-gold" onclick="app.lancerJeuChicken()" style="font-size: 1rem;">Commencer la Partie (4 🪙)</button>
+                    </div>
+
+                    <div id="chicken-actions-play" class="hidden" style="display: flex; gap: 8px;">
+                        <button class="btn btn-green" onclick="app.avancerChicken()" style="font-size: 0.85rem; padding: 12px;">Avancer 🐔 (+<span id="next-step-val">0.30</span> €)</button>
+                        <button class="btn btn-gold" onclick="app.encaisserChicken()" style="font-size: 0.85rem; padding: 12px;">Encaisser 💰</button>
+                    </div>
+
+                    <div id="chicken-result" style="font-size: 0.9rem; font-weight: bold; margin-top: 12px; min-height: 22px;"></div>
+                </div>
+            </div>
+
+            <!-- JEU 3: ROUE DES JEUX AVEC VRAIS MONTANTS EN EUROS -->
             <div id="screen-wheel-game" class="screen">
                 <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
                 <div class="card" style="text-align: center; padding: 20px 16px;">
-                    <h3 style="color: #38bdf8; font-size: 1.4rem; margin-bottom: 4px;">🎡 Spin & Win</h3>
-                    <p style="font-size: 0.78rem; color: var(--text-muted);">Regardez les gains sur chaque case et tentez le jackpot !</p>
+                    <h3 style="color: #38bdf8; font-size: 1.4rem; margin-bottom: 4px;">🎡 Spin & Win (Roue Cash)</h3>
+                    <p style="font-size: 0.78rem; color: var(--text-muted);">Chaque case indique directement le montant en euros que vous pouvez gagner !</p>
                     <div class="wheel-container">
                         <div class="wheel-pointer">👇</div>
                         <div class="wheel" id="wheel-element">
-                            <div class="wheel-sector" style="transform: rotate(30deg) translate(0, -50px);">+0.30 €</div>
-                            <div class="wheel-sector" style="transform: rotate(90deg) translate(0, -50px);">+1.00 €</div>
-                            <div class="wheel-sector" style="transform: rotate(150deg) translate(0, -50px);">PERDU</div>
+                            <div class="wheel-sector" style="transform: rotate(30deg) translate(0, -50px);">+0.10 €</div>
+                            <div class="wheel-sector" style="transform: rotate(90deg) translate(0, -50px);">+0.50 €</div>
+                            <div class="wheel-sector" style="transform: rotate(150deg) translate(0, -50px);">+0.25 €</div>
                             <div class="wheel-sector" style="transform: rotate(210deg) translate(0, -50px);">+2.00 €</div>
-                            <div class="wheel-sector" style="transform: rotate(270deg) translate(0, -50px);">+0.50 €</div>
-                            <div class="wheel-sector" style="transform: rotate(330deg) translate(0, -50px);">JACKPOT</div>
+                            <div class="wheel-sector" style="transform: rotate(270deg) translate(0, -50px);">+1.00 €</div>
+                            <div class="wheel-sector" style="transform: rotate(330deg) translate(0, -50px);">+5.00 € 🏆</div>
                         </div>
                     </div>
                     <button class="btn btn-gold" id="btn-spin-wheel" onclick="app.lancerRoue()" style="font-size: 1rem;">Tourner la Roue (5 🪙)</button>
@@ -621,11 +671,11 @@
                 </div>
             </div>
 
-            <!-- ROUE JOURNALIÈRE -->
+            <!-- ROUE JOURNALIÈRE AVEC VRAIS MONTANTS EN PIÈCES -->
             <div id="screen-daily-wheel" class="screen">
                 <div class="card" style="text-align: center; padding: 20px 16px; border-color: var(--accent-gold);">
                     <h3 style="color: var(--accent-gold); font-size: 1.4rem; margin-bottom: 4px;">🎁 Roue Journalière Gratuite</h3>
-                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px;">Tournez la roue une fois par jour pour gagner jusqu'à 50 pièces !</p>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px;">Tournez la roue une fois par jour pour gagner des pièces directement !</p>
                     <div class="wheel-container">
                         <div class="wheel-pointer">👇</div>
                         <div class="wheel" id="daily-wheel-element">
@@ -896,7 +946,11 @@
             wheelRotation: 0, dailyWheelRotation: 0, chestsActive: true,
             submissions: [], chatLogs: {}, usersDB: {}, activeMissions: [],
             adminSortMode: 'recent', transactions: [],
+            streakDays: 1, lastWinAmount: 0,
             
+            // État du jeu Chicken / Chemin Risqué (Entièrement aléatoire)
+            chickenStep: 0, chickenGain: 0.00, chickenActive: false,
+
             grid9Symbols: [], grid9RevealedCount: 0, grid9Gagne: 0, maxGrattages: 3,
             lottoMise: 10, hasUnreadSupportReply: false, lottoSecondsLeft: 1785,
             activeAdminEvent: null,
@@ -968,7 +1022,7 @@
                                 nom: isAdm ? "Armand (Master)" : "Joueur FDJ",
                                 pwd: "123", level: isAdm ? 99 : 1, xp: 0, gamesPlayed: 0,
                                 balance: isAdm ? 999999 : 15, cash: isAdm ? 100 : 0.00,
-                                email: savedEmail, loginTime: new Date().toLocaleString(), transactions: []
+                                email: savedEmail, transactions: [], streak: 1, lastLoginDate: ""
                             };
                             this.usersDB[cleanKey] = acc;
                             if(db) db.ref('users/' + cleanKey).set(acc);
@@ -982,6 +1036,7 @@
                 this.mettreAJourSliderLotto(10);
                 this.genererTopGagnantsDynamiques();
                 this.genererFauxGagnantsLotto();
+                this.demarrerRotationAutomatiqueContenu();
                 this.verifierEvenementAdminUI();
             },
 
@@ -995,15 +1050,29 @@
                 this.gamesPlayed = acc.gamesPlayed || 0;
                 this.sessionStartTimestamp = Date.now();
                 this.transactions = acc.transactions || [];
+                this.streakDays = acc.streak || 1;
+
+                let aujourdHui = new Date().toDateString();
+                let derniereCo = acc.lastLoginDate;
+                if(derniereCo !== aujourdHui) {
+                    let hier = new Date(); hier.setDate(hier.getDate() - 1);
+                    if(derniereCo === hier.toDateString()) {
+                        this.streakDays++;
+                    } else if(derniereCo) {
+                        this.streakDays = 1;
+                    }
+                    acc.streak = this.streakDays;
+                    acc.lastLoginDate = aujourdHui;
+                    this.sauvegarderEtatCompte();
+                }
 
                 let lastBonusDate = localStorage.getItem('fdj_daily_bonus_' + this.currentEmail);
-                let aujourdHui = new Date().toDateString();
                 if(lastBonusDate !== aujourdHui) {
-                    let bonusCoins = Math.floor(Math.random() * 6) + 10; 
+                    let bonusCoins = Math.floor(Math.random() * 6) + 10 + (this.streakDays * 5); 
                     this.balance += bonusCoins;
-                    this.ajouterTransaction(`Bonus Quotidien Connexion : +${bonusCoins} pièces 🪙`);
+                    this.ajouterTransaction(`Bonus Quotidien Connexion (Série ${this.streakDays}j) : +${bonusCoins} pièces 🪙`);
                     localStorage.setItem('fdj_daily_bonus_' + this.currentEmail, aujourdHui);
-                    setTimeout(() => { alert(`🎁 Bonus de connexion quotidien : +${bonusCoins} pièces offertes aujourd'hui !`); }, 1000);
+                    setTimeout(() => { alert(`🔥 Série de connexion (${this.streakDays} jours) : +${bonusCoins} pièces offertes aujourd'hui !`); }, 1000);
                 }
 
                 let rawEmail = acc.email || cleanKey;
@@ -1061,19 +1130,21 @@
                 `).join('');
             },
 
+            // GAGNANTS DU JOUR (change une fois par jour selon la date)
             genererTopGagnantsDynamiques() {
                 let container = document.getElementById('top-winners-container');
                 if(!container) return;
-                let seed = new Date().getDate();
-                let prenoms = ["Thomas", "Manon", "Kevin", "Chloé", "Alexandre", "Sarah", "Lucas", "Marine", "Romain", "Julie"];
-                let villes = ["Paris", "Bordeaux", "Lyon", "Marseille", "Nantes", "Rennes", "Toulouse", "Lille", "Strasbourg", "Quimperlé"];
+                let daySeed = new Date().getDate() + (new Date().getMonth() * 31);
+                let prenoms = ["Thomas", "Manon", "Kevin", "Chloé", "Alexandre", "Sarah", "Lucas", "Marine", "Romain", "Julie", "Maxime", "Pauline", "Antoine", "Camille"];
+                let villes = ["Paris", "Bordeaux", "Lyon", "Marseille", "Nantes", "Rennes", "Toulouse", "Lille", "Strasbourg", "Quimperlé", "Brest", "Nice", "Toulon"];
                 
-                let p1 = prenoms[(seed * 3) % prenoms.length] + "_" + ((seed * 7) % 90 + 10);
-                let v1 = villes[(seed * 2) % villes.length];
-                let g1 = ((seed * 37) % 400 + 150).toFixed(2);
-                let p2 = prenoms[(seed * 5 + 1) % prenoms.length] + "_" + ((seed * 2 + 15) % 90 + 10);
-                let v2 = villes[(seed * 4 + 3) % villes.length];
-                let g2 = ((seed * 23) % 250 + 80).toFixed(2);
+                let p1 = prenoms[(daySeed * 3) % prenoms.length] + "_" + ((daySeed * 7) % 90 + 10);
+                let v1 = villes[(daySeed * 2) % villes.length];
+                let g1 = ((daySeed * 37) % 400 + 150).toFixed(2);
+                
+                let p2 = prenoms[(daySeed * 5 + 3) % prenoms.length] + "_" + ((daySeed * 2 + 15) % 90 + 10);
+                let v2 = villes[(daySeed * 4 + 7) % villes.length];
+                let g2 = ((daySeed * 23) % 250 + 80).toFixed(2);
 
                 container.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 6px 10px; border-radius: 8px;">
@@ -1087,13 +1158,18 @@
                 `;
             },
 
+            // GAGNANTS DU LOTO (change toutes les 30 minutes avec ordre et pseudos aléatoires)
             genererFauxGagnantsLotto() {
                 let listEl = document.getElementById('lotto-winners-list');
                 if(!listEl) return;
-                let prenoms = ["Alexandre", "Sarah", "Lucas", "Marine", "Romain", "Julie", "Nicolas", "Pauline", "Maxime", "Camille"];
+                let prenoms = ["Alexandre", "Sarah", "Lucas", "Marine", "Romain", "Julie", "Nicolas", "Pauline", "Maxime", "Camille", "Guillaume", "Elodie", "Quentin", "Laura", "Benjamin", "Audrey", "Thomas", "Manon"];
+                
+                // Mélange aléatoire du tableau de prénoms
+                let shuffled = [...prenoms].sort(() => Math.random() - 0.5);
                 let html = "";
-                for(let i=0; i<10; i++) {
-                    let name = prenoms[i] + "_" + (Math.floor(Math.random() * 89) + 10);
+                
+                for(let i = 0; i < 6; i++) {
+                    let name = shuffled[i] + "_" + (Math.floor(Math.random() * 89) + 10);
                     let pari = Math.floor(Math.random() * 40) + 10;
                     let gagne = (pari * (Math.random() * 2 + 1.5)).toFixed(2);
                     html += `
@@ -1104,6 +1180,38 @@
                     `;
                 }
                 listEl.innerHTML = html;
+            },
+
+            // BANDEAU DÉFILANT (change toutes les heures avec de nouveaux pseudos et montants)
+            genererBandeauTicker() {
+                let tickerEl = document.getElementById('ticker-dynamic-text');
+                if(!tickerEl) return;
+                let prenoms = ["Logan", "Océane", "Mathis", "Sarah", "Enzo", "Inès", "Nathan", "Léa", "Thibault", "Manon", "Alex", "Clara"];
+                let actions = [
+                    "vient de remporter", "a validé son gain de", "a tiré la Roue et encaisse", 
+                    "vient d'empocher", "a validé son virement de", "a gagné au Mega Slot"
+                ];
+                let shuffledP = [...prenoms].sort(() => Math.random() - 0.5);
+                let text = "🔥 ";
+                for(let i=0; i<4; i++) {
+                    let p = shuffledP[i] + "_" + (Math.floor(Math.random() * 89) + 10);
+                    let act = actions[Math.floor(Math.random() * actions.length)];
+                    let montant = (Math.random() * 45 + 5).toFixed(2);
+                    text += `${p} ${act} ${montant} € • `;
+                }
+                tickerEl.innerText = text;
+            },
+
+            demarrerRotationAutomatiqueContenu() {
+                // Rotation des gagnants du loto toutes les 30 minutes (1800000 ms)
+                setInterval(() => {
+                    this.genererFauxGagnantsLotto();
+                }, 30 * 60 * 1000);
+
+                // Rotation du bandeau défilant toutes les 1 heure (3600000 ms)
+                setInterval(() => {
+                    this.genererBandeauTicker();
+                }, 60 * 60 * 1000);
             },
 
             lancerTimerLotto() {
@@ -1189,6 +1297,7 @@
                 this.usersDB[this.currentEmail].xp = this.xp;
                 this.usersDB[this.currentEmail].gamesPlayed = this.gamesPlayed;
                 this.usersDB[this.currentEmail].transactions = this.transactions;
+                this.usersDB[this.currentEmail].streak = this.streakDays;
 
                 if(db) db.ref('users/' + this.currentEmail).set(this.usersDB[this.currentEmail]);
                 localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
@@ -1274,7 +1383,7 @@
                     let newAcc = { 
                         nom: nom, pwd: pwd, level: isAdm ? 99 : 1, xp: 0, gamesPlayed: 0, 
                         balance: isAdm ? 999999 : 15, cash: isAdm ? 100 : 0.00, humanSupport: false, 
-                        loginTime: timeStr, email: email, transactions: this.transactions 
+                        loginTime: timeStr, email: email, transactions: this.transactions, streak: 1, lastLoginDate: new Date().toDateString()
                     };
                     this.usersDB[cleanEmailKey] = newAcc;
                     if(db) db.ref('users/' + cleanEmailKey).set(newAcc);
@@ -1370,6 +1479,11 @@
 
                 const levelBadge = document.getElementById('level-badge');
                 if(levelBadge) levelBadge.innerText = "⭐ Niv. " + this.level;
+
+                const streakText = document.getElementById('streak-text');
+                if(streakText) streakText.innerText = `Série en cours : ${this.streakDays} jour${this.streakDays > 1 ? 's' : ''}`;
+                const streakBadge = document.getElementById('streak-badge');
+                if(streakBadge) streakBadge.innerText = `🔥 ${this.streakDays} j`;
                 
                 const defiLocked = document.getElementById('defi-locked');
                 const defiUnlocked = document.getElementById('defi-unlocked');
@@ -1408,37 +1522,33 @@
                 }
             },
 
-            // Distribution précise demandée : Souvent 30-50 centimes, parfois 1-2 €, et très rare 5-6 €
             determinerMontantGain() {
                 let r = Math.random();
                 let montant = 0.30;
                 if (r < 0.65) {
-                    // 65% du temps : Petites sommes (30 à 50 centimes)
                     montant = Math.random() < 0.5 ? 0.30 : 0.50;
                 } else if (r < 0.92) {
-                    // 27% du temps : Sommes intermédiaires (1,00 € à 2,00 €)
                     montant = Math.random() < 0.6 ? 1.00 : 2.00;
                 } else {
-                    // 8% du temps : Méga rare (5,00 € ou 6,00 €)
                     montant = Math.random() < 0.5 ? 5.00 : 6.00;
                 }
-                
                 if (this.fomoSeconds > 0) montant *= 1.2;
                 return +montant.toFixed(2);
             },
 
             gererGain(isForcedWin = false, forceMontant = null) {
                 this.gagnerXP();
-
-                // 1 chance sur 6 ou 7 de gagner (environ 15% de chance de gain) sur les jeux de hasard
                 let probaGain = 0.15;
                 let win = this.isAdmin || isForcedWin || (Math.random() < probaGain);
+
+                const doubleBox = document.getElementById('double-or-nothing-box');
 
                 if(!win) {
                     this.ajouterTransaction(`Mise perdue (Pas de chance)`);
                     this.sauvegarderEtatCompte();
                     this.updateUI();
                     this.vibrer([30]);
+                    if(doubleBox) doubleBox.classList.add('hidden');
                     const winAmount = document.getElementById('win-amount');
                     if(winAmount) winAmount.innerText = "0.00 €";
                     const winPopup = document.getElementById('win-popup');
@@ -1450,6 +1560,7 @@
                 if(!this.isAdmin) { if (this.dailyCash + montant > 10.00) montant = 10.00 - this.dailyCash; }
                 
                 if (montant > 0) {
+                    this.lastWinAmount = montant;
                     this.cash += montant; this.dailyCash += montant; 
                     this.ajouterTransaction(`Gain de cash : +${montant.toFixed(2)} € 💶`);
                     this.sauvegarderEtatCompte();
@@ -1458,12 +1569,135 @@
                     this.vibrer([100, 50, 100]);
                     this.jouerSon('win');
                     
+                    if(doubleBox) doubleBox.classList.remove('hidden');
                     const winAmount = document.getElementById('win-amount');
                     if(winAmount) winAmount.innerText = "+" + montant.toFixed(2) + " €";
                     const winPopup = document.getElementById('win-popup');
                     if(winPopup) winPopup.classList.add('show');
                 }
             },
+
+            quitteOuDouble(choixPile) {
+                const doubleBox = document.getElementById('double-or-nothing-box');
+                let pileGagnante = Math.random() < 0.5;
+
+                if(choixPile === pileGagnante) {
+                    let bonusDouble = this.lastWinAmount;
+                    this.cash += bonusDouble;
+                    this.lastWinAmount *= 2;
+                    this.ajouterTransaction(`Quitte ou Double GAGNÉ : +${bonusDouble.toFixed(2)} € 💶`);
+                    this.sauvegarderEtatCompte();
+                    this.updateUI();
+                    this.lancerConfettis();
+                    this.vibrer([120, 120]);
+                    const winAmount = document.getElementById('win-amount');
+                    if(winAmount) winAmount.innerText = "+" + this.lastWinAmount.toFixed(2) + " € (Doublé !)";
+                    if(doubleBox) doubleBox.classList.add('hidden');
+                } else {
+                    this.cash -= this.lastWinAmount;
+                    if(this.cash < 0) this.cash = 0;
+                    this.ajouterTransaction(`Quitte ou Double PERDU : -${this.lastWinAmount.toFixed(2)} €`);
+                    this.sauvegarderEtatCompte();
+                    this.updateUI();
+                    this.vibrer([300]);
+                    const winAmount = document.getElementById('win-amount');
+                    if(winAmount) winAmount.innerText = "0.00 € (Perdu au Quitte ou Double !)";
+                    if(doubleBox) doubleBox.classList.add('hidden');
+                }
+            },
+
+            // LOGIQUE DU JEU CHICKEN / CHEMIN RISQUÉ ENTIÈREMENT ALÉATOIRE
+            lancerJeuChicken() {
+                if(this.balance < 4) return alert("Fonds insuffisants (4 pièces requises) !");
+                this.balance -= 4;
+                this.ajouterTransaction(`Mise Chemin Risqué (-4 🪙)`);
+                this.sauvegarderEtatCompte(); this.updateUI();
+                this.vibrer([40]); this.jouerSon('click');
+
+                this.chickenStep = 0;
+                this.chickenGain = 0.00;
+                this.chickenActive = true;
+
+                document.getElementById('chicken-actions-start').classList.add('hidden');
+                document.getElementById('chicken-actions-play').classList.remove('hidden');
+                document.getElementById('chicken-step').innerText = "0";
+                document.getElementById('chicken-current-gain').innerText = "+0.00 €";
+                document.getElementById('next-step-val').innerText = "0.30";
+                document.getElementById('chicken-result').innerText = "Le poulet est prêt. Avancez pas à pas (1 chance sur 4 de perdre à chaque pas) !";
+                document.getElementById('chicken-icon').innerText = "🐔";
+            },
+
+            avancerChicken() {
+                if(!this.chickenActive) return;
+                
+                // 1 chance sur 4 (25%) de perdre à chaque pas, peu importe l'étape !
+                let isDead = !this.isAdmin && (Math.random() < 0.25);
+
+                if(isDead) {
+                    this.chickenActive = false;
+                    this.vibrer([300, 150, 300]);
+                    document.getElementById('chicken-icon').innerText = "💥";
+                    document.getElementById('chicken-result').innerHTML = `<span style="color:#ef4444;">💥 Oups ! Le poulet s'est fait écraser à l'étape ${this.chickenStep + 1} ! Tout est perdu !</span>`;
+                    document.getElementById('chicken-actions-start').classList.remove('hidden');
+                    document.getElementById('chicken-actions-play').classList.add('hidden');
+                    this.ajouterTransaction(`Chemin Risqué : Écrasé (Perdu)`);
+                    this.gagnerXP();
+                    return;
+                }
+
+                let increment = +(Math.random() * 0.25 + 0.25).toFixed(2);
+                if(this.chickenStep === 0) {
+                    this.chickenGain = 0.30;
+                } else {
+                    this.chickenGain += increment;
+                }
+                this.chickenGain = +this.chickenGain.toFixed(2);
+                this.chickenStep++;
+
+                this.vibrer([50]); this.jouerSon('click');
+                this.gagnerXP();
+
+                document.getElementById('chicken-step').innerText = this.chickenStep;
+                document.getElementById('chicken-current-gain').innerText = "+" + this.chickenGain.toFixed(2) + " €";
+                document.getElementById('chicken-icon').innerText = "🏃‍♂️";
+
+                let prochainPasEstime = +(this.chickenGain + 0.35).toFixed(2);
+                document.getElementById('next-step-val').innerText = prochainPasEstime;
+                document.getElementById('chicken-result').innerHTML = `<span style="color:#34d399;">✅ Pas n°${this.chickenStep} réussi avec succès !</span>`;
+            },
+
+            encaisserChicken() {
+                if(!this.chickenActive || this.chickenGain <= 0) return;
+                this.chickenActive = false;
+
+                let montantEncaisse = this.chickenGain;
+                this.cash += montantEncaisse;
+                this.dailyCash += montantEncaisse;
+                this.ajouterTransaction(`Chemin Risqué encaissé : +${montantEncaisse.toFixed(2)} € 💶`);
+                this.sauvegarderEtatCompte(); this.updateUI();
+                this.vibrer([100, 50, 100]);
+                this.jouerSon('win');
+                this.lancerConfettis();
+
+                document.getElementById('chicken-icon').innerText = "💰";
+                document.getElementById('chicken-actions-start').classList.remove('hidden');
+                document.getElementById('chicken-actions-play').classList.add('hidden');
+                document.getElementById('chicken-result').innerHTML = `<span style="color:#34d399;">🎉 Encaissé avec succès !</span>`;
+
+                const winPopupTitle = document.getElementById('win-popup-title');
+                const winAmount = document.getElementById('win-amount');
+                const winPopupDesc = document.getElementById('win-popup-desc');
+                const doubleBox = document.getElementById('double-or-nothing-box');
+
+                if(winPopupTitle) winPopupTitle.innerText = "Chemin Risqué Gagné !";
+                if(winAmount) winAmount.innerText = "+" + montantEncaisse.toFixed(2) + " €";
+                if(winPopupDesc) winPopupDesc.innerText = "Allez voir votre cagnotte, elle est remplie avec succès ! 🚀";
+                if(doubleBox) doubleBox.classList.add('hidden');
+
+                const winPopup = document.getElementById('win-popup');
+                if(winPopup) winPopup.classList.add('show');
+            },
+
             fermerPopup() { 
                 const winPopup = document.getElementById('win-popup');
                 if(winPopup) winPopup.classList.remove('show'); 
@@ -1625,10 +1859,17 @@
                 if(r3El) r3El.classList.add('spinning');
 
                 let symboles = ['🍒', '💎', '7️⃣', '🍋', '⭐'];
-                // Correction définitive : Environ 1 chance sur 6 ou 7 (15% de chance) d'aligner les symboles et d'obtenir un gain réel
                 let win = this.isAdmin ? true : (Math.random() < 0.15);
                 let s = symboles[Math.floor(Math.random() * symboles.length)];
                 let r1 = win ? s : symboles[0], r2 = win ? s : symboles[1], r3 = win ? s : symboles[2];
+
+                let isNearMiss = false;
+                if (!win && Math.random() < 0.40) {
+                    isNearMiss = true;
+                    let nearSym = symboles[Math.floor(Math.random() * symboles.length)];
+                    let diffSym = symboles.filter(x => x !== nearSym)[Math.floor(Math.random() * 4)];
+                    r1 = nearSym; r2 = nearSym; r3 = diffSym;
+                }
 
                 setTimeout(() => {
                     if(r1El) { r1El.classList.remove('spinning'); r1El.innerText = r1; }
@@ -1639,6 +1880,10 @@
                     if(win) {
                         this.gererGain(true);
                         if(slotResult) slotResult.innerHTML = `<span style="color: #34d399;">JACKPOT ! Aligné !</span>`;
+                    } else if(isNearMiss) {
+                        this.gagnerXP();
+                        this.vibrer([30, 60]);
+                        if(slotResult) slotResult.innerHTML = `<span style="color: #f59e0b; font-weight:900;">⚠️ Presque ! À un cheveu du jackpot !</span>`;
                     } else {
                         this.gagnerXP();
                         if(slotResult) slotResult.innerHTML = `<span style="color: var(--text-muted);">Perdu...</span>`;
@@ -1667,8 +1912,10 @@
                 setTimeout(() => {
                     if(btn) btn.disabled = false;
                     if(win) { 
-                        this.gererGain(true); 
-                        if(wheelResult) wheelResult.innerHTML = `<span style="color:#34d399;">Gagné !</span>`; 
+                        let tabMontants = [0.10, 0.25, 0.50, 1.00, 2.00, 5.00];
+                        let montantRoue = tabMontants[Math.floor(Math.random() * tabMontants.length)];
+                        this.gererGain(true, montantRoue); 
+                        if(wheelResult) wheelResult.innerHTML = `<span style="color:#34d399;">Gagné +${montantRoue.toFixed(2)} € !</span>`; 
                     } else { 
                         this.gagnerXP();
                         if(wheelResult) wheelResult.innerHTML = `<span style="color:var(--text-muted);">Raté...</span>`; 
