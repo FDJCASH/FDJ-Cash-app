@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Française des Jeux - Espace Cash & Loto</title>
+    <title>Française des Jeux - Espace Cash, Loto & Paris</title>
     <!-- Firebase SDK v9 Compat -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -67,14 +67,14 @@
         .nav-item {
             background: none; border: none; cursor: pointer; display: flex; flex-direction: column;
             align-items: center; gap: 2px; color: rgba(255, 255, 255, 0.4); transition: all 0.3s;
-            font-size: 0.68rem; font-weight: 700; padding: 4px 6px; border-radius: 12px; position: relative;
+            font-size: 0.65rem; font-weight: 700; padding: 4px 4px; border-radius: 12px; position: relative;
         }
-        .nav-item svg { width: 20px; height: 20px; fill: currentColor; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .nav-item svg { width: 18px; height: 18px; fill: currentColor; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .nav-item.active { color: var(--accent-green); }
         .nav-item.active svg { transform: translateY(-2px) scale(1.1); filter: drop-shadow(0 4px 6px rgba(16,185,129,0.6)); }
 
         .notif-dot {
-            position: absolute; top: 2px; right: 8px; width: 9px; height: 9px;
+            position: absolute; top: 2px; right: 6px; width: 9px; height: 9px;
             background: #ef4444; border-radius: 50%; border: 2px solid #042f2e;
             box-shadow: 0 0 8px #ef4444; display: none; animation: pulseDot 1.5s infinite;
         }
@@ -101,8 +101,8 @@
         .btn-gold { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; box-shadow: 0 6px 20px var(--accent-gold-glow); border: 1px solid #fcd34d; }
         .btn-outline { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; }
 
-        input { width: 100%; padding: 13px; border-radius: 12px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 0.95rem; box-sizing: border-box; outline: none; margin-bottom: 10px; }
-        input:focus { border-color: var(--accent-green); background: rgba(0,0,0,0.6); box-shadow: 0 0 15px rgba(16,185,129,0.4); }
+        input, select { width: 100%; padding: 13px; border-radius: 12px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 0.95rem; box-sizing: border-box; outline: none; margin-bottom: 10px; }
+        input:focus, select:focus { border-color: var(--accent-green); background: rgba(0,0,0,0.6); box-shadow: 0 0 15px rgba(16,185,129,0.4); }
 
         .promo-banner { background: linear-gradient(135deg, #064e3b, #0f172a); border-radius: 18px; padding: 16px; color: white; box-shadow: 0 12px 30px rgba(6,78,59,0.4); border: 1px solid rgba(16,185,129,0.3); }
         
@@ -607,6 +607,51 @@
                 </div>
             </div>
 
+            <!-- NOUVEL ESPACE PARIS SPORTIFS & PRONOSTICS -->
+            <div id="screen-paris" class="screen">
+                <div class="card" style="background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(15,23,42,0.9)); border-color: rgba(59,130,246,0.3);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                        <h3 style="margin:0; color:#38bdf8; font-size:1.2rem;">⚽ Espace Paris & Matchs</h3>
+                        <span style="font-size:0.7rem; background:rgba(59,130,246,0.2); color:#38bdf8; padding:2px 6px; border-radius:6px; font-weight:bold;">BOOKMAKER</span>
+                    </div>
+                    <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:12px;">Pariez vos pièces sur les matchs et événements pour multiplier vos gains !</p>
+
+                    <!-- Sous-onglets Paris -->
+                    <div class="auth-tabs" style="margin-bottom:10px;">
+                        <div class="auth-tab active" id="tab-pari-dispo" onclick="app.switchPariTab('dispo')">Matchs Ouverts</div>
+                        <div class="auth-tab" id="tab-pari-ouverts" onclick="app.switchPariTab('ouverts')">Mes Paris (En cours)</div>
+                        <div class="auth-tab" id="tab-pari-fermes" onclick="app.switchPariTab('fermes')">Historique</div>
+                    </div>
+                </div>
+
+                <!-- 1. Liste des matchs disponibles -->
+                <div id="pari-section-dispo" class="pari-sub-section">
+                    <div id="user-paris-matchs-list" style="display:flex; flex-direction:column; gap:10px;">
+                        <div class="card" style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.8rem;">
+                            Aucun match ou pari ouvert pour le moment. Revenez vite !
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Mes paris en cours (ouverts) -->
+                <div id="pari-section-ouverts" class="pari-sub-section hidden">
+                    <div id="user-paris-ouverts-list" style="display:flex; flex-direction:column; gap:8px;">
+                        <div class="card" style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.8rem;">
+                            Aucun pari en cours.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Historique des paris fermés -->
+                <div id="pari-section-fermes" class="pari-sub-section hidden">
+                    <div id="user-paris-fermes-list" style="display:flex; flex-direction:column; gap:8px;">
+                        <div class="card" style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.8rem;">
+                            Aucun historique de pari.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- JEU 4: COFFRES -->
             <div id="screen-chests" class="screen">
                 <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
@@ -716,7 +761,7 @@
             <div id="screen-lotto" class="screen">
                 <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
                 <div class="card" style="text-align: center; padding: 16px; border-color: #10b981;">
-                    <div style="font-size: 2.2rem; margin-bottom: 2px;">🎟️️</div>
+                    <div style="font-size: 2.2rem; margin-bottom: 2px;">🎟</div>
                     <h3 style="color: #34d399; font-size: 1.2rem; margin-bottom: 2px;">Tirage Loto Flash</h3>
                     <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px;">Prochain tirage automatique dans : <strong id="lotto-countdown" style="color:var(--accent-gold);">29:45</strong></p>
                     
@@ -892,12 +937,26 @@
             <div id="screen-admin" class="screen">
                 <div class="card" style="border-color: #ef4444; background: linear-gradient(180deg, rgba(239,68,68,0.15), rgba(0,0,0,0));">
                     <h3 style="margin:0 0 6px 0; color: #ef4444; font-size: 1.3rem;">👑 Console Master (Admin)</h3>
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Gestion des profils, annonces et maintenance.</p>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Gestion des profils, annonces, paris et maintenance.</p>
                     
                     <div style="background: rgba(239,68,68,0.15); padding: 12px; border-radius: 10px; border: 1px solid rgba(239,68,68,0.5); margin-bottom: 12px; text-align: center;">
                         <h4 style="color: #f87171; margin:0 0 6px 0; font-size: 0.85rem;">🛠️ Interrupteur Mode Maintenance :</h4>
                         <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 8px;">Bloque instantanément l'accès à tous les joueurs avec un écran pro.</p>
                         <button class="btn btn-green" id="btn-toggle-maintenance" onclick="app.toggleMaintenanceMode()" style="font-size: 0.78rem; padding: 10px; background: linear-gradient(135deg, #ef4444, #b91c1c); border-color: #f87171;">Activer la Maintenance 🛑</button>
+                    </div>
+
+                    <!-- GESTION DES PARIS SPORTIFS (ADMIN) -->
+                    <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px; border: 1px solid rgba(59,130,246,0.4); margin-bottom: 12px;">
+                        <h4 style="color: #38bdf8; margin:0 0 6px 0; font-size: 0.85rem;">⚽ Créer un Match / Pari Sportif :</h4>
+                        <input type="text" id="admin-pari-titre" placeholder="Intitulé (ex: Real vs Barça)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
+                        <input type="text" id="admin-pari-choix1" placeholder="Option 1 (ex: Real Madrid)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
+                        <input type="number" step="0.05" id="admin-pari-cote1" placeholder="Côte Option 1 (ex: 1.80)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
+                        <input type="text" id="admin-pari-choix2" placeholder="Option 2 (ex: FC Barcelone)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
+                        <input type="number" step="0.05" id="admin-pari-cote2" placeholder="Côte Option 2 (ex: 2.10)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
+                        <button class="btn btn-green" onclick="app.adminCreerPariMatch()" style="font-size:0.75rem; padding:8px; background:linear-gradient(135deg, #3b82f6, #1d4ed8); margin-bottom:8px;">Publier le Match ⚽</button>
+                        
+                        <div style="font-size:0.75rem; color:#fff; font-weight:bold; margin-bottom:4px;">Matchs ouverts à trancher :</div>
+                        <div id="admin-matchs-trancher-list" style="display:flex; flex-direction:column; gap:6px; max-height:160px; overflow-y:auto;"></div>
                     </div>
 
                     <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px; border: 1px solid rgba(245,158,11,0.4); margin-bottom: 12px;">
@@ -1017,8 +1076,11 @@
             <button class="nav-item active" id="nav-home" onclick="app.changerEcran('screen-home', this)">
                 <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg> Accueil
             </button>
+            <button class="nav-item" id="nav-paris" onclick="app.changerEcran('screen-paris', this); app.renderParisJoueur();">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg> Paris ⚽
+            </button>
             <button class="nav-item" id="nav-daily-wheel" onclick="app.changerEcran('screen-daily-wheel', this); app.verifierRoueJournaliere();">
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg> Roue 🎁
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z"/></svg> Roue 🎁
             </button>
             <button class="nav-item" id="nav-defis" onclick="app.changerEcran('screen-defis', this)">
                 <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg> Missions
@@ -1066,6 +1128,7 @@
             lottoGrilles: [],
             activeAdminEvent: null, activeQuiz: null, selectedQuizMise: 1,
             isMaintenanceMode: false,
+            globalParisMatchs: {}, userMesParis: [],
 
             dailyQuests: [
                 { id: 'quest_spins', title: 'Faire 3 spins / parties', target: 3, current: 0, reward: 10, claimed: false },
@@ -1098,6 +1161,9 @@
                 let localQuiz = localStorage.getItem('fdj_active_quiz');
                 if(localQuiz) { try { this.activeQuiz = JSON.parse(localQuiz); } catch(e){} }
 
+                let localParis = localStorage.getItem('fdj_global_paris');
+                if(localParis) { try { this.globalParisMatchs = JSON.parse(localParis); } catch(e){} }
+
                 let localMaint = localStorage.getItem('fdj_maintenance_mode');
                 if(localMaint === 'true') this.isMaintenanceMode = true;
 
@@ -1124,6 +1190,13 @@
                             localStorage.setItem('fdj_submissions', JSON.stringify(data));
                             if(this.isAdmin) this.chargerAdminSubmissions();
                         }
+                    });
+                    db.ref('global_paris_matchs').on('value', (snapshot) => {
+                        let data = snapshot.val() || {};
+                        this.globalParisMatchs = data;
+                        localStorage.setItem('fdj_global_paris', JSON.stringify(data));
+                        this.renderParisJoueur();
+                        if(this.isAdmin) this.chargerAdminParisManage();
                     });
                     db.ref('global_admin_event').on('value', (snapshot) => {
                         let data = snapshot.val();
@@ -1162,7 +1235,7 @@
                                 pwd: "123", level: isAdm ? 99 : 1, xp: 0, gamesPlayed: 0,
                                 balance: isAdm ? 999999 : 15, cash: isAdm ? 100 : 0.00,
                                 email: savedEmail, transactions: [], streak: 1, lastLoginDate: "",
-                                lottoGrilles: [], dailyQuests: this.dailyQuests
+                                lottoGrilles: [], dailyQuests: this.dailyQuests, mesParis: []
                             };
                             this.usersDB[cleanKey] = acc;
                             if(db) db.ref('users/' + cleanKey).set(acc);
@@ -1231,6 +1304,7 @@
                 this.transactions = acc.transactions || [];
                 this.streakDays = acc.streak || 1;
                 this.lottoGrilles = acc.lottoGrilles || [];
+                this.userMesParis = acc.mesParis || [];
                 if(acc.dailyQuests) this.dailyQuests = acc.dailyQuests;
 
                 let rawEmail = acc.email || cleanKey;
@@ -1291,6 +1365,229 @@
                 if(!tutoDone && !isAdm) {
                     const tutoOverlay = document.getElementById('tuto-overlay');
                     if(tutoOverlay) tutoOverlay.classList.add('show');
+                }
+            },
+
+            // GESTION DES ONGLETS DE PARIS JOUEUR
+            switchPariTab(tab) {
+                document.querySelectorAll('#screen-paris .auth-tab').forEach(t => t.classList.remove('active'));
+                document.getElementById('tab-pari-' + tab).classList.add('active');
+                document.querySelectorAll('.pari-sub-section').forEach(s => s.classList.add('hidden'));
+                document.getElementById('pari-section-' + tab).classList.remove('hidden');
+                this.renderParisJoueur();
+                this.vibrer([20]);
+            },
+
+            adminCreerPariMatch() {
+                let titre = document.getElementById('admin-pari-titre').value.trim();
+                let choix1 = document.getElementById('admin-pari-choix1').value.trim();
+                let cote1 = parseFloat(document.getElementById('admin-pari-cote1').value);
+                let choix2 = document.getElementById('admin-pari-choix2').value.trim();
+                let cote2 = parseFloat(document.getElementById('admin-pari-cote2').value);
+
+                if(!titre || !choix1 || !choix2 || isNaN(cote1) || isNaN(cote2)) {
+                    return alert("Veuillez remplir tous les champs du match correctement.");
+                }
+
+                let matchId = 'match_' + Date.now();
+                let nouveauMatch = {
+                    id: matchId, titre: titre,
+                    choix1: choix1, cote1: cote1,
+                    choix2: choix2, cote2: cote2,
+                    statut: 'ouvert', vainqueur: null
+                };
+
+                this.globalParisMatchs[matchId] = nouveauMatch;
+                if(db) db.ref('global_paris_matchs/' + matchId).set(nouveauMatch);
+                localStorage.setItem('fdj_global_paris', JSON.stringify(this.globalParisMatchs));
+
+                document.getElementById('admin-pari-titre').value = "";
+                document.getElementById('admin-pari-choix1').value = "";
+                document.getElementById('admin-pari-cote1').value = "";
+                document.getElementById('admin-pari-choix2').value = "";
+                document.getElementById('admin-pari-cote2').value = "";
+                alert("Match / Pari sportif publié avec succès !");
+                this.chargerAdminParisManage();
+            },
+
+            chargerAdminParisManage() {
+                let container = document.getElementById('admin-matchs-trancher-list');
+                if(!container) return;
+                let keys = Object.keys(this.globalParisMatchs || {});
+                let ouverts = keys.filter(k => this.globalParisMatchs[k].statut === 'ouvert');
+
+                if(ouverts.length === 0) {
+                    container.innerHTML = `<p style="font-size:0.75rem; color:var(--text-muted);">Aucun match ouvert à trancher.</p>`;
+                    return;
+                }
+
+                container.innerHTML = ouverts.map(k => {
+                    let m = this.globalParisMatchs[k];
+                    return `
+                        <div style="background:rgba(0,0,0,0.5); padding:8px; border-radius:8px; border:1px solid rgba(59,130,246,0.3); font-size:0.75rem;">
+                            <div style="font-weight:bold; color:#fff; margin-bottom:4px;">⚽ ${m.titre}</div>
+                            <div style="display:flex; gap:6px;">
+                                <button class="btn btn-green" style="padding:5px; font-size:0.7rem; background:#10b981;" onclick="app.adminTrancherMatch('${m.id}', 'choix1')">Victoire ${m.choix1} (${m.cote1})</button>
+                                <button class="btn btn-green" style="padding:5px; font-size:0.7rem; background:#3b82f6;" onclick="app.adminTrancherMatch('${m.id}', 'choix2')">Victoire ${m.choix2} (${m.cote2})</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            },
+
+            adminTrancherMatch(matchId, choixGagnantKey) {
+                let m = this.globalParisMatchs[matchId];
+                if(!m || m.statut !== 'ouvert') return;
+                m.statut = 'ferme';
+                m.vainqueur = choixGagnantKey;
+
+                // Parcourir tous les utilisateurs pour distribuer les gains de ce match
+                for(let emailKey in this.usersDB) {
+                    let userAcc = this.usersDB[emailKey];
+                    if(userAcc && userAcc.mesParis) {
+                        userAcc.mesParis.forEach(p => {
+                            if(p.matchId === matchId && p.statut === 'ouvert') {
+                                if(p.choixKey === choixGagnantKey) {
+                                    p.statut = 'gagne';
+                                    p.gain = Math.round(p.mise * p.cote);
+                                    userAcc.balance = (userAcc.balance || 0) + p.gain;
+                                    if(!userAcc.transactions) userAcc.transactions = [];
+                                    userAcc.transactions.unshift({ text: `Pari Sportif GAGNÉ sur "${m.titre}" : +${p.gain} pièces 🪙`, time: new Date().toLocaleTimeString() });
+                                } else {
+                                    p.statut = 'perdu';
+                                    p.gain = 0;
+                                    if(!userAcc.transactions) userAcc.transactions = [];
+                                    userAcc.transactions.unshift({ text: `Pari Sportif PERDU sur "${m.titre}" (-${p.mise} 🪙)`, time: new Date().toLocaleTimeString() });
+                                }
+                            }
+                        });
+                        if(db) db.ref('users/' + emailKey).set(userAcc);
+                    }
+                }
+
+                if(db) db.ref('global_paris_matchs/' + matchId).set(m);
+                localStorage.setItem('fdj_global_paris', JSON.stringify(this.globalParisMatchs));
+                localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
+
+                // Mettre à jour l'utilisateur connecté en local
+                if(this.currentEmail && this.usersDB[this.currentEmail]) {
+                    this.userMesParis = this.usersDB[this.currentEmail].mesParis || [];
+                    this.balance = this.usersDB[this.currentEmail].balance;
+                    this.updateUI(); this.rafraichirJournalTransactionsUI();
+                }
+
+                alert(`Match "${m.titre}" tranché ! Les gains ont été distribués aux gagnants.`);
+                this.renderParisJoueur();
+                this.chargerAdminParisManage();
+            },
+
+            parierSurMatch(matchId, choixKey) {
+                let m = this.globalParisMatchs[matchId];
+                if(!m || m.statut !== 'ouvert') return;
+
+                let miseInput = prompt(`Combien de pièces souhaitez-vous miser sur ${choixKey === 'choix1' ? m.choix1 : m.choix2} ? (Solde actuel : ${this.balance} 🪙)`);
+                if(!miseInput) return;
+                let mise = parseInt(miseInput);
+                if(isNaN(mise) || mise <= 0) return alert("Montant invalide.");
+                if(this.balance < mise) return alert("Vous n'avez pas assez de pièces !");
+
+                this.balance -= mise;
+                let cote = choixKey === 'choix1' ? m.cote1 : m.cote2;
+                let gainPotentiel = Math.round(mise * cote);
+
+                let nouveauPari = {
+                    id: 'pari_' + Date.now(),
+                    matchId: matchId,
+                    matchTitre: m.titre,
+                    choixNom: choixKey === 'choix1' ? m.choix1 : m.choix2,
+                    choixKey: choixKey,
+                    mise: mise,
+                    cote: cote,
+                    gainPotentiel: gainPotentiel,
+                    statut: 'ouvert',
+                    gain: 0,
+                    temps: new Date().toLocaleTimeString()
+                };
+
+                this.userMesParis.unshift(nouveauPari);
+                this.ajouterTransaction(`Pari Sportif placé : ${mise} 🪙 sur "${m.titre}"`);
+                this.sauvegarderEtatCompte();
+                this.updateUI();
+                this.renderParisJoueur();
+                this.vibrer([50, 50]); this.jouerSon('win');
+                alert(`Pari validé avec succès ! Gain potentiel : ${gainPotentiel} pièces 🪙`);
+            },
+
+            renderParisJoueur() {
+                let dispoContainer = document.getElementById('user-paris-matchs-list');
+                let ouvertsContainer = document.getElementById('user-paris-ouverts-list');
+                let fermesContainer = document.getElementById('user-paris-fermes-list');
+
+                let keys = Object.keys(this.globalParisMatchs || {});
+                let matchsOuverts = keys.filter(k => this.globalParisMatchs[k].statut === 'ouvert');
+
+                // 1. Matchs ouverts
+                if(dispoContainer) {
+                    if(matchsOuverts.length === 0) {
+                        dispoContainer.innerHTML = `<div class="card" style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.8rem;">Aucun match ou pari ouvert pour le moment. Revenez vite !</div>`;
+                    } else {
+                        dispoContainer.innerHTML = matchsOuverts.map(k => {
+                            let m = this.globalParisMatchs[k];
+                            return `
+                                <div class="card" style="background:rgba(15,23,42,0.9); border-color:rgba(59,130,246,0.4);">
+                                    <div style="font-size:0.85rem; font-weight:bold; color:#fff; margin-bottom:8px; text-align:center;">⚽ ${m.titre}</div>
+                                    <div style="display:flex; gap:8px;">
+                                        <button class="btn btn-outline" style="flex:1; padding:10px; font-size:0.75rem; border-color:#3b82f6;" onclick="app.parierSurMatch('${m.id}', 'choix1')">
+                                            ${m.choix1}<br><strong style="color:var(--accent-gold);">Côte : ${m.cote1}</strong>
+                                        </button>
+                                        <button class="btn btn-outline" style="flex:1; padding:10px; font-size:0.75rem; border-color:#3b82f6;" onclick="app.parierSurMatch('${m.id}', 'choix2')">
+                                            ${m.choix2}<br><strong style="color:var(--accent-gold);">Côte : ${m.cote2}</strong>
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                    }
+                }
+
+                // 2. Mes paris ouverts
+                let mesOuverts = this.userMesParis.filter(p => p.statut === 'ouvert');
+                if(ouvertsContainer) {
+                    if(mesOuverts.length === 0) {
+                        ouvertsContainer.innerHTML = `<div class="card" style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.8rem;">Aucun pari en cours.</div>`;
+                    } else {
+                        ouvertsContainer.innerHTML = mesOuverts.map(p => `
+                            <div class="card" style="background:rgba(0,0,0,0.4); padding:10px; border-left:4px solid #38bdf8;">
+                                <div style="font-size:0.8rem; font-weight:bold; color:#fff;">${p.matchTitre}</div>
+                                <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">Votre choix : <strong style="color:#38bdf8;">${p.choixNom}</strong></div>
+                                <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-top:6px;">
+                                    <span>Mise : <strong>${p.mise} 🪙</strong> (Côte : ${p.cote})</span>
+                                    <span style="color:var(--accent-gold); font-weight:bold;">Gain potent. : +${p.gainPotentiel} 🪙</span>
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+                }
+
+                // 3. Mes paris fermés (historique)
+                let mesFermes = this.userMesParis.filter(p => p.statut !== 'ouvert');
+                if(fermesContainer) {
+                    if(mesFermes.length === 0) {
+                        fermesContainer.innerHTML = `<div class="card" style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.8rem;">Aucun historique de pari.</div>`;
+                    } else {
+                        fermesContainer.innerHTML = mesFermes.map(p => {
+                            let isWin = p.statut === 'gagne';
+                            let badgeColor = isWin ? '#10b981' : '#ef4444';
+                            let badgeText = isWin ? `🎉 GAGNÉ (+${p.gain} 🪙)` : `❌ PERDU (-${p.mise} 🪙)`;
+                            return `
+                                <div class="card" style="background:rgba(0,0,0,0.4); padding:10px; border-left:4px solid ${badgeColor};">
+                                    <div style="font-size:0.8rem; font-weight:bold; color:#fff;">${p.matchTitre}</div>
+                                    <div style="font-size:0.75rem; color:var(--text-muted);">Choix : ${p.choixNom} | Mise : ${p.mise} 🪙</div>
+                                    <div style="font-size:0.78rem; font-weight:bold; color:${badgeColor}; margin-top:4px;">${badgeText}</div>
+                                </div>
+                            `;
+                        }).join('');
+                    }
                 }
             },
 
@@ -1432,7 +1729,7 @@
                 let v1 = villes[(daySeed * 2) % villes.length];
                 let g1 = ((daySeed * 37) % 400 + 150).toFixed(2);
                 
-                let p2 = prenoms[(daySeed * 5 + 3) % prenoms.length] + "_" + ((daySeed * 4 + 7) % villes.length);
+                let p2 = prenoms[(daySeed * 5 + 3) % prenoms.length] + "_" + ((daySeed * 4 + 7) % villes.length];
                 let v2 = villes[(daySeed * 4 + 7) % villes.length];
                 let g2 = ((daySeed * 23) % 250 + 80).toFixed(2);
 
@@ -1775,6 +2072,7 @@
                 this.usersDB[this.currentEmail].streak = this.streakDays;
                 this.usersDB[this.currentEmail].lottoGrilles = this.lottoGrilles;
                 this.usersDB[this.currentEmail].dailyQuests = this.dailyQuests;
+                this.usersDB[this.currentEmail].mesParis = this.userMesParis;
 
                 if(db) db.ref('users/' + this.currentEmail).set(this.usersDB[this.currentEmail]);
                 localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
@@ -1835,7 +2133,7 @@
                         nom: nom, pwd: pwd, level: isAdm ? 99 : 1, xp: 0, gamesPlayed: 0, 
                         balance: isAdm ? 999999 : 15, cash: isAdm ? 100 : 0.00, humanSupport: false, 
                         loginTime: timeStr, email: email, transactions: this.transactions, streak: 1, lastLoginDate: new Date().toDateString(),
-                        lottoGrilles: [], dailyQuests: this.dailyQuests
+                        lottoGrilles: [], dailyQuests: this.dailyQuests, mesParis: []
                     };
                     this.usersDB[cleanEmailKey] = newAcc;
                     if(db) db.ref('users/' + cleanEmailKey).set(newAcc);
@@ -2581,6 +2879,7 @@
                 }
                 this.chargerAdminMissionsManage();
                 this.chargerAdminSubmissions();
+                this.chargerAdminParisManage();
             },
 
             chargerAdminSubmissions() {
