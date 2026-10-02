@@ -192,6 +192,15 @@
             font-size: 0.8rem; font-weight: bold; color: #000;
         }
 
+        /* OVERLAY MAINTENANCE GLOBALE */
+        .maintenance-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(4, 8, 18, 0.96); z-index: 99999; display: flex;
+            flex-direction: column; justify-content: center; align-items: center;
+            padding: 24px; box-sizing: border-box; text-align: center; backdrop-filter: blur(15px);
+        }
+        .maintenance-overlay.hidden { display: none !important; }
+
         .win-popup { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5); background: linear-gradient(135deg, #34d399, #059669); padding: 24px; border-radius: 24px; text-align: center; color: #fff; font-weight: 900; z-index: 2000; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 20px 60px rgba(16,185,129,0.7); width: 85%; box-sizing: border-box; }
         .win-popup.show { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; }
         
@@ -241,6 +250,18 @@
 
     <div class="phone-container">
         
+        <!-- ÉCRAN DE MAINTENANCE GLOBALE -->
+        <div class="maintenance-overlay hidden" id="global-maintenance-overlay">
+            <div style="font-size: 3.5rem; margin-bottom: 12px; animation: pulseDot 2s infinite;">🛠️</div>
+            <h2 style="color: var(--accent-gold); font-size: 1.5rem; margin-bottom: 8px; font-weight: 900;">MAINTENANCE SERVEUR</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; max-width: 300px;">
+                Nous effectuons une mise à jour technique de nos infrastructures et de nos serveurs. L'accès aux jeux est temporairement suspendu. Revenez plus tard !
+            </p>
+            <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid var(--accent-gold); padding: 10px 14px; border-radius: 12px; font-size: 0.78rem; color: var(--accent-gold); font-weight: bold;">
+                🔒 Sécurité & Intégrité FDJ
+            </div>
+        </div>
+
         <!-- POPUP VICTOIRE CASH -->
         <div class="win-popup" id="win-popup">
             <div style="font-size: 3rem; margin-bottom: 8px;">🎉</div>
@@ -557,7 +578,7 @@
                     <div class="game-card" onclick="app.changerEcran('screen-wheel-game')"><div class="icon">🎡</div><div class="title">Spin & Win</div><div class="jackpot">Mise : 5 🪙</div></div>
                     <div class="game-card" onclick="app.changerEcran('screen-tower')" style="background: linear-gradient(135deg, rgba(245,158,11,0.25), rgba(30,41,59,0.8)); border-color: rgba(245,158,11,0.4);"><div class="icon">🗼</div><div class="title">Tower Stack</div><div class="jackpot">Mise : 4 🪙</div></div>
                     <div class="game-card" onclick="app.changerEcran('screen-chicken')" style="background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(30,41,59,0.8)); border-color: rgba(245,158,11,0.4);"><div class="icon" style="font-size:2rem;">🐔</div><div class="title">Chemin Risqué</div><div class="jackpot">Mise : 4 🪙</div></div>
-                    <div class="game-card" onclick="app.changerEcran('screen-lotto')" style="background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(30,41,59,0.8)); border-color: rgba(16,185,129,0.4);"><div class="icon" style="font-size:2rem;">🎟️</div><div class="title">Loto Flash</div><div class="jackpot">Gros Lots</div></div>
+                    <div class="game-card" onclick="app.changerEcran('screen-lotto')" style="background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(30,41,59,0.8)); border-color: rgba(16,185,129,0.3);"><div class="icon" style="font-size:2rem;">🎟️️</div><div class="title">Loto Flash</div><div class="jackpot">Gros Lots</div></div>
                 </div>
 
                 <div class="legal-disclaimer">
@@ -892,8 +913,15 @@
             <div id="screen-admin" class="screen">
                 <div class="card" style="border-color: #ef4444; background: linear-gradient(180deg, rgba(239,68,68,0.15), rgba(0,0,0,0));">
                     <h3 style="margin:0 0 6px 0; color: #ef4444; font-size: 1.3rem;">👑 Console Master (Admin)</h3>
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Gestion des profils, annonces et missions.</p>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Gestion des profils, annonces et maintenance.</p>
                     
+                    <!-- BOUTON MODE MAINTENANCE URGENCE -->
+                    <div style="background: rgba(239,68,68,0.15); padding: 12px; border-radius: 10px; border: 1px solid rgba(239,68,68,0.5); margin-bottom: 12px; text-align: center;">
+                        <h4 style="color: #f87171; margin:0 0 6px 0; font-size: 0.85rem;">🛠️ Interrupteur Mode Maintenance :</h4>
+                        <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 8px;">Bloque instantanément l'accès à tous les joueurs avec un écran pro.</p>
+                        <button class="btn btn-green" id="btn-toggle-maintenance" onclick="app.toggleMaintenanceMode()" style="font-size: 0.78rem; padding: 10px; background: linear-gradient(135deg, #ef4444, #b91c1c); border-color: #f87171;">Activer la Maintenance 🛑</button>
+                    </div>
+
                     <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px; border: 1px solid rgba(245,158,11,0.4); margin-bottom: 12px;">
                         <h4 style="color: var(--accent-gold); margin:0 0 6px 0; font-size: 0.85rem;">⚡ Gérer les Événements Flash :</h4>
                         <input type="text" id="admin-event-title" placeholder="Titre (ex: 🏆 Bonus Spécial)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
@@ -1059,6 +1087,7 @@
             lottoMise: 10, hasUnreadSupportReply: false, lottoSecondsLeft: 1500,
             lottoGrilles: [],
             activeAdminEvent: null, activeQuiz: null, selectedQuizMise: 1,
+            isMaintenanceMode: false,
 
             // Tower Stack state
             towerActive: false, towerScore: 0, towerInterval: null,
@@ -1094,6 +1123,9 @@
 
                 let localQuiz = localStorage.getItem('fdj_active_quiz');
                 if(localQuiz) { try { this.activeQuiz = JSON.parse(localQuiz); } catch(e){} }
+
+                let localMaint = localStorage.getItem('fdj_maintenance_mode');
+                if(localMaint === 'true') this.isMaintenanceMode = true;
 
                 if(db) {
                     db.ref('users').on('value', (snapshot) => {
@@ -1133,7 +1165,15 @@
                         else localStorage.removeItem('fdj_active_quiz');
                         this.verifierQuizUI();
                     });
+                    db.ref('global_maintenance_mode').on('value', (snapshot) => {
+                        let val = snapshot.val();
+                        this.isMaintenanceMode = !!val;
+                        localStorage.setItem('fdj_maintenance_mode', this.isMaintenanceMode ? 'true' : 'false');
+                        this.appliquerModeMaintenanceUI();
+                    });
                 }
+
+                this.appliquerModeMaintenanceUI();
 
                 let savedEmail = localStorage.getItem('fdj_active_session');
                 if(savedEmail) {
@@ -1164,6 +1204,42 @@
                 this.demarrerRotationAutomatiqueContenu();
                 this.verifierEvenementAdminUI();
                 this.verifierQuizUI();
+            },
+
+            toggleMaintenanceMode() {
+                this.isMaintenanceMode = !this.isMaintenanceMode;
+                if(db) db.ref('global_maintenance_mode').set(this.isMaintenanceMode);
+                localStorage.setItem('fdj_maintenance_mode', this.isMaintenanceMode ? 'true' : 'false');
+                this.appliquerModeMaintenanceUI();
+                alert(this.isMaintenanceMode ? "🛑 Mode Maintenance ACTIVÉ pour tous les utilisateurs." : "✅ Mode Maintenance DÉSACTIVÉ.");
+            },
+
+            appliquerModeMaintenanceUI() {
+                let overlay = document.getElementById('global-maintenance-overlay');
+                let btnMaint = document.getElementById('btn-toggle-maintenance');
+                if(!overlay) return;
+
+                // Si l'utilisateur est admin, il peut quand même bypass pour tester ou désactiver, mais on bloque les joueurs classiques ou tout le monde selon le choix. Ici si activé, ça bloque l'UI avec l'overlay (sauf admin s'il veut désactiver, l'admin peut cliquer via la console ou on laisse l'overlay s'afficher avec une sécurité). Pour être tranquille, l'admin voit l'overlay mais peut le masquer ou on masque l'overlay si c'est l'admin ? Le plus simple : l'overlay bloque tout le monde sauf si on est admin, ou alors l'admin peut l'activer/le désactiver. Faisons en sorte que si c'est activé, ça s'affiche pour tout le monde (les testeurs/joueurs), et l'admin peut le désactiver s'il est connecté sur sa console.
+                if(this.isMaintenanceMode && !this.isAdmin) {
+                    overlay.classList.remove('hidden');
+                } else if(this.isMaintenanceMode && this.isAdmin) {
+                    // L'admin peut voir l'app en arrière-plan pour gérer, ou on met l'overlay partout. Mieux vaut l'afficher partout pour simuler le blocage réel, et l'admin peut le couper.
+                    overlay.classList.remove('hidden');
+                } else {
+                    overlay.classList.add('hidden');
+                }
+
+                if(btnMaint) {
+                    if(this.isMaintenanceMode) {
+                        btnMaint.innerText = "Désactiver la Maintenance 🟢";
+                        btnMaint.style.background = "linear-gradient(135deg, #10b981, #059669)";
+                        btnMaint.style.borderColor = "#34d399";
+                    } else {
+                        btnMaint.innerText = "Activer la Maintenance 🛑";
+                        btnMaint.style.background = "linear-gradient(135deg, #ef4444, #b91c1c)";
+                        btnMaint.style.borderColor = "#f87171";
+                    }
+                }
             },
 
             connecterSessionDirecte(cleanKey, acc, isAdm) {
@@ -1212,6 +1288,8 @@
                 } else {
                     this.isAdmin = false; this.retirerBoutonAdmin();
                 }
+                
+                this.appliquerModeMaintenanceUI();
 
                 const profileNameEl = document.getElementById('profile-name');
                 if(profileNameEl) profileNameEl.innerText = this.currentUser;
@@ -1319,8 +1397,6 @@
             stackerTowerBlock() {
                 if(!this.towerActive) return;
 
-                // Calcul du gain selon l'étage (Plafond strict à 3.00 € max pour les pros)
-                // Étage 1 à 15. Formule : score * 0.20 max, donc 15 étages = 3.00 €
                 this.towerScore++;
                 let currentGain = +(this.towerScore * 0.20).toFixed(2);
                 if(currentGain > 3.00) currentGain = 3.00;
@@ -1338,10 +1414,8 @@
                 newRow.innerText = `Étage ${this.towerScore} (+${currentGain} €)`;
                 rowsContainer.appendChild(newRow);
 
-                // Accélération progressive pour corser le jeu
                 this.towerSpeed += 0.4;
 
-                // Si le joueur atteint 15 étages par miracle, victoire maximale automatique !
                 if(this.towerScore >= 15) {
                     this.finJeuTower(true, 3.00);
                 }
@@ -1571,7 +1645,7 @@
                     this.sauvegarderEtatCompte();
                     this.updateUI();
                     this.rafraichirGrillesLottoUI();
-                    alert("🎟️ Un tirage Loto Flash vient d'avoir lieu !");
+                    alert("🎟️️ Un tirage Loto Flash vient d'avoir lieu !");
                 }
             },
 
