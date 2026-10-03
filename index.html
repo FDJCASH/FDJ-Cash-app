@@ -283,6 +283,15 @@
             <button class="btn btn-green" onclick="app.fermerPopup()">Continuer à jouer 🚀</button>
         </div>
 
+        <!-- POPUP RÉSULTAT LOTO (GAGNÉ / PERDU) -->
+        <div class="win-popup" id="lotto-result-popup" style="background: linear-gradient(135deg, #0f172a, #064e3b); border: 2px solid var(--accent-gold);">
+            <div style="font-size: 3rem; margin-bottom: 8px;" id="lotto-popup-icon">🎟️</div>
+            <div style="font-size: 1.3rem; text-transform: uppercase; color: var(--accent-gold);" id="lotto-popup-title">Tirage Loto Flash</div>
+            <div id="lotto-popup-amount" style="font-size: 2.2rem; color: #fff; margin: 8px 0;">+0.00 €</div>
+            <p id="lotto-popup-desc" style="font-size: 0.82rem; color: #cbd5e1; margin-bottom: 16px;">Le tirage officiel est tombé !</p>
+            <button class="btn btn-green" onclick="document.getElementById('lotto-result-popup').classList.remove('show')">Fermer et continuer 🚀</button>
+        </div>
+
         <!-- POPUP SPÉCIAL GAIN DE PIÈCES -->
         <div class="coins-popup" id="coins-popup">
             <div style="font-size: 3.2rem; margin-bottom: 4px;" id="coins-popup-icon">🥤🪙</div>
@@ -581,6 +590,8 @@
                     <div class="game-card" onclick="app.changerEcran('screen-wheel-game')"><div class="icon">🎡</div><div class="title">Spin & Win</div><div class="jackpot">Mise : 5 🪙</div></div>
                     <div class="game-card" onclick="app.changerEcran('screen-chests')" style="background: linear-gradient(135deg, rgba(56,189,248,0.25), rgba(30,41,59,0.8)); border-color: rgba(56,189,248,0.4);"><div class="icon">🧰</div><div class="title">Coffres Magiques</div><div class="jackpot">Mise : 6 🪙</div></div>
                     <div class="game-card" onclick="app.changerEcran('screen-chicken')" style="background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(30,41,59,0.8)); border-color: rgba(245,158,11,0.4);"><div class="icon" style="font-size:2rem;">🐔</div><div class="title">Chemin Risqué</div><div class="jackpot">Mise : 4 🪙</div></div>
+                    <div class="game-card" onclick="app.changerEcran('screen-dice')" style="background: linear-gradient(135deg, rgba(168,85,247,0.25), rgba(30,41,59,0.8)); border-color: rgba(168,85,247,0.4);"><div class="icon" style="font-size:2rem;">🎲</div><div class="title">Jeu de Dés</div><div class="jackpot">Mise : 5 🪙</div></div>
+                    <div class="game-card" onclick="app.changerEcran('screen-blackjack')" style="background: linear-gradient(135deg, rgba(239,68,68,0.25), rgba(30,41,59,0.8)); border-color: rgba(239,68,68,0.4);"><div class="icon" style="font-size:2rem;">🃏</div><div class="title">Black Jack</div><div class="jackpot">Mise : 8 🪙</div></div>
                     <div class="game-card" onclick="app.changerEcran('screen-lotto')" style="background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(30,41,59,0.8)); border-color: rgba(16,185,129,0.3);"><div class="icon" style="font-size:2rem;">🎟</div><div class="title">Loto Flash</div><div class="jackpot">Gros Lots</div></div>
                 </div>
 
@@ -607,19 +618,19 @@
                 </div>
             </div>
 
-            <!-- NOUVEL ESPACE PARIS SPORTIFS & PRONOSTICS -->
+            <!-- ESPACE PARIS SPORTIFS & PRONOSTICS (REFONTE TOTALE PROPRE) -->
             <div id="screen-paris" class="screen">
                 <div class="card" style="background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(15,23,42,0.9)); border-color: rgba(59,130,246,0.3);">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                         <h3 style="margin:0; color:#38bdf8; font-size:1.2rem;">⚽ Espace Paris & Matchs</h3>
                         <span style="font-size:0.7rem; background:rgba(59,130,246,0.2); color:#38bdf8; padding:2px 6px; border-radius:6px; font-weight:bold;">BOOKMAKER</span>
                     </div>
-                    <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:12px;">Pariez vos pièces sur les matchs et événements pour multiplier vos gains !</p>
+                    <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:12px;">Pariez vos pièces sur les matchs et suivez vos investissements en direct.</p>
 
                     <!-- Sous-onglets Paris -->
-                    <div class="auth-tabs" style="margin-bottom:10px;">
+                    <div class="auth-tabs" style="margin-bottom:0;">
                         <div class="auth-tab active" id="tab-pari-dispo" onclick="app.switchPariTab('dispo')">Matchs Ouverts</div>
-                        <div class="auth-tab" id="tab-pari-ouverts" onclick="app.switchPariTab('ouverts')">Mes Paris (En cours)</div>
+                        <div class="auth-tab" id="tab-pari-ouverts" onclick="app.switchPariTab('ouverts')">Mes Paris (Actifs)</div>
                         <div class="auth-tab" id="tab-pari-fermes" onclick="app.switchPariTab('fermes')">Historique</div>
                     </div>
                 </div>
@@ -652,6 +663,26 @@
                 </div>
             </div>
 
+            <!-- MODALE PLACER UN PARI PROPRE (AVEC SAISIE DE MISE PERSONNALISÉE) -->
+            <div class="modal-overlay hidden" id="modal-placer-pari" style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:1800; display:flex; justify-content:center; align-items:center; padding:16px; box-sizing:border-box;">
+                <div class="card" style="width: 100%; max-width: 320px; border-color: #38bdf8; background: #0f172a;">
+                    <div style="font-size: 1.8rem; text-align: center; margin-bottom: 6px;">⚽</div>
+                    <h3 style="margin-top:0; color: #38bdf8; font-size: 1.1rem; text-align: center;" id="modal-pari-title">Placer un pari</h3>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-bottom: 12px;" id="modal-pari-subtitle">Option choisie : -</p>
+                    
+                    <div style="font-size: 0.75rem; color: #fff; font-weight: bold; margin-bottom: 4px;">Montant de votre mise en pièces (🪙) :</div>
+                    <input type="number" id="modal-pari-input-mise" placeholder="Ex: 10" min="1" value="10" style="text-align: center; font-size: 1rem; font-weight: bold; margin-bottom: 8px;">
+                    
+                    <div style="background: rgba(0,0,0,0.4); padding: 8px; border-radius: 8px; font-size: 0.75rem; margin-bottom: 12px; display:flex; justify-content:space-between; align-items:center;">
+                        <span style="color:var(--text-muted);">Gain potentiel estimé :</span>
+                        <strong style="color:#34d399; font-size:0.9rem;" id="modal-pari-gain-estim">0 🪙</strong>
+                    </div>
+
+                    <button class="btn btn-green" onclick="app.confirmerPariModal()" style="margin-bottom: 6px; font-size: 0.85rem;">Confirmer le Pari 🚀</button>
+                    <button class="btn btn-outline" onclick="document.getElementById('modal-placer-pari').classList.add('hidden')" style="font-size: 0.78rem; padding: 8px;">Annuler</button>
+                </div>
+            </div>
+
             <!-- JEU 4: COFFRES -->
             <div id="screen-chests" class="screen">
                 <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
@@ -665,6 +696,55 @@
                     </div>
                     <button class="btn btn-gold hidden" id="btn-new-chests" onclick="app.resetCoffres()">Rejouer (6 🪙)</button>
                     <div id="chest-result" style="font-size: 0.95rem; font-weight: bold; margin-top: 12px; min-height: 22px;"></div>
+                </div>
+            </div>
+
+            <!-- JEU DE DÉS -->
+            <div id="screen-dice" class="screen">
+                <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
+                <div class="card" style="text-align: center; padding: 20px 16px; border-color: #a855f7; background: linear-gradient(180deg, rgba(168,85,247,0.15), rgba(15,23,42,0.9));">
+                    <h3 style="color: #c084fc; font-size: 1.4rem; margin-bottom: 4px;">🎲 Jeu de Dés Chance</h3>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Misez 5 pièces. Si le total dépasse 7, vous gagnez du Cash ou des pièces !</p>
+                    
+                    <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0;">
+                        <div id="dice-1" style="width: 70px; height: 70px; background: #1e1b4b; border: 2px solid #c084fc; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; box-shadow: 0 0 15px rgba(168,85,247,0.4);">🎲</div>
+                        <div id="dice-2" style="width: 70px; height: 70px; background: #1e1b4b; border: 2px solid #c084fc; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; box-shadow: 0 0 15px rgba(168,85,247,0.4);">🎲</div>
+                    </div>
+
+                    <div style="font-size: 0.9rem; font-weight: bold; color: #fff; margin-bottom: 14px;" id="dice-total-text">Total : -</div>
+
+                    <button class="btn btn-gold" id="btn-roll-dice" onclick="app.lancerJeuDes()" style="font-size: 1rem; background: linear-gradient(135deg, #a855f7, #7e22ce); color: #fff; border-color: #d8b4fe;">Lancer les Dés (5 🪙)</button>
+                    <div id="dice-result" style="font-size: 0.95rem; font-weight: bold; margin-top: 12px; min-height: 22px;"></div>
+                </div>
+            </div>
+
+            <!-- JEU BLACK JACK -->
+            <div id="screen-blackjack" class="screen">
+                <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
+                <div class="card" style="text-align: center; padding: 18px 14px; border-color: #ef4444; background: linear-gradient(180deg, rgba(239,68,68,0.15), rgba(15,23,42,0.9));">
+                    <h3 style="color: #f87171; font-size: 1.3rem; margin-bottom: 4px;">🃏 Black Jack Casino</h3>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">Misez 8 pièces. Battez le croupier sans dépasser 21 !</p>
+                    
+                    <div style="background: rgba(0,0,0,0.5); padding: 10px; border-radius: 12px; margin-bottom: 10px; border: 1px solid rgba(239,68,68,0.3);">
+                        <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 4px;">Main du Croupier (<span id="dealer-score">?</span>)</div>
+                        <div id="dealer-cards" style="display: flex; justify-content: center; gap: 6px; min-height: 55px; align-items: center;"></div>
+                    </div>
+
+                    <div style="background: rgba(0,0,0,0.5); padding: 10px; border-radius: 12px; margin-bottom: 12px; border: 1px solid rgba(16,185,129,0.3);">
+                        <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 4px;">Votre Main (<span id="player-score">0</span>)</div>
+                        <div id="player-cards" style="display: flex; justify-content: center; gap: 6px; min-height: 55px; align-items: center;"></div>
+                    </div>
+
+                    <div id="bj-actions-start">
+                        <button class="btn btn-gold" onclick="app.demarrerBlackJack()" style="font-size: 0.95rem; background: linear-gradient(135deg, #ef4444, #991b1b); color: #fff; border-color: #f87171;">Commencer (8 🪙)</button>
+                    </div>
+
+                    <div id="bj-actions-play" class="hidden" style="display: flex; gap: 8px;">
+                        <button class="btn btn-green" onclick="app.bjTirerCarte()" style="font-size: 0.8rem; padding: 10px;">Carte ➕</button>
+                        <button class="btn btn-gold" onclick="app.bjRester()" style="font-size: 0.8rem; padding: 10px; background:#f59e0b;">Rester 🛑</button>
+                    </div>
+
+                    <div id="bj-result" style="font-size: 0.9rem; font-weight: bold; margin-top: 10px; min-height: 22px;"></div>
                 </div>
             </div>
 
@@ -757,13 +837,13 @@
                 </div>
             </div>
 
-            <!-- LOTO FLASH -->
+            <!-- LOTO FLASH (GAIN MAX 5 € PAR EXEMPLE) -->
             <div id="screen-lotto" class="screen">
                 <div><button class="btn btn-outline" style="width: auto; padding: 8px 14px; font-size: 0.8rem;" onclick="app.changerEcran('screen-home', document.getElementById('nav-home'))">⬅ Retour</button></div>
                 <div class="card" style="text-align: center; padding: 16px; border-color: #10b981;">
                     <div style="font-size: 2.2rem; margin-bottom: 2px;">🎟</div>
                     <h3 style="color: #34d399; font-size: 1.2rem; margin-bottom: 2px;">Tirage Loto Flash</h3>
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px;">Prochain tirage automatique dans : <strong id="lotto-countdown" style="color:var(--accent-gold);">29:45</strong></p>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px;">Prochain tirage automatique dans : <strong id="lotto-countdown" style="color:var(--accent-gold);">00:30</strong></p>
                     
                     <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 14px; margin-bottom: 10px; border: 1px solid rgba(16,185,129,0.3);">
                         <div style="font-size: 1rem; font-weight: 900; color: var(--accent-gold); margin-bottom: 4px;">
@@ -775,7 +855,7 @@
                             <span>25 🪙</span>
                             <span>50 🪙</span>
                         </div>
-                        <div id="lotto-gain-potentiel" style="font-size: 0.78rem; color: #34d399; font-weight: bold; margin-top: 6px;">Gain potentiel : +1.50 €</div>
+                        <div id="lotto-gain-potentiel" style="font-size: 0.78rem; color: #34d399; font-weight: bold; margin-top: 6px;">Gain potentiel max : ~5.00 €</div>
                     </div>
 
                     <button class="btn btn-green" id="btn-lotto" onclick="app.validerGrilleLotto()" style="font-size: 0.9rem; padding: 12px;">Valider ma Grille 🎟</button>
@@ -784,9 +864,9 @@
                     <div style="margin-top: 10px; text-align: left; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 12px; border: 1px solid rgba(56,189,248,0.2);">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                             <span style="font-size: 0.78rem; font-weight: bold; color: #38bdf8;">📥 Mes Grilles & Statuts de Tirage</span>
-                            <span style="font-size: 0.65rem; color: #10b981; background:rgba(16,185,129,0.2); padding:2px 5px; border-radius:4px;">AUTO</span>
+                            <span style="font-size: 0.65rem; color: #10b981; background:rgba(16,185,129,0.2); padding:2px 5px; border-radius:4px;">RÉEL</span>
                         </div>
-                        <div id="lotto-my-grids-list" style="display: flex; flex-direction: column; gap: 6px; max-height: 110px; overflow-y: auto; font-size: 0.75rem; color: #cbd5e1; margin-bottom: 8px;">
+                        <div id="lotto-my-grids-list" style="display: flex; flex-direction: column; gap: 6px; max-height: 120px; overflow-y: auto; font-size: 0.75rem; color: #cbd5e1; margin-bottom: 8px;">
                             <p style="font-size: 0.72rem; color: var(--text-muted);">Aucune grille en cours.</p>
                         </div>
                     </div>
@@ -933,7 +1013,7 @@
                 </div>
             </div>
 
-            <!-- 5. ESPACE ADMIN MASTER -->
+            <!-- 5. ESPACE ADMIN MASTER (AVEC CONTRÔLE TOTAL DES PARIS) -->
             <div id="screen-admin" class="screen">
                 <div class="card" style="border-color: #ef4444; background: linear-gradient(180deg, rgba(239,68,68,0.15), rgba(0,0,0,0));">
                     <h3 style="margin:0 0 6px 0; color: #ef4444; font-size: 1.3rem;">👑 Console Master (Admin)</h3>
@@ -945,9 +1025,9 @@
                         <button class="btn btn-green" id="btn-toggle-maintenance" onclick="app.toggleMaintenanceMode()" style="font-size: 0.78rem; padding: 10px; background: linear-gradient(135deg, #ef4444, #b91c1c); border-color: #f87171;">Activer la Maintenance 🛑</button>
                     </div>
 
-                    <!-- GESTION DES PARIS SPORTIFS (ADMIN) -->
+                    <!-- GESTION DES PARIS SPORTIFS (ADMIN PROPRE) -->
                     <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px; border: 1px solid rgba(59,130,246,0.4); margin-bottom: 12px;">
-                        <h4 style="color: #38bdf8; margin:0 0 6px 0; font-size: 0.85rem;">⚽ Créer un Match / Pari Sportif :</h4>
+                        <h4 style="color: #38bdf8; margin:0 0 6px 0; font-size: 0.85rem;">⚽ Créer ou Gérer les Matchs & Paris :</h4>
                         <input type="text" id="admin-pari-titre" placeholder="Intitulé (ex: Real vs Barça)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
                         <input type="text" id="admin-pari-choix1" placeholder="Option 1 (ex: Real Madrid)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
                         <input type="number" step="0.05" id="admin-pari-cote1" placeholder="Côte Option 1 (ex: 1.80)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
@@ -965,7 +1045,7 @@
                         <input type="number" step="0.5" id="admin-event-reward" placeholder="Montant en € (ex: 10.00)" style="margin-bottom:6px; font-size:0.75rem; padding:7px;">
                         <div style="display:flex; gap:6px;">
                             <button class="btn btn-gold" onclick="app.adminLancerEvenement()" style="font-size:0.75rem; padding:8px; flex:1;">Publier 🚀</button>
-                            <button class="btn btn-outline" onclick="app.adminSupprimerEvenement()" style="font-size:0.75rem; padding:8px; color:#ef4444; border-color:#ef4444; flex:1;">Supprimer 🗑️</button>
+                            <button class="btn btn-outline" onclick="app.adminSupprimerEvenement()" style="font-size:0.75rem; padding:8px; color:#ef4444; border-color:#ef4444; flex:1;">Supprimer 🗑</button>
                         </div>
                     </div>
 
@@ -1124,11 +1204,17 @@
             
             chickenStep: 0, chickenGain: 0.00, chickenActive: false,
             grid9Symbols: [], grid9RevealedCount: 0, maxGrattages: 3,
-            lottoMise: 10, hasUnreadSupportReply: false, lottoSecondsLeft: 1500,
+            lottoMise: 10, hasUnreadSupportReply: false, lottoSecondsLeft: 30,
             lottoGrilles: [],
             activeAdminEvent: null, activeQuiz: null, selectedQuizMise: 1,
             isMaintenanceMode: false,
             globalParisMatchs: {}, userMesParis: [],
+
+            // Données temporaires pour la modale de pari
+            pendingPariMatchId: null, pendingPariChoixKey: null,
+
+            // États Black Jack
+            bjDeck: [], bjPlayerHand: [], bjDealerHand: [], bjActive: false, bjMise: 8,
 
             dailyQuests: [
                 { id: 'quest_spins', title: 'Faire 3 spins / parties', target: 3, current: 0, reward: 10, claimed: false },
@@ -1253,6 +1339,167 @@
                 this.verifierQuizUI();
             },
 
+            // JEU DE DÉS
+            lancerJeuDes() {
+                if (this.balance < 5) return alert("Fonds insuffisants (5 pièces requises) !");
+                this.balance -= 5;
+                this.ajouterTransaction("Mise Jeu de Dés (-5 🪙)");
+                this.sauvegarderEtatCompte(); this.updateUI();
+                this.vibrer([40]); this.jouerSon('spin');
+
+                document.getElementById('dice-result').innerText = "Les dés roulent...";
+                document.getElementById('dice-total-text').innerText = "Total : ...";
+
+                let d1El = document.getElementById('dice-1');
+                let d2El = document.getElementById('dice-2');
+
+                let r1 = Math.floor(Math.random() * 6) + 1;
+                let r2 = Math.floor(Math.random() * 6) + 1;
+                let total = r1 + r2;
+
+                setTimeout(() => {
+                    d1El.innerText = r1;
+                    d2El.innerText = r2;
+                    document.getElementById('dice-total-text').innerText = `Total : ${total} (Objectif > 7)`;
+
+                    if (total > 7) {
+                        if (Math.random() < 0.5) {
+                            let rewardCoins = 12;
+                            this.balance += rewardCoins;
+                            this.ajouterTransaction(`Jeu de Dés GAGNÉ : +${rewardCoins} pièces 🪙`);
+                            this.sauvegarderEtatCompte(); this.updateUI();
+                            this.montrerPopupPieces(rewardCoins, "🎲 Super Victoire aux Dés !");
+                        } else {
+                            this.gererGain(true, 0.50);
+                        }
+                        document.getElementById('dice-result').innerHTML = `<span style="color:#34d399;">🎉 Gagné ! Total de ${total} !</span>`;
+                    } else {
+                        this.gagnerXP(); this.jouerSon('lose');
+                        document.getElementById('dice-result').innerHTML = `<span style="color:var(--text-muted);">Perdu... Total de ${total}.</span>`;
+                    }
+                }, 1000);
+            },
+
+            // JEU BLACK JACK
+            demarrerBlackJack() {
+                if (this.balance < this.bjMise) return alert("Fonds insuffisants (8 pièces requises) !");
+                this.balance -= this.bjMise;
+                this.ajouterTransaction("Mise Black Jack (-8 🪙)");
+                this.sauvegarderEtatCompte(); this.updateUI();
+                this.vibrer([40]); this.jouerSon('click');
+
+                this.bjActive = true;
+                document.getElementById('bj-actions-start').classList.add('hidden');
+                document.getElementById('bj-actions-play').classList.remove('hidden');
+                document.getElementById('bj-result').innerText = "Partie en cours. Tirez ou restez.";
+
+                let suits = ['♠', '♥', '♦', '♣'];
+                let values = [
+                    {n:'2',v:2},{n:'3',v:3},{n:'4',v:4},{n:'5',v:5},{n:'6',v:6},{n:'7',v:7},{n:'8',v:8},{n:'9',v:9},{n:'10',v:10},{n:'J',v:10},{n:'Q',v:10},{n:'K',v:10},{n:'A',v:11}
+                ];
+                this.bjDeck = [];
+                for(let s of suits) {
+                    for(let val of values) {
+                        this.bjDeck.push({name: val.n + s, value: val.v});
+                    }
+                }
+                this.bjDeck.sort(() => Math.random() - 0.5);
+
+                this.bjPlayerHand = [this.bjDeck.pop(), this.bjDeck.pop()];
+                this.bjDealerHand = [this.bjDeck.pop(), this.bjDeck.pop()];
+
+                this.rafraichirBlackJackUI(false);
+            },
+
+            bjTirerCarte() {
+                if(!this.bjActive) return;
+                this.bjPlayerHand.push(this.bjDeck.pop());
+                this.vibrer([20]); this.jouerSon('click');
+                this.rafraichirBlackJackUI(false);
+
+                let playerScore = this.calculerScoreBJ(this.bjPlayerHand);
+                if(playerScore > 21) {
+                    this.bjFinPartie("Bust ! Vous avez dépassé 21.", false);
+                }
+            },
+
+            bjRester() {
+                if(!this.bjActive) return;
+                let dealerScore = this.calculerScoreBJ(this.bjDealerHand);
+                while(dealerScore < 17) {
+                    this.bjDealerHand.push(this.bjDeck.pop());
+                    dealerScore = this.calculerScoreBJ(this.bjDealerHand);
+                }
+
+                let playerScore = this.calculerScoreBJ(this.bjPlayerHand);
+                this.rafraichirBlackJackUI(true);
+
+                if(dealerScore > 21 || playerScore > dealerScore) {
+                    this.bjFinPartie("🎉 Victoire au Black Jack !", true);
+                } else if(playerScore === dealerScore) {
+                    this.balance += this.bjMise;
+                    this.sauvegarderEtatCompte(); this.updateUI();
+                    this.bjFinPartie("Égalité ! Votre mise est remboursée.", false);
+                } else {
+                    this.bjFinPartie("Le Croupier l'emporte...", false);
+                }
+            },
+
+            calculerScoreBJ(hand) {
+                let score = 0;
+                let aces = 0;
+                for(let card of hand) {
+                    score += card.value;
+                    if(card.name.includes('A')) aces++;
+                }
+                while(score > 21 && aces > 0) {
+                    score -= 10;
+                    aces--;
+                }
+                return score;
+            },
+
+            rafraichirBlackJackUI(croupierRevele) {
+                let pScore = this.calculerScoreBJ(this.bjPlayerHand);
+                let dScore = croupierRevele ? this.calculerScoreBJ(this.bjDealerHand) : this.bjDealerHand[0].value;
+
+                document.getElementById('player-score').innerText = pScore;
+                document.getElementById('dealer-score').innerText = dScore;
+
+                document.getElementById('player-cards').innerHTML = this.bjPlayerHand.map(c => `
+                    <div style="background:#f8fafc; color:#0f172a; width:35px; height:50px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.85rem; box-shadow:0 4px 10px rgba(0,0,0,0.5);">${c.name}</div>
+                `).join('');
+
+                document.getElementById('dealer-cards').innerHTML = this.bjDealerHand.map((c, idx) => {
+                    if(!croupierRevele && idx === 1) {
+                        return `<div style="background:#334155; color:#94a3b8; width:35px; height:50px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.85rem;">?</div>`;
+                    }
+                    return `<div style="background:#f8fafc; color:#0f172a; width:35px; height:50px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.85rem; box-shadow:0 4px 10px rgba(0,0,0,0.5);">${c.name}</div>`;
+                }).join('');
+            },
+
+            bjFinPartie(message, isWin) {
+                this.bjActive = false;
+                document.getElementById('bj-actions-start').classList.remove('hidden');
+                document.getElementById('bj-actions-play').classList.add('hidden');
+                document.getElementById('bj-result').innerHTML = `<span style="color:${isWin ? '#34d399' : '#ef4444'};">${message}</span>`;
+
+                if(isWin) {
+                    if(Math.random() < 0.5) {
+                        let rewardCoins = 20;
+                        this.balance += rewardCoins;
+                        this.ajouterTransaction(`Black Jack GAGNÉ : +${rewardCoins} pièces 🪙`);
+                        this.sauvegarderEtatCompte(); this.updateUI();
+                        this.montrerPopupPieces(rewardCoins, "🃏 Victoire Royale au Black Jack !");
+                    } else {
+                        this.gererGain(true, 1.00);
+                    }
+                } else {
+                    this.gagnerXP(); this.jouerSon('lose');
+                    this.ajouterTransaction("Black Jack Perdu");
+                }
+            },
+
             toggleMaintenanceMode() {
                 this.isMaintenanceMode = !this.isMaintenanceMode;
                 if(db) db.ref('global_maintenance_mode').set(this.isMaintenanceMode);
@@ -1357,6 +1604,7 @@
                 this.updateUI();
                 this.renderQuestsUI();
                 this.renderMissions();
+                this.rafraichirGrillesLottoUI();
                 this.chargerChatBoxDepuisStorage();
                 this.rafraichirJournalTransactionsUI();
                 this.changerEcran('screen-home', document.getElementById('nav-home'));
@@ -1441,7 +1689,6 @@
                 m.statut = 'ferme';
                 m.vainqueur = choixGagnantKey;
 
-                // Parcourir tous les utilisateurs pour distribuer les gains de ce match
                 for(let emailKey in this.usersDB) {
                     let userAcc = this.usersDB[emailKey];
                     if(userAcc && userAcc.mesParis) {
@@ -1469,7 +1716,6 @@
                 localStorage.setItem('fdj_global_paris', JSON.stringify(this.globalParisMatchs));
                 localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
 
-                // Mettre à jour l'utilisateur connecté en local
                 if(this.currentEmail && this.usersDB[this.currentEmail]) {
                     this.userMesParis = this.usersDB[this.currentEmail].mesParis || [];
                     this.balance = this.usersDB[this.currentEmail].balance;
@@ -1481,14 +1727,40 @@
                 this.chargerAdminParisManage();
             },
 
-            parierSurMatch(matchId, choixKey) {
+            ouvrirModalePari(matchId, choixKey) {
                 let m = this.globalParisMatchs[matchId];
                 if(!m || m.statut !== 'ouvert') return;
 
-                let miseInput = prompt(`Combien de pièces souhaitez-vous miser sur ${choixKey === 'choix1' ? m.choix1 : m.choix2} ? (Solde actuel : ${this.balance} 🪙)`);
-                if(!miseInput) return;
-                let mise = parseInt(miseInput);
-                if(isNaN(mise) || mise <= 0) return alert("Montant invalide.");
+                this.pendingPariMatchId = matchId;
+                this.pendingPariChoixKey = choixKey;
+
+                let choixNom = choixKey === 'choix1' ? m.choix1 : m.choix2;
+                let cote = choixKey === 'choix1' ? m.cote1 : m.cote2;
+
+                document.getElementById('modal-pari-title').innerText = m.titre;
+                document.getElementById('modal-pari-subtitle').innerHTML = `Choix : <strong style="color:#38bdf8;">${choixNom}</strong> (Côte : ${cote})`;
+                
+                let inputMise = document.getElementById('modal-pari-input-mise');
+                inputMise.value = 10;
+                document.getElementById('modal-pari-gain-estim').innerText = Math.round(10 * cote) + " 🪙";
+
+                inputMise.oninput = (e) => {
+                    let val = parseInt(e.target.value) || 0;
+                    document.getElementById('modal-pari-gain-estim').innerText = Math.round(val * cote) + " 🪙";
+                };
+
+                document.getElementById('modal-placer-pari').classList.remove('hidden');
+                this.vibrer([20]);
+            },
+
+            confirmerPariModal() {
+                let matchId = this.pendingPariMatchId;
+                let choixKey = this.pendingPariChoixKey;
+                let m = this.globalParisMatchs[matchId];
+                if(!m) return;
+
+                let mise = parseInt(document.getElementById('modal-pari-input-mise').value);
+                if(isNaN(mise) || mise <= 0) return alert("Montant de mise invalide.");
                 if(this.balance < mise) return alert("Vous n'avez pas assez de pièces !");
 
                 this.balance -= mise;
@@ -1514,6 +1786,8 @@
                 this.sauvegarderEtatCompte();
                 this.updateUI();
                 this.renderParisJoueur();
+                
+                document.getElementById('modal-placer-pari').classList.add('hidden');
                 this.vibrer([50, 50]); this.jouerSon('win');
                 alert(`Pari validé avec succès ! Gain potentiel : ${gainPotentiel} pièces 🪙`);
             },
@@ -1526,7 +1800,6 @@
                 let keys = Object.keys(this.globalParisMatchs || {});
                 let matchsOuverts = keys.filter(k => this.globalParisMatchs[k].statut === 'ouvert');
 
-                // 1. Matchs ouverts
                 if(dispoContainer) {
                     if(matchsOuverts.length === 0) {
                         dispoContainer.innerHTML = `<div class="card" style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.8rem;">Aucun match ou pari ouvert pour le moment. Revenez vite !</div>`;
@@ -1537,10 +1810,10 @@
                                 <div class="card" style="background:rgba(15,23,42,0.9); border-color:rgba(59,130,246,0.4);">
                                     <div style="font-size:0.85rem; font-weight:bold; color:#fff; margin-bottom:8px; text-align:center;">⚽ ${m.titre}</div>
                                     <div style="display:flex; gap:8px;">
-                                        <button class="btn btn-outline" style="flex:1; padding:10px; font-size:0.75rem; border-color:#3b82f6;" onclick="app.parierSurMatch('${m.id}', 'choix1')">
+                                        <button class="btn btn-outline" style="flex:1; padding:10px; font-size:0.75rem; border-color:#3b82f6;" onclick="app.ouvrirModalePari('${m.id}', 'choix1')">
                                             ${m.choix1}<br><strong style="color:var(--accent-gold);">Côte : ${m.cote1}</strong>
                                         </button>
-                                        <button class="btn btn-outline" style="flex:1; padding:10px; font-size:0.75rem; border-color:#3b82f6;" onclick="app.parierSurMatch('${m.id}', 'choix2')">
+                                        <button class="btn btn-outline" style="flex:1; padding:10px; font-size:0.75rem; border-color:#3b82f6;" onclick="app.ouvrirModalePari('${m.id}', 'choix2')">
                                             ${m.choix2}<br><strong style="color:var(--accent-gold);">Côte : ${m.cote2}</strong>
                                         </button>
                                     </div>
@@ -1550,7 +1823,6 @@
                     }
                 }
 
-                // 2. Mes paris ouverts
                 let mesOuverts = this.userMesParis.filter(p => p.statut === 'ouvert');
                 if(ouvertsContainer) {
                     if(mesOuverts.length === 0) {
@@ -1569,7 +1841,6 @@
                     }
                 }
 
-                // 3. Mes paris fermés (historique)
                 let mesFermes = this.userMesParis.filter(p => p.statut !== 'ouvert');
                 if(fermesContainer) {
                     if(mesFermes.length === 0) {
@@ -1755,7 +2026,7 @@
                 for(let i = 0; i < 6; i++) {
                     let name = shuffled[i] + "_" + (Math.floor(Math.random() * 89) + 10);
                     let pari = Math.floor(Math.random() * 40) + 10;
-                    let gagne = (pari * (Math.random() * 2 + 1.5)).toFixed(2);
+                    let gagne = (Math.random() * 4.5 + 0.5).toFixed(2); // Gagnants Loto Flash plafonnés à max ~5 €
                     html += `
                         <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.3); padding:4px 6px; border-radius:4px;">
                             <span>👤 <strong>${name}</strong> (Mise : ${pari} 🪙)</span>
@@ -1799,31 +2070,41 @@
                         let cdEl = document.getElementById('lotto-countdown');
                         if(cdEl) cdEl.innerText = `${m < 10 ? '0':''}${m}:${s < 10 ? '0':''}${s}`;
                     } else {
-                        this.lottoSecondsLeft = 1500;
-                        this.effectuerTirageLottoAutomatique();
+                        this.lottoSecondsLeft = 30;
+                        this.effectuerTirageLottoReel();
                         this.genererFauxGagnantsLotto();
                     }
                 }, 1000);
             },
 
-            effectuerTirageLottoAutomatique() {
+            effectuerTirageLottoReel() {
                 if(!this.lottoGrilles || this.lottoGrilles.length === 0) return;
                 let aModifie = false;
+                let dernierGainTirage = 0;
+                let dernierePerteTirage = 0;
+                let aGagneTirage = false;
 
                 this.lottoGrilles.forEach(g => {
                     if(g.statut === 'en_attente') {
-                        let win = this.isAdmin ? true : (Math.random() < 0.20);
+                        let win = this.isAdmin ? true : (Math.random() < 0.35);
                         if(win) {
-                            let gainMontant = +(g.mise * 0.3).toFixed(2);
+                            // GAIN MAX PLAFONNÉ AUTOUR DE 5 € (ex: entre 0.50 € et 5.00 € max selon la mise)
+                            let facteur = g.mise / 50; // de 0.02 à 1.0
+                            let gainMontant = +(Math.random() * 4.5 + 0.5 * (1 + facteur)).toFixed(2);
+                            if(gainMontant > 5.00) gainMontant = 5.00;
+
                             g.statut = 'gagne';
                             g.gain = gainMontant;
                             this.cash += gainMontant;
                             this.dailyCash += gainMontant;
-                            this.ajouterTransaction(`Loto Flash GAGNÉ (+${gainMontant.toFixed(2)} €)`);
+                            this.ajouterTransaction(`Tirage Loto Flash GAGNÉ (+${gainMontant.toFixed(2)} €) 🎉`);
+                            dernierGainTirage = gainMontant;
+                            aGagneTirage = true;
                         } else {
                             g.statut = 'perdu';
                             g.gain = 0.00;
-                            this.ajouterTransaction(`Loto Flash PERDU (-${g.mise} 🪙)`);
+                            dernierePerteTirage = g.mise;
+                            this.ajouterTransaction(`Tirage Loto Flash PERDU (-${g.mise} 🪙) ❌`);
                         }
                         aModifie = true;
                     }
@@ -1833,7 +2114,31 @@
                     this.sauvegarderEtatCompte();
                     this.updateUI();
                     this.rafraichirGrillesLottoUI();
-                    alert("🎟 Un tirage Loto Flash vient d'avoir lieu !");
+
+                    const lottoPopup = document.getElementById('lotto-result-popup');
+                    const popupTitle = document.getElementById('lotto-popup-title');
+                    const popupAmount = document.getElementById('lotto-popup-amount');
+                    const popupDesc = document.getElementById('lotto-popup-desc');
+                    const popupIcon = document.getElementById('lotto-popup-icon');
+
+                    if(lottoPopup) {
+                        if(aGagneTirage) {
+                            popupIcon.innerText = "🎉";
+                            popupTitle.innerText = "Loto Flash GAGNÉ !";
+                            popupAmount.style.color = "#34d399";
+                            popupAmount.innerText = "+" + dernierGainTirage.toFixed(2) + " €";
+                            popupDesc.innerText = "Félicitations ! Vos grilles ont été tirées au sort et l'argent a été ajouté à votre cagnotte Cash !";
+                            this.lancerConfettis(); this.vibrer([100, 50, 100]); this.jouerSon('win');
+                        } else {
+                            popupIcon.innerText = "❌";
+                            popupTitle.innerText = "Loto Flash Perdu...";
+                            popupAmount.style.color = "#ef4444";
+                            popupAmount.innerText = "-" + dernierePerteTirage + " 🪙";
+                            popupDesc.innerText = "Dommage ! Le tirage n'a pas retenu vos numéros. Retentez votre chance sur le prochain tirage !";
+                            this.vibrer([150]); this.jouerSon('lose');
+                        }
+                        lottoPopup.classList.add('show');
+                    }
                 }
             },
 
@@ -1860,7 +2165,7 @@
                 this.vibrer([60]); this.jouerSon('click');
 
                 let resEl = document.getElementById('lotto-result');
-                if(resEl) resEl.innerText = `🎟️ Grille enregistrée avec succès !`;
+                if(resEl) resEl.innerText = `🎟️ Grille validée ! Résultat au prochain décompte.`;
             },
 
             rafraichirGrillesLottoUI() {
@@ -1871,12 +2176,21 @@
                     return;
                 }
                 container.innerHTML = this.lottoGrilles.map(g => {
-                    let statutBadge = g.statut === 'en_attente' ? `<span style="color:#f59e0b; font-weight:bold;">⏳ En attente</span>` : (g.statut === 'gagne' ? `<span style="color:#10b981; font-weight:bold;">🎉 +${g.gain.toFixed(2)} €</span>` : `<span style="color:#ef4444; font-weight:bold;">❌ Perdu</span>`);
+                    let statutBadge = g.statut === 'en_attente' ? `<span style="color:#f59e0b; font-weight:bold;">⏳ En attente (${g.temps})</span>` : (g.statut === 'gagne' ? `<span style="color:#10b981; font-weight:bold;">🎉 +${g.gain.toFixed(2)} €</span>` : `<span style="color:#ef4444; font-weight:bold;">❌ Perdu (-${g.mise} 🪙)</span>`);
                     return `<div style="background:rgba(0,0,0,0.3); padding:6px 8px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
-                        <span>Mise : <strong>${g.mise} 🪙</strong> (${g.temps})</span>
+                        <span>Mise : <strong>${g.mise} 🪙</strong></span>
                         ${statutBadge}
                     </div>`;
                 }).join('');
+            },
+
+            mettreAJourSliderLotto(val) {
+                this.lottoMise = parseInt(val);
+                document.getElementById('lotto-mise-val').innerText = this.lottoMise;
+                // Gain potentiel max plafonné à ~5 €
+                let gainMaxEstime = Math.min(5.00, +(this.lottoMise * 0.1).toFixed(2));
+                if(gainMaxEstime < 0.50) gainMaxEstime = 0.50;
+                document.getElementById('lotto-gain-potentiel').innerText = `Gain potentiel max : ~${gainMaxEstime.toFixed(2)} €`;
             },
 
             adminLancerEvenement() {
@@ -2573,12 +2887,6 @@
                 }, 4000);
             },
 
-            mettreAJourSliderLotto(val) {
-                this.lottoMise = parseInt(val);
-                document.getElementById('lotto-mise-val').innerText = this.lottoMise;
-                document.getElementById('lotto-gain-potentiel').innerText = `Gain potentiel : +${(this.lottoMise * 0.3).toFixed(2)} €`;
-            },
-
             verifierRoueJournaliere() {
                 let lastSpin = localStorage.getItem('fdj_last_daily_' + this.currentEmail);
                 let btn = document.getElementById('btn-spin-daily');
@@ -2969,69 +3277,72 @@
                 let acc = this.usersDB[this.selectedAdminUserEmail];
                 if(acc) {
                     acc.balance = nouveauSolde;
-                    if(!acc.transactions) acc.transactions = [];
-                    acc.transactions.unshift({ text: `Admin a modifié le solde : ${nouveauSolde} pièces`, time: new Date().toLocaleTimeString() });
-                    this.usersDB[this.selectedAdminUserEmail] = acc;
                     if(db) db.ref('users/' + this.selectedAdminUserEmail).set(acc);
                     localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
-
                     if(this.selectedAdminUserEmail === this.currentEmail) {
-                        this.balance = nouveauSolde;
-                        this.updateUI(); this.rafraichirJournalTransactionsUI();
+                        this.balance = nouveauSolde; this.updateUI();
                     }
-                    alert("Solde mis à jour.");
+                    alert("Solde mis à jour !");
                     this.selectionnerUtilisateurAdmin(this.selectedAdminUserEmail);
                 }
             },
 
             supprimerUtilisateurAdmin() {
                 if(!this.selectedAdminUserEmail) return;
-                if(confirm("Supprimer ce profil ?")) {
+                if(confirm("Supprimer définitivement ce profil ?")) {
                     delete this.usersDB[this.selectedAdminUserEmail];
                     if(db) db.ref('users/' + this.selectedAdminUserEmail).remove();
                     localStorage.setItem('fdj_users', JSON.stringify(this.usersDB));
-                    this.fermerAdminDetail(); this.chargerAdminData();
+                    document.getElementById('admin-user-detail-card').classList.add('hidden');
+                    this.chargerAdminData();
+                    alert("Compte supprimé.");
                 }
             },
 
             ouvrirAdminChat(emailKey) {
                 this.activeAdminTargetEmail = emailKey;
+                document.getElementById('admin-active-chat-box').classList.remove('hidden');
                 let acc = this.usersDB[emailKey];
                 document.getElementById('admin-active-user-title').innerText = "Discussion : " + (acc ? acc.nom : emailKey);
-                document.getElementById('admin-conversations-list').classList.add('hidden');
-                document.getElementById('admin-active-chat-box').classList.remove('hidden');
                 this.rafraichirThreadAdmin();
+                this.chargerAdminData();
             },
 
             fermerAdminChat() {
                 this.activeAdminTargetEmail = null;
                 document.getElementById('admin-active-chat-box').classList.add('hidden');
-                document.getElementById('admin-conversations-list').classList.remove('hidden');
                 this.chargerAdminData();
             },
 
             supprimerDiscussionAdmin() {
                 if(!this.activeAdminTargetEmail) return;
-                if(confirm("Supprimer cette conversation ?")) {
+                if(confirm("Supprimer toute cette conversation ?")) {
                     delete this.chatLogs[this.activeAdminTargetEmail];
                     if(db) db.ref('chats/' + this.activeAdminTargetEmail).remove();
                     localStorage.setItem('fdj_chat_logs', JSON.stringify(this.chatLogs));
                     this.fermerAdminChat();
-                    alert("Supprimé.");
+                    alert("Conversation supprimée.");
                 }
             },
 
             rafraichirThreadAdmin() {
-                if(!this.activeAdminTargetEmail) return;
-                let logs = this.chatLogs[this.activeAdminTargetEmail] || [];
                 let threadEl = document.getElementById('admin-messages-thread');
-                if(!threadEl) return;
+                if(!threadEl || !this.activeAdminTargetEmail) return;
+                let logs = this.chatLogs[this.activeAdminTargetEmail] || [];
+                if(logs.length === 0) {
+                    threadEl.innerHTML = `<p style="font-size:0.75rem; color:var(--text-muted);">Aucun message.</p>`;
+                    return;
+                }
                 threadEl.innerHTML = logs.map(l => {
-                    let col = (l.sender === 'user') ? '#38bdf8' : (l.sender === 'admin' ? '#f59e0b' : '#10b981');
-                    let name = (l.sender === 'user') ? 'Joueur' : (l.sender === 'admin' ? 'Admin' : 'Bot');
-                    return `<div style="background:rgba(0,0,0,0.5); padding:6px 8px; border-radius:6px; border-left:3px solid ${col};">
-                        <strong style="color:${col};">${name} (${l.time}) :</strong> ${l.text}
-                    </div>`;
+                    let isUser = (l.sender === 'user');
+                    let bgCol = isUser ? 'rgba(0,0,0,0.5)' : 'rgba(56,189,248,0.25)';
+                    let align = isUser ? 'flex-start' : 'flex-end';
+                    return `
+                        <div style="background:${bgCol}; padding:6px 8px; border-radius:8px; align-self:${align}; max-width:85%;">
+                            <div style="font-size:0.68rem; color:#38bdf8; font-weight:bold; margin-bottom:2px;">${isUser ? 'Joueur' : 'Support (Admin)'} (${l.time})</div>
+                            <div style="color:#fff;">${l.text}</div>
+                        </div>
+                    `;
                 }).join('');
                 threadEl.scrollTop = threadEl.scrollHeight;
             },
@@ -3040,55 +3351,54 @@
                 let input = document.getElementById('admin-live-input');
                 let txt = input.value.trim();
                 if(!txt || !this.activeAdminTargetEmail) return;
+
                 if(!this.chatLogs[this.activeAdminTargetEmail]) this.chatLogs[this.activeAdminTargetEmail] = [];
                 this.chatLogs[this.activeAdminTargetEmail].push({ sender: 'admin', text: txt, time: new Date().toLocaleTimeString(), readByPlayer: false });
+                
                 if(db) db.ref('chats/' + this.activeAdminTargetEmail).set(this.chatLogs[this.activeAdminTargetEmail]);
                 localStorage.setItem('fdj_chat_logs', JSON.stringify(this.chatLogs));
+
                 input.value = "";
-                this.rafraichirThreadAdmin(); this.vibrer([20]);
+                this.rafraichirThreadAdmin();
             },
 
             chargerChatBoxDepuisStorage() {
-                if(!this.currentEmail) return;
-                let box = document.getElementById('chat-box');
-                if(!box) return;
+                let chatBox = document.getElementById('chat-box');
+                if(!chatBox || !this.currentEmail) return;
                 let logs = this.chatLogs[this.currentEmail] || [];
-                let html = `<div class="msg bot">Bonjour <strong>${this.currentUser ? this.currentUser.split(' ')[0] : 'Joueur'}</strong>. Service client FDJ.</div>`;
-                let hasUnread = false;
 
-                logs.forEach(l => {
-                    if(l.sender === 'user') html += `<div class="msg user">${l.text}</div>`;
-                    else if(l.sender === 'admin') {
-                        html += `<div class="msg admin-reply">👑 Support FDJ : ${l.text}</div>`;
-                        if(!l.readByPlayer) hasUnread = true;
-                    } else html += `<div class="msg bot">${l.text}</div>`;
-                });
-                box.innerHTML = html;
-                box.scrollTop = box.scrollHeight;
+                let baseHtml = `<div class="msg bot">Bonjour <strong>${this.currentUser ? this.currentUser.split(' ')[0] : 'Joueur'}</strong>. Service client FDJ. Veuillez formuler votre demande.</div>`;
+                
+                if(logs.length > 0) {
+                    baseHtml += logs.map(l => {
+                        if(l.sender === 'user') return `<div class="msg user">${l.text}</div>`;
+                        if(l.sender === 'admin') return `<div class="msg admin-reply">Support : ${l.text}</div>`;
+                        return `<div class="msg bot">${l.text}</div>`;
+                    }).join('');
+                }
+                chatBox.innerHTML = baseHtml;
+                chatBox.scrollTop = chatBox.scrollHeight;
 
-                this.hasUnreadSupportReply = hasUnread;
-                let dotCompte = document.getElementById('nav-compte-dot');
-                let dotSetting = document.getElementById('setting-support-dot');
-                if(hasUnread) {
-                    if(dotCompte) dotCompte.classList.add('show');
-                    if(dotSetting) dotSetting.classList.add('show');
-                } else {
-                    if(dotCompte) dotCompte.classList.remove('show');
-                    if(dotSetting) dotSetting.classList.remove('show');
+                let unread = logs.some(l => l.sender === 'admin' && !l.readByPlayer);
+                let dot1 = document.getElementById('nav-compte-dot');
+                let dot2 = document.getElementById('setting-support-dot');
+                if(unread) {
+                    if(dot1) dot1.classList.add('show');
+                    if(dot2) dot2.classList.add('show');
                 }
             },
 
             effacerNotificationSupport() {
-                if(!this.currentEmail || !this.chatLogs[this.currentEmail]) return;
-                let modified = false;
-                this.chatLogs[this.currentEmail].forEach(l => {
-                    if(l.sender === 'admin' && !l.readByPlayer) { l.readByPlayer = true; modified = true; }
-                });
-                if(modified) {
-                    if(db) db.ref('chats/' + this.currentEmail).set(this.chatLogs[this.currentEmail]);
+                let logs = this.chatLogs[this.currentEmail];
+                if(logs) {
+                    logs.forEach(l => { if(l.sender === 'admin') l.readByPlayer = true; });
+                    if(db) db.ref('chats/' + this.currentEmail).set(logs);
                     localStorage.setItem('fdj_chat_logs', JSON.stringify(this.chatLogs));
-                    this.chargerChatBoxDepuisStorage();
                 }
+                let dot1 = document.getElementById('nav-compte-dot');
+                let dot2 = document.getElementById('setting-support-dot');
+                if(dot1) dot1.classList.remove('show');
+                if(dot2) dot2.classList.remove('show');
             }
         };
 
