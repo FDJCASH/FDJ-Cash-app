@@ -1,84 +1,103 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FDJ Cash - Espace Jeux & Paris</title>
+    <title>FDJ Cash - Plateforme Officielle de Jeux</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome pour les icônes -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#07090e',
+                        cardBg: '#101722',
+                        borderCol: '#1e293b',
+                        brandGreen: '#10b981',
+                        brandHover: '#059669'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Firebase SDK v9 Compat -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Poppins', sans-serif; background-color: #0b0f19; color: #f3f4f6; }
-        .neon-glow { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
-        .neon-text { text-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta+ Sans', sans-serif; background-color: #07090e; color: #f3f4f6; }
+        .glass-panel { background: rgba(16, 23, 34, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.06); }
+        .neon-glow { box-shadow: 0 0 25px rgba(16, 185, 129, 0.25); }
+        .neon-text { text-shadow: 0 0 12px rgba(16, 185, 129, 0.6); }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-black">
 
-    <!-- Bannière Maintenance Globale -->
-    <div id="maintenance-banner" class="hidden bg-red-600 text-white text-center py-2 px-4 font-bold text-sm tracking-wider uppercase z-50">
+    <!-- Bannière Maintenance -->
+    <div id="maintenance-banner" class="hidden bg-red-600 text-white text-center py-2.5 px-4 font-bold text-xs tracking-wider uppercase z-50 shadow-lg">
         ⚠️ Site en maintenance programmée. Les jeux sont temporairement suspendus.
     </div>
 
-    <!-- En-tête -->
-    <header class="bg-gray-900/80 backdrop-blur-md border-b border-gray-800 sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+    <!-- En-tête de luxe -->
+    <header class="glass-panel sticky top-0 z-40 border-b border-borderCol">
+        <div class="max-w-7xl mx-auto px-4 py-3.5 flex justify-between items-center">
             <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('games')">
-                <div class="bg-emerald-500 text-black p-2 rounded-xl font-extrabold text-xl tracking-tighter neon-glow">
-                    FDJ<span class="text-white">CASH</span>
+                <div class="bg-gradient-to-tr from-emerald-600 to-emerald-400 text-black px-3 py-1.5 rounded-xl font-extrabold text-lg tracking-tight neon-glow flex items-center gap-1.5">
+                    <i class="fa-solid fa-gem text-xs"></i> FDJ<span class="text-white">CASH</span>
                 </div>
-                <span class="hidden sm:inline text-xs font-semibold px-2 py-1 bg-emerald-500/10 text-emerald-400 rounded-full border border-emerald-500/20">Remastered v2.8</span>
+                <span class="hidden sm:inline text-[11px] font-semibold px-2.5 py-1 bg-emerald-500/10 text-emerald-400 rounded-full border border-emerald-500/20">Remastered v3.0</span>
             </div>
 
             <!-- Solde & Profil -->
             <div id="user-nav-info" class="hidden flex items-center space-x-4">
-                <div class="bg-gray-800/80 border border-gray-700 px-4 py-1.5 rounded-full flex items-center space-x-2">
-                    <i class="fa-solid fa-coins text-yellow-400"></i>
-                    <span id="header-balance" class="font-bold text-emerald-400">0.00</span> <span class="text-xs text-gray-400">€</span>
+                <div class="bg-gray-900/90 border border-borderCol px-4 py-2 rounded-2xl flex items-center space-x-2.5 shadow-inner">
+                    <i class="fa-solid fa-wallet text-emerald-400 text-sm"></i>
+                    <span id="header-balance" class="font-bold text-emerald-400 text-sm">0.00</span> <span class="text-xs text-gray-400 font-medium">€</span>
                 </div>
-                <button onclick="logout()" class="text-gray-400 hover:text-red-400 transition" title="Se déconnecter">
-                    <i class="fa-solid fa-power-off text-lg"></i>
+                <button onclick="logout()" class="w-9 h-9 rounded-xl bg-gray-900 border border-borderCol text-gray-400 hover:text-red-400 hover:border-red-500/30 transition flex items-center justify-center" title="Se déconnecter">
+                    <i class="fa-solid fa-power-off text-sm"></i>
                 </button>
             </div>
         </div>
     </header>
 
     <!-- Contenu Principal -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-8">
 
         <!-- AUTH SECTION -->
-        <div id="auth-section" class="max-w-md mx-auto bg-gray-900 border border-gray-800 p-8 rounded-2xl shadow-xl mt-10">
-            <div class="text-center mb-6">
-                <h1 class="text-2xl font-bold tracking-tight text-white mb-2">Bienvenue sur <span class="text-emerald-400">FDJ Cash</span></h1>
-                <p class="text-sm text-gray-400">Connectez-vous ou créez un compte pour lancer les parties.</p>
+        <div id="auth-section" class="max-w-md mx-auto glass-panel p-8 rounded-3xl shadow-2xl mt-12 relative overflow-hidden">
+            <div class="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="text-center mb-8">
+                <h1 class="text-2xl font-extrabold tracking-tight text-white mb-2">Espace Sécurisé <span class="text-emerald-400">FDJ Cash</span></h1>
+                <p class="text-xs text-gray-400">Connectez-vous pour accéder à vos sessions de jeu.</p>
             </div>
 
             <div id="auth-error" class="hidden mb-4 p-3 bg-red-500/10 border border-red-500/30 text-red-400 text-xs rounded-xl text-center"></div>
 
             <form id="auth-form" onsubmit="handleAuth(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1">Adresse E-mail</label>
-                    <input type="email" id="auth-email" required class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
+                    <label class="block text-[11px] font-semibold text-gray-400 mb-1.5 uppercase tracking-wider">Adresse E-mail</label>
+                    <input type="email" id="auth-email" required class="w-full bg-gray-900/80 border border-borderCol rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1">Mot de passe</label>
-                    <input type="password" id="auth-password" required class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
+                    <label class="block text-[11px] font-semibold text-gray-400 mb-1.5 uppercase tracking-wider">Mot de passe</label>
+                    <input type="password" id="auth-password" required class="w-full bg-gray-900/80 border border-borderCol rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
                 </div>
-                <button type="submit" id="auth-submit-btn" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-3 rounded-xl transition shadow-lg shadow-emerald-500/20">
+                <button type="submit" id="auth-submit-btn" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-3.5 rounded-2xl transition shadow-lg shadow-emerald-500/20 text-sm mt-2">
                     Se connecter
                 </button>
             </form>
 
             <div class="mt-6 text-center">
-                <button onclick="toggleAuthMode()" id="auth-switch-btn" class="text-xs text-emerald-400 hover:underline">
+                <button onclick="toggleAuthMode()" id="auth-switch-btn" class="text-xs text-emerald-400 hover:underline font-medium">
                     Pas encore de compte ? S'inscrire
                 </button>
             </div>
@@ -88,142 +107,192 @@
         <div id="app-container" class="hidden space-y-6">
 
             <!-- Navigation Onglets -->
-            <div class="flex overflow-x-auto space-x-2 pb-2 border-b border-gray-800 custom-scrollbar">
-                <button onclick="switchTab('games')" id="tab-btn-games" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-sm bg-emerald-500 text-black transition shrink-0">
-                    <i class="fa-solid fa-gamepad mr-2"></i> Mini-Jeux
+            <div class="flex overflow-x-auto space-x-2 pb-2 border-b border-borderCol custom-scrollbar">
+                <button onclick="switchTab('games')" id="tab-btn-games" class="tab-btn px-5 py-2.5 rounded-2xl font-bold text-xs bg-emerald-500 text-black transition shrink-0 flex items-center gap-2 shadow-lg shadow-emerald-500/20">
+                    <i class="fa-solid fa-gamepad"></i> Mini-Jeux & Casino
                 </button>
-                <button onclick="switchTab('quests')" id="tab-btn-quests" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-sm bg-gray-800 text-gray-400 hover:text-white transition shrink-0">
-                    <i class="fa-solid fa-trophy mr-2"></i> Quêtes & Bonus
+                <button onclick="switchTab('quests')" id="tab-btn-quests" class="tab-btn px-5 py-2.5 rounded-2xl font-bold text-xs bg-cardBg border border-borderCol text-gray-400 hover:text-white transition shrink-0 flex items-center gap-2">
+                    <i class="fa-solid fa-trophy"></i> Quêtes & Bonus
                 </button>
-                <button onclick="switchTab('referral')" id="tab-btn-referral" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-sm bg-gray-800 text-gray-400 hover:text-white transition shrink-0">
-                    <i class="fa-solid fa-users mr-2"></i> Parrainage
+                <button onclick="switchTab('referral')" id="tab-btn-referral" class="tab-btn px-5 py-2.5 rounded-2xl font-bold text-xs bg-cardBg border border-borderCol text-gray-400 hover:text-white transition shrink-0 flex items-center gap-2">
+                    <i class="fa-solid fa-users"></i> Parrainage
                 </button>
-                <button onclick="switchTab('support')" id="tab-btn-support" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-sm bg-gray-800 text-gray-400 hover:text-white transition shrink-0">
-                    <i class="fa-solid fa-headset mr-2"></i> Support Live
+                <button onclick="switchTab('support')" id="tab-btn-support" class="tab-btn px-5 py-2.5 rounded-2xl font-bold text-xs bg-cardBg border border-borderCol text-gray-400 hover:text-white transition shrink-0 flex items-center gap-2">
+                    <i class="fa-solid fa-headset"></i> Support Live
                 </button>
-                <button onclick="switchTab('admin')" id="tab-btn-admin" class="tab-btn hidden px-5 py-2.5 rounded-xl font-semibold text-sm bg-red-500/20 text-red-400 border border-red-500/30 transition shrink-0">
-                    <i class="fa-solid fa-shield-halved mr-2"></i> Administration
+                <button onclick="switchTab('admin')" id="tab-btn-admin" class="tab-btn hidden px-5 py-2.5 rounded-2xl font-bold text-xs bg-red-500/15 text-red-400 border border-red-500/30 transition shrink-0 items-center gap-2">
+                    <i class="fa-solid fa-shield-halved"></i> Administration
                 </button>
             </div>
 
             <!-- ONGLET 1 : JEUX -->
             <div id="tab-games" class="tab-content space-y-6">
-                <!-- Grille de sélection des jeux -->
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                    <div onclick="openGame('scratch')" class="bg-gray-900 border border-gray-800 p-4 rounded-2xl cursor-pointer hover:border-emerald-500 transition text-center group">
-                        <div class="w-12 h-12 mx-auto bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">
+                <!-- Grille des jeux -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
+                    <div onclick="openGame('scratch')" class="glass-panel p-5 rounded-3xl cursor-pointer hover:border-emerald-500/50 transition text-center group">
+                        <div class="w-12 h-12 mx-auto bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition shadow-inner">
                             <i class="fa-solid fa-ticket"></i>
                         </div>
-                        <h3 class="font-bold text-sm">Grattage</h3>
-                        <p class="text-xs text-gray-400 mt-1">Petits & Gros Lots</p>
+                        <h3 class="font-bold text-xs text-white">Grattage</h3>
+                        <p class="text-[10px] text-gray-400 mt-0.5">Petits & Gros Lots</p>
                     </div>
-                    <div onclick="openGame('slots')" class="bg-gray-900 border border-gray-800 p-4 rounded-2xl cursor-pointer hover:border-emerald-500 transition text-center group">
-                        <div class="w-12 h-12 mx-auto bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">
+                    <div onclick="openGame('slots')" class="glass-panel p-5 rounded-3xl cursor-pointer hover:border-emerald-500/50 transition text-center group">
+                        <div class="w-12 h-12 mx-auto bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition shadow-inner">
                             <i class="fa-solid fa-slot-machine"></i>
                         </div>
-                        <h3 class="font-bold text-sm">Slots</h3>
-                        <p class="text-xs text-gray-400 mt-1">Machine à sous</p>
+                        <h3 class="font-bold text-xs text-white">Slots</h3>
+                        <p class="text-[10px] text-gray-400 mt-0.5">Machine à sous</p>
                     </div>
-                    <div onclick="openGame('wheel')" class="bg-gray-900 border border-gray-800 p-4 rounded-2xl cursor-pointer hover:border-emerald-500 transition text-center group">
-                        <div class="w-12 h-12 mx-auto bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">
+                    <div onclick="openGame('wheel')" class="glass-panel p-5 rounded-3xl cursor-pointer hover:border-emerald-500/50 transition text-center group">
+                        <div class="w-12 h-12 mx-auto bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition shadow-inner">
                             <i class="fa-solid fa-dharmachakra"></i>
                         </div>
-                        <h3 class="font-bold text-sm">Roue de la Fortune</h3>
-                        <p class="text-xs text-gray-400 mt-1">Multiplicateur</p>
+                        <h3 class="font-bold text-xs text-white">Roue</h3>
+                        <p class="text-[10px] text-gray-400 mt-0.5">Multiplicateur</p>
                     </div>
-                    <div onclick="openGame('dice')" class="bg-gray-900 border border-gray-800 p-4 rounded-2xl cursor-pointer hover:border-emerald-500 transition text-center group">
-                        <div class="w-12 h-12 mx-auto bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">
+                    <div onclick="openGame('dice')" class="glass-panel p-5 rounded-3xl cursor-pointer hover:border-emerald-500/50 transition text-center group">
+                        <div class="w-12 h-12 mx-auto bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition shadow-inner">
                             <i class="fa-solid fa-dice"></i>
                         </div>
-                        <h3 class="font-bold text-sm">Lanceur de Dés</h3>
-                        <p class="text-xs text-gray-400 mt-1">High / Low</p>
+                        <h3 class="font-bold text-xs text-white">Dés</h3>
+                        <p class="text-[10px] text-gray-400 mt-0.5">High / Low</p>
                     </div>
-                    <div onclick="openGame('crash')" class="bg-gray-900 border border-gray-800 p-4 rounded-2xl cursor-pointer hover:border-emerald-500 transition text-center group">
-                        <div class="w-12 h-12 mx-auto bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition">
+                    <div onclick="openGame('crash')" class="glass-panel p-5 rounded-3xl cursor-pointer hover:border-emerald-500/50 transition text-center group">
+                        <div class="w-12 h-12 mx-auto bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition shadow-inner">
                             <i class="fa-solid fa-rocket"></i>
                         </div>
-                        <h3 class="font-bold text-sm">Crash Aviator</h3>
-                        <p class="text-xs text-gray-400 mt-1">Encaissez à temps</p>
+                        <h3 class="font-bold text-xs text-white">Crash</h3>
+                        <p class="text-[10px] text-gray-400 mt-0.5">Aviator</p>
+                    </div>
+                    <div onclick="openGame('keno')" class="glass-panel p-5 rounded-3xl cursor-pointer hover:border-emerald-500/50 transition text-center group">
+                        <div class="w-12 h-12 mx-auto bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition shadow-inner">
+                            <i class="fa-solid fa-asterisk"></i>
+                        </div>
+                        <h3 class="font-bold text-xs text-white">Keno Flash</h3>
+                        <p class="text-[10px] text-emerald-400 mt-0.5">Nouveau</p>
+                    </div>
+                    <div onclick="openGame('blackjack')" class="glass-panel p-5 rounded-3xl cursor-pointer hover:border-emerald-500/50 transition text-center group">
+                        <div class="w-12 h-12 mx-auto bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition shadow-inner">
+                            <i class="fa-solid fa-diamond"></i>
+                        </div>
+                        <h3 class="font-bold text-xs text-white">Blackjack</h3>
+                        <p class="text-[10px] text-emerald-400 mt-0.5">Nouveau</p>
                     </div>
                 </div>
 
-                <!-- Zone d'affichage du jeu actif -->
-                <div id="game-active-container" class="hidden bg-gray-900 border border-gray-800 p-6 rounded-2xl relative">
-                    <button onclick="closeGame()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                        <i class="fa-solid fa-xmark text-xl"></i>
+                <!-- Zone de Jeu Active (Modale intégrée stylée) -->
+                <div id="game-active-container" class="hidden glass-panel p-8 rounded-3xl relative border border-emerald-500/20 shadow-2xl">
+                    <button onclick="closeGame()" class="absolute top-6 right-6 w-10 h-10 rounded-2xl bg-gray-900 border border-borderCol text-gray-400 hover:text-white flex items-center justify-center transition">
+                        <i class="fa-solid fa-xmark text-lg"></i>
                     </button>
                     
                     <!-- 1. GRATTAGE -->
-                    <div id="game-scratch" class="game-view hidden text-center space-y-4">
-                        <h2 class="text-xl font-bold">Ticket de Grattage FDJ</h2>
+                    <div id="game-scratch" class="game-view hidden text-center space-y-5 max-w-lg mx-auto">
+                        <h2 class="text-xl font-extrabold text-white">Ticket de Grattage FDJ</h2>
                         <p class="text-xs text-gray-400">Grattez les 3 cases. Gagnez régulièrement de petites sommes ou décrochez des plus gros lots !</p>
-                        <div class="flex justify-center space-x-3 my-6">
-                            <div onclick="scratchCase(0)" id="scratch-0" class="w-24 h-24 bg-gray-800 border border-gray-700 rounded-xl flex items-center justify-center text-xl font-bold cursor-pointer select-none">?</div>
-                            <div onclick="scratchCase(1)" id="scratch-1" class="w-24 h-24 bg-gray-800 border border-gray-700 rounded-xl flex items-center justify-center text-xl font-bold cursor-pointer select-none">?</div>
-                            <div onclick="scratchCase(2)" id="scratch-2" class="w-24 h-24 bg-gray-800 border border-gray-700 rounded-xl flex items-center justify-center text-xl font-bold cursor-pointer select-none">?</div>
+                        <div class="flex justify-center space-x-4 my-6">
+                            <div onclick="scratchCase(0)" id="scratch-0" class="w-28 h-28 bg-gray-900 border border-borderCol rounded-2xl flex items-center justify-center text-xl font-bold cursor-pointer select-none hover:border-emerald-500 transition shadow-lg">?</div>
+                            <div onclick="scratchCase(1)" id="scratch-1" class="w-28 h-28 bg-gray-900 border border-borderCol rounded-2xl flex items-center justify-center text-xl font-bold cursor-pointer select-none hover:border-emerald-500 transition shadow-lg">?</div>
+                            <div onclick="scratchCase(2)" id="scratch-2" class="w-28 h-28 bg-gray-900 border border-borderCol rounded-2xl flex items-center justify-center text-xl font-bold cursor-pointer select-none hover:border-emerald-500 transition shadow-lg">?</div>
                         </div>
-                        <button onclick="initScratch()" class="bg-emerald-500 text-black font-bold px-6 py-2.5 rounded-xl text-sm">Nouveau Ticket (0.50 €)</button>
+                        <button onclick="initScratch()" class="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-8 py-3 rounded-2xl text-xs transition shadow-lg shadow-emerald-500/20">Nouveau Ticket (0.50 €)</button>
                     </div>
 
                     <!-- 2. SLOTS -->
-                    <div id="game-slots" class="game-view hidden text-center space-y-4">
-                        <h2 class="text-xl font-bold">Machine à Sous FDJ</h2>
+                    <div id="game-slots" class="game-view hidden text-center space-y-5 max-w-lg mx-auto">
+                        <h2 class="text-xl font-extrabold text-white">Machine à Sous FDJ</h2>
                         <div class="flex justify-center space-x-4 my-6">
-                            <div id="slot-0" class="w-20 h-24 bg-gray-800 border border-gray-700 rounded-xl flex items-center justify-center text-3xl">🍒</div>
-                            <div id="slot-1" class="w-20 h-24 bg-gray-800 border border-gray-700 rounded-xl flex items-center justify-center text-3xl">🍋</div>
-                            <div id="slot-2" class="w-20 h-24 bg-gray-800 border border-gray-700 rounded-xl flex items-center justify-center text-3xl">💎</div>
+                            <div id="slot-0" class="w-24 h-28 bg-gray-900 border border-borderCol rounded-2xl flex items-center justify-center text-4xl shadow-inner">🍒</div>
+                            <div id="slot-1" class="w-24 h-28 bg-gray-900 border border-borderCol rounded-2xl flex items-center justify-center text-4xl shadow-inner">🍋</div>
+                            <div id="slot-2" class="w-24 h-28 bg-gray-900 border border-borderCol rounded-2xl flex items-center justify-center text-4xl shadow-inner">💎</div>
                         </div>
-                        <div class="max-w-xs mx-auto flex items-center space-x-2">
-                            <span class="text-xs text-gray-400">Mise :</span>
-                            <input type="number" id="slot-bet" value="0.50" min="0.10" step="0.10" class="w-20 bg-gray-800 border border-gray-700 rounded-lg px-2 py-1 text-center text-sm">
-                            <button onclick="playSlots()" class="bg-emerald-500 text-black font-bold px-6 py-2 rounded-xl text-sm flex-grow">Jouer</button>
+                        <div class="flex items-center justify-center space-x-3">
+                            <span class="text-xs text-gray-400 font-medium">Mise (€) :</span>
+                            <input type="number" id="slot-bet" value="0.50" min="0.10" step="0.10" class="w-24 bg-gray-900 border border-borderCol rounded-xl px-3 py-2 text-center text-sm font-bold text-white">
+                            <button onclick="playSlots()" class="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-8 py-2.5 rounded-xl text-xs transition shadow-lg shadow-emerald-500/20">Lancer</button>
                         </div>
                     </div>
 
-                    <!-- 3. ROUE DE LA FORTUNE -->
-                    <div id="game-wheel" class="game-view hidden text-center space-y-4">
-                        <h2 class="text-xl font-bold">Roue de la Fortune</h2>
+                    <!-- 3. ROUE -->
+                    <div id="game-wheel" class="game-view hidden text-center space-y-5 max-w-lg mx-auto">
+                        <h2 class="text-xl font-extrabold text-white">Roue de la Fortune</h2>
                         <div class="my-6">
-                            <div id="wheel-display" class="w-32 h-32 mx-auto bg-emerald-500/10 border-4 border-emerald-500 rounded-full flex items-center justify-center text-2xl font-bold text-emerald-400 neon-glow transition-all duration-1000">
+                            <div id="wheel-display" class="w-36 h-36 mx-auto bg-emerald-500/10 border-4 border-emerald-500 rounded-full flex items-center justify-center text-3xl font-extrabold text-emerald-400 neon-glow transition-all duration-1000 shadow-2xl">
                                 🎲
                             </div>
                         </div>
-                        <button onclick="spinWheel()" id="wheel-btn" class="bg-emerald-500 text-black font-bold px-6 py-2.5 rounded-xl text-sm">Lancer la roue (1.00 €)</button>
+                        <button onclick="spinWheel()" class="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-8 py-3 rounded-2xl text-xs transition shadow-lg shadow-emerald-500/20">Lancer la roue (1.00 €)</button>
                     </div>
 
-                    <!-- 4. LANCEUR DE DÉS -->
-                    <div id="game-dice" class="game-view hidden text-center space-y-4">
-                        <h2 class="text-xl font-bold">Lanceur de Dés (Over / Under)</h2>
-                        <p class="text-xs text-gray-400">Pariez si le résultat du dé (1-100) sera au-dessus ou en dessous de la cible.</p>
-                        <div class="my-6">
-                            <div id="dice-result" class="text-5xl font-extrabold text-emerald-400 mb-2">50</div>
-                            <div class="text-xs text-gray-400">Résultat du tirage</div>
+                    <!-- 4. DÉS -->
+                    <div id="game-dice" class="game-view hidden text-center space-y-5 max-w-lg mx-auto">
+                        <h2 class="text-xl font-extrabold text-white">Lanceur de Dés (High / Low)</h2>
+                        <p class="text-xs text-gray-400">Pariez si le dé (1-100) sera au-dessus ou en dessous de la cible.</p>
+                        <div class="my-4">
+                            <div id="dice-result" class="text-6xl font-black text-emerald-400 neon-text mb-1">50</div>
+                            <div class="text-[11px] text-gray-400">Résultat du tirage</div>
                         </div>
-                        <div class="max-w-sm mx-auto space-y-3">
-                            <div class="flex justify-between text-xs text-gray-400">
+                        <div class="space-y-3">
+                            <div class="flex justify-between text-xs text-gray-400 px-2">
                                 <span>Mise (€)</span>
-                                <span>Cible : <span id="dice-target-val">50</span></span>
+                                <span>Cible : <span id="dice-target-val" class="text-white font-bold">50</span></span>
                             </div>
-                            <input type="number" id="dice-bet" value="0.50" min="0.10" step="0.10" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-3 py-2 text-center text-sm">
+                            <input type="number" id="dice-bet" value="0.50" min="0.10" step="0.10" class="w-full bg-gray-900 border border-borderCol rounded-xl px-3 py-2 text-center text-sm text-white font-bold">
                             <input type="range" id="dice-slider" min="10" max="90" value="50" oninput="updateDiceTarget(this.value)" class="w-full accent-emerald-500">
                             <div class="grid grid-cols-2 gap-3 pt-2">
-                                <button onclick="rollDice('under')" class="bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 font-bold py-2.5 rounded-xl text-sm hover:bg-emerald-500 hover:text-black transition">Moins de <span id="target-under">50</span></button>
-                                <button onclick="rollDice('over')" class="bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 font-bold py-2.5 rounded-xl text-sm hover:bg-emerald-500 hover:text-black transition">Plus de <span id="target-over">50</span></button>
+                                <button onclick="rollDice('under')" class="bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-bold py-3 rounded-xl text-xs hover:bg-emerald-500 hover:text-black transition">Moins de <span id="target-under">50</span></button>
+                                <button onclick="rollDice('over')" class="bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-bold py-3 rounded-xl text-xs hover:bg-emerald-500 hover:text-black transition">Plus de <span id="target-over">50</span></button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 5. CRASH AVIATOR -->
-                    <div id="game-crash" class="game-view hidden text-center space-y-4">
-                        <h2 class="text-xl font-bold">Crash Aviator</h2>
-                        <p class="text-xs text-gray-400">Regardez le multiplicateur grimper et encaissez avant le crash !</p>
-                        <div class="my-6 bg-gray-950 border border-gray-800 p-8 rounded-2xl relative overflow-hidden">
-                            <div id="crash-multiplier" class="text-5xl font-black text-emerald-400 neon-text">1.00x</div>
-                            <div id="crash-status" class="text-xs text-gray-500 mt-2">Prêt au décollage</div>
+                    <!-- 5. CRASH -->
+                    <div id="game-crash" class="game-view hidden text-center space-y-5 max-w-lg mx-auto">
+                        <h2 class="text-xl font-extrabold text-white">Crash Aviator</h2>
+                        <p class="text-xs text-gray-400">Multipliez votre mise et encaissez avant le crash !</p>
+                        <div class="my-6 bg-gray-950 border border-borderCol p-8 rounded-3xl relative overflow-hidden shadow-inner">
+                            <div id="crash-multiplier" class="text-6xl font-black text-emerald-400 neon-text">1.00x</div>
+                            <div id="crash-status" class="text-xs text-gray-500 mt-2 font-medium">Prêt au décollage</div>
                         </div>
-                        <div class="max-w-xs mx-auto space-y-3">
-                            <input type="number" id="crash-bet" value="1.00" min="0.10" step="0.10" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-3 py-2 text-center text-sm">
-                            <button id="crash-action-btn" onclick="startCrashGame()" class="w-full bg-emerald-500 text-black font-bold py-3 rounded-xl text-sm shadow-lg shadow-emerald-500/20">Placer la mise</button>
+                        <div class="space-y-3">
+                            <input type="number" id="crash-bet" value="1.00" min="0.10" step="0.10" class="w-full bg-gray-900 border border-borderCol rounded-xl px-3 py-2 text-center text-sm text-white font-bold">
+                            <button id="crash-action-btn" onclick="startCrashGame()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-3.5 rounded-xl text-xs shadow-lg shadow-emerald-500/20 transition">Placer la mise</button>
+                        </div>
+                    </div>
+
+                    <!-- 6. KENO FLASH (Nouveau) -->
+                    <div id="game-keno" class="game-view hidden text-center space-y-5 max-w-md mx-auto">
+                        <h2 class="text-xl font-extrabold text-white">Keno Flash</h2>
+                        <p class="text-xs text-gray-400">Sélectionnez 3 numéros (1 à 10). Plus vous en trouvez, plus vous gagnez !</p>
+                        <div id="keno-grid" class="grid grid-cols-5 gap-2 my-4"></div>
+                        <div class="flex items-center justify-between">
+                            <input type="number" id="keno-bet" value="0.50" min="0.10" step="0.10" class="w-24 bg-gray-900 border border-borderCol rounded-xl px-3 py-2 text-center text-sm text-white font-bold">
+                            <button onclick="playKeno()" class="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-8 py-2.5 rounded-xl text-xs transition">Lancer le tirage</button>
+                        </div>
+                    </div>
+
+                    <!-- 7. BLACKJACK (Nouveau) -->
+                    <div id="game-blackjack" class="game-view hidden text-center space-y-5 max-w-md mx-auto">
+                        <h2 class="text-xl font-extrabold text-white">Blackjack Simplifié</h2>
+                        <p class="text-xs text-gray-400">Atteignez 21 ou battez le croupier sans dépasser.</p>
+                        <div class="bg-gray-950 p-6 rounded-2xl border border-borderCol space-y-4">
+                            <div>
+                                <span class="text-[11px] text-gray-400 uppercase tracking-wider block mb-1">Croupier</span>
+                                <div id="bj-dealer" class="text-xl font-bold text-gray-300">-</div>
+                            </div>
+                            <hr class="border-borderCol">
+                            <div>
+                                <span class="text-[11px] text-gray-400 uppercase tracking-wider block mb-1">Votre Main</span>
+                                <div id="bj-player" class="text-2xl font-black text-emerald-400">-</div>
+                            </div>
+                        </div>
+                        <div id="bj-controls" class="space-y-3">
+                            <input type="number" id="bj-bet" value="1.00" min="0.50" step="0.50" class="w-full bg-gray-900 border border-borderCol rounded-xl px-3 py-2 text-center text-sm text-white font-bold">
+                            <button onclick="startBlackjack()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-3 rounded-xl text-xs transition">Distribuer les cartes</button>
+                        </div>
+                        <div id="bj-actions" class="hidden grid grid-cols-2 gap-3">
+                            <button onclick="bjHit()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl text-xs transition">Carte (Hit)</button>
+                            <button onclick="bjStand()" class="bg-amber-600 hover:bg-amber-500 text-white font-bold py-2.5 rounded-xl text-xs transition">Rester (Stand)</button>
                         </div>
                     </div>
 
@@ -231,78 +300,87 @@
             </div>
 
             <!-- ONGLET 2 : QUÊTES -->
-            <div id="tab-quests" class="tab-content hidden space-y-4">
-                <div class="bg-gray-900 border border-gray-800 p-6 rounded-2xl">
-                    <h2 class="text-lg font-bold mb-4">Quêtes Journalières</h2>
+            <div id="tab-quests" class="tab-content hidden space-y-4 max-w-2xl mx-auto">
+                <div class="glass-panel p-6 rounded-3xl space-y-4">
+                    <h2 class="text-lg font-bold text-white mb-2">Quêtes Journalières</h2>
                     <div class="space-y-3">
-                        <div class="bg-gray-800/50 border border-gray-700/50 p-4 rounded-xl flex justify-between items-center">
+                        <div class="bg-gray-900/60 border border-borderCol p-4 rounded-2xl flex justify-between items-center">
                             <div>
-                                <h4 class="font-bold text-sm">Effectuer 3 parties de n'importe quel jeu</h4>
-                                <p class="text-xs text-gray-400">Récompense : +2.00 €</p>
+                                <h4 class="font-bold text-xs text-white">Effectuer 3 parties de n'importe quel jeu</h4>
+                                <p class="text-[11px] text-gray-400 mt-0.5">Récompense : +2.00 €</p>
                             </div>
-                            <button onclick="claimQuest('games3')" id="quest-games3-btn" class="bg-emerald-500 text-black px-4 py-1.5 rounded-lg text-xs font-bold">Récupérer</button>
+                            <button onclick="claimQuest('games3')" id="quest-games3-btn" class="bg-emerald-500 hover:bg-emerald-400 text-black px-4 py-2 rounded-xl text-xs font-bold transition">Récupérer</button>
                         </div>
-                        <div class="bg-gray-800/50 border border-gray-700/50 p-4 rounded-xl flex justify-between items-center">
+                        <div class="bg-gray-900/60 border border-borderCol p-4 rounded-2xl flex justify-between items-center">
                             <div>
-                                <h4 class="font-bold text-sm">Récupérer le bonus de connexion quotidien</h4>
-                                <p class="text-xs text-gray-400">Récompense : +5.00 €</p>
+                                <h4 class="font-bold text-xs text-white">Bonus de connexion quotidien</h4>
+                                <p class="text-[11px] text-gray-400 mt-0.5">Récompense : +5.00 €</p>
                             </div>
-                            <button onclick="claimQuest('daily')" id="quest-daily-btn" class="bg-emerald-500 text-black px-4 py-1.5 rounded-lg text-xs font-bold">Récupérer</button>
+                            <button onclick="claimQuest('daily')" id="quest-daily-btn" class="bg-emerald-500 hover:bg-emerald-400 text-black px-4 py-2 rounded-xl text-xs font-bold transition">Récupérer</button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- ONGLET 3 : PARRAINAGE -->
-            <div id="tab-referral" class="tab-content hidden space-y-4">
-                <div class="bg-gray-900 border border-gray-800 p-6 rounded-2xl text-center space-y-4">
-                    <h2 class="text-lg font-bold">Programme de Parrainage</h2>
-                    <p class="text-xs text-gray-400 max-w-md mx-auto">Partagez votre lien de parrainage unique. Gagnez 10% de commission sur les mises de vos filleuls !</p>
-                    <div class="max-w-md mx-auto flex items-center space-x-2">
-                        <input type="text" id="referral-link" readonly class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-2 text-xs text-gray-300">
-                        <button onclick="copyReferral()" class="bg-emerald-500 text-black font-bold px-4 py-2 rounded-xl text-xs shrink-0">Copier</button>
+            <div id="tab-referral" class="tab-content hidden space-y-4 max-w-2xl mx-auto">
+                <div class="glass-panel p-8 rounded-3xl text-center space-y-4">
+                    <h2 class="text-lg font-bold text-white">Programme de Parrainage</h2>
+                    <p class="text-xs text-gray-400 max-w-md mx-auto">Partagez votre lien unique. Gagnez 10% de commission sur les mises de vos filleuls !</p>
+                    <div class="max-w-md mx-auto flex items-center space-x-2 pt-2">
+                        <input type="text" id="referral-link" readonly class="w-full bg-gray-900 border border-borderCol rounded-2xl px-4 py-2.5 text-xs text-gray-300 font-mono">
+                        <button onclick="copyReferral()" class="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-5 py-2.5 rounded-2xl text-xs shrink-0 transition">Copier</button>
                     </div>
                 </div>
             </div>
 
             <!-- ONGLET 4 : SUPPORT -->
-            <div id="tab-support" class="tab-content hidden space-y-4">
-                <div class="bg-gray-900 border border-gray-800 rounded-2xl flex flex-col h-[500px]">
-                    <div class="p-4 border-b border-gray-800 font-bold text-sm">Support Client FDJ Cash (Live Chat)</div>
+            <div id="tab-support" class="tab-content hidden space-y-4 max-w-3xl mx-auto">
+                <div class="glass-panel rounded-3xl flex flex-col h-[520px] overflow-hidden border border-borderCol shadow-2xl">
+                    <div class="p-4 border-b border-borderCol font-bold text-xs text-white flex items-center gap-2">
+                        <i class="fa-solid fa-headset text-emerald-400"></i> Support Client FDJ Cash (Live Chat)
+                    </div>
                     <div id="chat-messages" class="flex-grow p-4 overflow-y-auto space-y-3 custom-scrollbar"></div>
-                    <form onsubmit="sendChatMessage(event)" class="p-4 border-t border-gray-800 flex space-x-2">
-                        <input type="text" id="chat-input" placeholder="Écrivez votre message..." required class="flex-grow bg-gray-800 border border-gray-700 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
-                        <button type="submit" class="bg-emerald-500 text-black font-bold px-5 py-2 rounded-xl text-sm">Envoyer</button>
+                    <form onsubmit="sendChatMessage(event)" class="p-4 border-t border-borderCol flex space-x-2 bg-gray-900/50">
+                        <input type="text" id="chat-input" placeholder="Écrivez votre message..." required class="flex-grow bg-gray-900 border border-borderCol rounded-2xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                        <button type="submit" class="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-6 py-2.5 rounded-2xl text-xs transition">Envoyer</button>
                     </form>
                 </div>
             </div>
 
-            <!-- ONGLET 5 : ADMIN -->
-            <div id="tab-admin" class="tab-content hidden space-y-6">
-                <div class="bg-gray-900 border border-gray-800 p-6 rounded-2xl space-y-4">
-                    <h2 class="text-lg font-bold text-red-400"><i class="fa-solid fa-shield-halved mr-2"></i> Console d'Administration</h2>
+            <!-- ONGLET 5 : ADMIN REMASTERISÉ -->
+            <div id="tab-admin" class="tab-content hidden space-y-6 max-w-5xl mx-auto">
+                <div class="glass-panel p-8 rounded-3xl space-y-6 border border-red-500/20">
+                    <div class="flex items-center justify-between border-b border-borderCol pb-4">
+                        <h2 class="text-lg font-extrabold text-red-400 flex items-center gap-2.5">
+                            <i class="fa-solid fa-shield-halved"></i> Console d'Administration Supérieure
+                        </h2>
+                        <span class="text-[10px] bg-red-500/10 text-red-400 px-3 py-1 rounded-full border border-red-500/20 font-semibold uppercase">Accès Restreint</span>
+                    </div>
                     
-                    <div class="flex items-center justify-between bg-gray-800/50 p-4 rounded-xl border border-gray-700">
+                    <!-- Maintenance Switch -->
+                    <div class="flex items-center justify-between bg-gray-900/80 p-5 rounded-2xl border border-borderCol">
                         <div>
-                            <h4 class="font-bold text-sm">Mode Maintenance Global</h4>
-                            <p class="text-xs text-gray-400">Bloque l'accès aux jeux pour tous les utilisateurs non-admins.</p>
+                            <h4 class="font-bold text-xs text-white">Mode Maintenance Global</h4>
+                            <p class="text-[11px] text-gray-400 mt-0.5">Bloque instantanément l'accès aux jeux pour tous les utilisateurs non-admins.</p>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" id="admin-maintenance-toggle" onchange="toggleMaintenance(this.checked)" class="sr-only peer">
-                            <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+                            <div class="w-11 h-6 bg-gray-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
                         </label>
                     </div>
 
-                    <div>
-                        <h3 class="font-bold text-sm mb-3">Gestion des Utilisateurs Inscrits</h3>
-                        <div class="overflow-x-auto">
+                    <!-- Table des utilisateurs -->
+                    <div class="space-y-3">
+                        <h3 class="font-bold text-xs text-white uppercase tracking-wider">Gestion des Utilisateurs Inscrits</h3>
+                        <div class="overflow-x-auto rounded-2xl border border-borderCol bg-gray-900/40">
                             <table class="w-full text-left text-xs">
-                                <thead class="border-b border-gray-800 text-gray-400">
+                                <thead class="border-b border-borderCol text-gray-400 bg-gray-900/80">
                                     <tr>
-                                        <th class="p-3">E-mail</th>
-                                        <th class="p-3">Solde</th>
-                                        <th class="p-3">Rôle</th>
-                                        <th class="p-3 text-right">Actions</th>
+                                        <th class="p-3.5">E-mail</th>
+                                        <th class="p-3.5">Solde Actuel</th>
+                                        <th class="p-3.5">Rôle</th>
+                                        <th class="p-3.5 text-right">Actions Rapides</th>
                                     </tr>
                                 </thead>
                                 <tbody id="admin-users-list"></tbody>
@@ -316,20 +394,21 @@
     </main>
 
     <!-- Pied de page -->
-    <footer class="bg-gray-900/40 border-t border-gray-800 py-4 text-center text-xs text-gray-500">
-        <p>&copy; 2026 FDJ Cash. Réservé aux personnes majeures. Jouer comporte des risques : endettement, dépendance.</p>
+    <footer class="glass-panel border-t border-borderCol py-5 text-center text-[11px] text-gray-500">
+        <p>&copy; 2026 FDJ Cash. Réservé aux personnes majeures. Jouer comporte des risques : endettement, dépendance, isolement.</p>
     </footer>
 
-    <!-- Script Logique Application -->
+    <!-- Script Logique Complet Remasterisé -->
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyDummyKeyForTemplatePurposesOnly12345",
-            authDomain: "fdjcash-offshore.firebaseapp.com",
-            databaseURL: "https://fdjcash-offshore-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "fdjcash-offshore",
-            storageBucket: "fdjcash-offshore.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:abcdef"
+            apiKey: "AIzaSyC7tFRf4P9VQvhHNcxFzeFCkbymfY9x0TQ",
+            authDomain: "fdj6-14fd4.firebaseapp.com",
+            databaseURL: "https://fdj6-14fd4-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "fdj6-14fd4",
+            storageBucket: "fdj6-14fd4.firebasestorage.app",
+            messagingSenderId: "761914674574",
+            appId: "1:761914674574:web:3af162bddbb077e36828df",
+            measurementId: "G-YR6JQC1E5R"
         };
 
         if (!firebase.apps.length) {
@@ -433,6 +512,7 @@
             
             if (userData.isAdmin) {
                 document.getElementById('tab-btn-admin').classList.remove('hidden');
+                document.getElementById('tab-btn-admin').classList.add('flex');
             } else {
                 document.getElementById('tab-btn-admin').classList.add('hidden');
             }
@@ -447,30 +527,30 @@
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(el => {
-                el.classList.remove('bg-emerald-500', 'text-black');
-                el.classList.add('bg-gray-800', 'text-gray-400');
+                el.classList.remove('bg-emerald-500', 'text-black', 'shadow-lg', 'shadow-emerald-500/20');
+                el.classList.add('bg-cardBg', 'border', 'border-borderCol', 'text-gray-400');
             });
 
             document.getElementById('tab-' + tabId).classList.remove('hidden');
             const activeBtn = document.getElementById('tab-btn-' + tabId);
-            activeBtn.classList.remove('bg-gray-800', 'text-gray-400');
-            activeBtn.classList.add('bg-emerald-500', 'text-black');
+            activeBtn.classList.remove('bg-cardBg', 'border', 'border-borderCol', 'text-gray-400');
+            activeBtn.classList.add('bg-emerald-500', 'text-black', 'shadow-lg', 'shadow-emerald-500/20');
 
             if (tabId === 'support') loadChatMessages();
         }
 
-        // --- MINI-JEUX : SYSTÈME DE GAINS PROGRESSIFS ET RÉALISTES ---
         function openGame(gameName) {
             document.querySelectorAll('.game-view').forEach(el => el.classList.add('hidden'));
             document.getElementById('game-active-container').classList.remove('hidden');
             document.getElementById('game-' + gameName).classList.remove('hidden');
 
             if (gameName === 'scratch') initScratch();
+            if (gameName === 'keno') initKenoGrid();
         }
 
         function closeGame() {
             document.getElementById('game-active-container').classList.add('hidden');
-            if (crashInterval) clearInterval(crashInterval);
+            if (window.crashInterval) clearInterval(window.crashInterval);
         }
 
         function getRandomWinAmount() {
@@ -504,7 +584,7 @@
             for (let i = 0; i < 3; i++) {
                 const box = document.getElementById('scratch-' + i);
                 box.textContent = '?';
-                box.className = "w-24 h-24 bg-gray-800 border border-gray-700 rounded-xl flex items-center justify-center text-xl font-bold cursor-pointer select-none hover:border-emerald-500 transition";
+                box.className = "w-28 h-28 bg-gray-900 border border-borderCol rounded-2xl flex items-center justify-center text-xl font-bold cursor-pointer select-none hover:border-emerald-500 transition shadow-lg";
             }
         }
 
@@ -514,14 +594,11 @@
             const box = document.getElementById('scratch-' + index);
             
             let symbol = '❌';
-            if (scratchWinAmount > 0) {
-                symbol = `💰 ${scratchWinAmount.toFixed(2)}€`;
-            } else {
-                symbol = '😢';
-            }
+            if (scratchWinAmount > 0) symbol = `💰 ${scratchWinAmount.toFixed(2)}€`;
+            else symbol = '😢';
 
             box.textContent = symbol;
-            box.className = "w-24 h-24 bg-gray-950 border border-emerald-500/50 rounded-xl flex items-center justify-center text-sm font-bold text-emerald-400";
+            box.className = "w-28 h-28 bg-gray-950 border border-emerald-500/50 rounded-2xl flex items-center justify-center text-sm font-bold text-emerald-400 shadow-inner";
 
             if (scratchRevealed.every(val => val)) {
                 if (scratchWinAmount > 0) {
@@ -529,7 +606,7 @@
                     saveUserData();
                     alert(`🎉 Gagné ! Vous remportez ${scratchWinAmount.toFixed(2)} € !`);
                 } else {
-                    alert('Dommage, ce ticket est perdant. Retentez votre chance !');
+                    alert('Dommage, ce ticket est perdant.');
                 }
                 incrementQuestProgress();
             }
@@ -550,8 +627,7 @@
 
             if (winAmt > 0) {
                 s0 = symbols[Math.floor(Math.random() * symbols.length)];
-                s1 = s0;
-                s2 = s0;
+                s1 = s0; s2 = s0;
             } else {
                 s0 = symbols[0]; s1 = symbols[1]; s2 = symbols[2];
             }
@@ -571,7 +647,7 @@
             incrementQuestProgress();
         }
 
-        // 3. Roue de la Fortune
+        // 3. Roue
         function spinWheel() {
             if (userData.balance < 1.00) {
                 alert('Solde insuffisant (1.00 € requis).');
@@ -594,7 +670,7 @@
             }, 1000);
         }
 
-        // 4. Lanceur de Dés
+        // 4. Dés
         function updateDiceTarget(val) {
             document.getElementById('dice-target-val').textContent = val;
             document.getElementById('target-under').textContent = val;
@@ -630,12 +706,7 @@
             incrementQuestProgress();
         }
 
-        // 5. Crash Aviator
-        let crashInterval = null;
-        let crashVal = 1.00;
-        let crashTarget = 1.00;
-        let isCrashing = false;
-
+        // 5. Crash
         function startCrashGame() {
             const bet = parseFloat(document.getElementById('crash-bet').value);
             if (isNaN(bet) || bet <= 0 || userData.balance < bet) {
@@ -645,51 +716,154 @@
             userData.balance -= bet;
             saveUserData();
 
-            isCrashing = false;
-            crashVal = 1.00;
-            crashTarget = 1.05 + (Math.random() * 3.0);
+            let isCrashing = false;
+            let crashVal = 1.00;
+            let crashTarget = 1.05 + (Math.random() * 3.0);
 
             const btn = document.getElementById('crash-action-btn');
-            btn.textContent = "encaisser (Cashout)";
-            btn.className = "w-full bg-yellow-500 text-black font-bold py-3 rounded-xl text-sm shadow-lg shadow-yellow-500/20";
-            btn.setAttribute('onclick', 'cashoutCrash(' + bet + ')');
+            btn.textContent = "Encaisser";
+            btn.className = "w-full bg-amber-500 hover:bg-amber-400 text-black font-bold py-3.5 rounded-xl text-xs shadow-lg shadow-amber-500/20 transition";
+            btn.onclick = () => {
+                if (isCrashing) return;
+                clearInterval(window.crashInterval);
+                isCrashing = true;
+                const winnings = bet * crashVal;
+                userData.balance += winnings;
+                saveUserData();
+                document.getElementById('crash-status').textContent = `🎉 Encaissé à ${crashVal.toFixed(2)}x (+${winnings.toFixed(2)} €)`;
+                resetCrashBtn();
+                incrementQuestProgress();
+            };
 
             document.getElementById('crash-status').textContent = "Vol en cours...";
 
-            crashInterval = setInterval(() => {
+            window.crashInterval = setInterval(() => {
                 crashVal += 0.08;
                 document.getElementById('crash-multiplier').textContent = crashVal.toFixed(2) + 'x';
 
                 if (crashVal >= crashTarget) {
-                    clearInterval(crashInterval);
+                    clearInterval(window.crashInterval);
                     isCrashing = true;
                     document.getElementById('crash-status').textContent = "CRASHÉ !";
                     document.getElementById('crash-multiplier').classList.add('text-red-500');
-                    
-                    btn.textContent = "Placer la mise";
-                    btn.className = "w-full bg-emerald-500 text-black font-bold py-3 rounded-xl text-sm shadow-lg shadow-emerald-500/20";
-                    btn.setAttribute('onclick', 'startCrashGame()');
+                    resetCrashBtn();
                 }
             }, 100);
         }
 
-        function cashoutCrash(bet) {
-            if (isCrashing) return;
-            clearInterval(crashInterval);
-            const winnings = bet * crashVal;
-            userData.balance += winnings;
-            saveUserData();
-
-            document.getElementById('crash-status').textContent = `🎉 Encaissé à ${crashVal.toFixed(2)}x ! (+${winnings.toFixed(2)} €)`;
-            
+        function resetCrashBtn() {
             const btn = document.getElementById('crash-action-btn');
             btn.textContent = "Placer la mise";
-            btn.className = "w-full bg-emerald-500 text-black font-bold py-3 rounded-xl text-sm shadow-lg shadow-emerald-500/20";
-            btn.setAttribute('onclick', 'startCrashGame()');
+            btn.className = "w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-3.5 rounded-xl text-xs shadow-lg shadow-emerald-500/20 transition";
+            btn.onclick = startCrashGame;
+        }
+
+        // 6. Keno Flash
+        let selectedKenoNumbers = [];
+        function initKenoGrid() {
+            selectedKenoNumbers = [];
+            const grid = document.getElementById('keno-grid');
+            grid.innerHTML = '';
+            for (let i = 1; i <= 10; i++) {
+                const cell = document.createElement('div');
+                cell.className = "h-12 bg-gray-900 border border-borderCol rounded-xl flex items-center justify-center font-bold text-xs cursor-pointer hover:border-emerald-500 transition";
+                cell.textContent = i;
+                cell.onclick = () => {
+                    if (selectedKenoNumbers.includes(i)) {
+                        selectedKenoNumbers = selectedKenoNumbers.filter(n => n !== i);
+                        cell.className = "h-12 bg-gray-900 border border-borderCol rounded-xl flex items-center justify-center font-bold text-xs cursor-pointer hover:border-emerald-500 transition";
+                    } else if (selectedKenoNumbers.length < 3) {
+                        selectedKenoNumbers.push(i);
+                        cell.className = "h-12 bg-emerald-500 text-black border border-emerald-500 rounded-xl flex items-center justify-center font-bold text-xs cursor-pointer shadow-md";
+                    }
+                };
+                grid.appendChild(cell);
+            }
+        }
+
+        function playKeno() {
+            const bet = parseFloat(document.getElementById('keno-bet').value);
+            if (selectedKenoNumbers.length < 3) {
+                alert('Veuillez sélectionner exactement 3 numéros.');
+                return;
+            }
+            if (isNaN(bet) || bet <= 0 || userData.balance < bet) {
+                alert('Solde insuffisant.');
+                return;
+            }
+            userData.balance -= bet;
+
+            // Tirage de 3 numéros gagnants aléatoires (1 à 10)
+            let drawn = [];
+            while(drawn.length < 3) {
+                let r = Math.floor(Math.random() * 10) + 1;
+                if(!drawn.includes(r)) drawn.push(r);
+            }
+
+            let matches = selectedKenoNumbers.filter(n => drawn.includes(n)).length;
+            let payout = 0;
+            if (matches === 3) payout = bet * 10;
+            else if (matches === 2) payout = bet * 3;
+            else if (matches === 1) payout = bet * 0.50;
+
+            userData.balance += payout;
+            saveUserData();
+            alert(`🎯 Tirage : [${drawn.join(', ')}] | Bons numéros : ${matches} | Gain : ${payout.toFixed(2)} €`);
             incrementQuestProgress();
         }
 
-        // Quêtes & Progression
+        // 7. Blackjack Simplifié
+        let bjState = { playerSum: 0, dealerSum: 0, bet: 1 };
+        function startBlackjack() {
+            const bet = parseFloat(document.getElementById('bj-bet').value);
+            if (isNaN(bet) || bet <= 0 || userData.balance < bet) {
+                alert('Solde insuffisant.');
+                return;
+            }
+            userData.balance -= bet;
+            saveUserData();
+            bjState.bet = bet;
+
+            bjState.playerSum = Math.floor(Math.random() * 8) + 12; // 12 à 19
+            bjState.dealerSum = Math.floor(Math.random() * 5) + 14; // 14 à 18
+
+            document.getElementById('bj-player').textContent = bjState.playerSum;
+            document.getElementById('bj-dealer').textContent = bjState.dealerSum > 21 ? 21 : bjState.dealerSum;
+            
+            document.getElementById('bj-controls').classList.add('hidden');
+            document.getElementById('bj-actions').classList.remove('hidden');
+        }
+
+        function bjHit() {
+            bjState.playerSum += Math.floor(Math.random() * 6) + 1;
+            document.getElementById('bj-player').textContent = bjState.playerSum;
+            if (bjState.playerSum > 21) {
+                alert('💥 Bust ! Vous avez dépassé 21.');
+                endBjRound(false);
+            }
+        }
+
+        function bjStand() {
+            if (bjState.playerSum > bjState.dealerSum || bjState.dealerSum > 21) {
+                alert(`🎉 Gagné ! Vous battez le croupier (${bjState.playerSum} vs ${bjState.dealerSum}).`);
+                endBjRound(true);
+            } else {
+                alert(`Perdu ! Le croupier l'emporte (${bjState.dealerSum} vs ${bjState.playerSum}).`);
+                endBjRound(false);
+            }
+        }
+
+        function endBjRound(won) {
+            if (won) {
+                userData.balance += (bjState.bet * 2);
+                saveUserData();
+            }
+            document.getElementById('bj-controls').classList.remove('hidden');
+            document.getElementById('bj-actions').classList.add('hidden');
+            incrementQuestProgress();
+        }
+
+        // Quêtes & Parrainage & Support
         function incrementQuestProgress() {
             userData.quests.games3 = (userData.quests.games3 || 0) + 1;
             saveUserData();
@@ -717,7 +891,6 @@
             alert("Lien de parrainage copié !");
         }
 
-        // Support Live Chat
         function loadChatMessages() {
             db.ref('support_chat').on('value', snapshot => {
                 const container = document.getElementById('chat-messages');
@@ -726,8 +899,8 @@
                 if (data) {
                     Object.values(data).forEach(msg => {
                         const div = document.createElement('div');
-                        div.className = `p-3 rounded-xl text-xs max-w-[80%] ${msg.sender === currentUser.email ? 'bg-emerald-500/10 border border-emerald-500/20 ml-auto text-right' : 'bg-gray-800'}`;
-                        div.innerHTML = `<span class="block font-bold text-[10px] text-gray-400 mb-1">${msg.sender}</span>${msg.text}`;
+                        div.className = `p-3 rounded-2xl text-xs max-w-[80%] ${msg.sender === currentUser.email ? 'bg-emerald-500/15 border border-emerald-500/30 ml-auto text-right' : 'bg-gray-900 border border-borderCol'}`;
+                        div.innerHTML = `<span class="block font-bold text-[10px] text-gray-400 mb-0.5">${msg.sender}</span>${msg.text}`;
                         container.appendChild(div);
                     });
                     container.scrollTop = container.scrollHeight;
@@ -749,7 +922,6 @@
             input.value = '';
         }
 
-        // Administration
         function toggleMaintenance(status) {
             if (!userData.isAdmin) return;
             db.ref('settings/maintenance').set(status);
@@ -763,13 +935,13 @@
                 if (users) {
                     Object.entries(users).forEach(([uid, u]) => {
                         const tr = document.createElement('tr');
-                        tr.className = "border-b border-gray-800/50";
+                        tr.className = "border-b border-borderCol/60 hover:bg-gray-900/40 transition";
                         tr.innerHTML = `
-                            <td class="p-3">${u.email}</td>
-                            <td class="p-3 text-emerald-400 font-bold">${u.balance.toFixed(2)} €</td>
-                            <td class="p-3">${u.isAdmin ? '<span class="text-red-400 font-bold">Admin</span>' : 'Membre'}</td>
-                            <td class="p-3 text-right">
-                                <button onclick="adminAddBalance('${uid}')" class="bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded text-[10px] mr-1">+10€</button>
+                            <td class="p-3.5 font-medium text-white">${u.email}</td>
+                            <td class="p-3.5 text-emerald-400 font-bold">${u.balance.toFixed(2)} €</td>
+                            <td class="p-3.5">${u.isAdmin ? '<span class="text-red-400 font-extrabold bg-red-500/10 px-2.5 py-1 rounded-full text-[10px] border border-red-500/20">Admin</span>' : '<span class="text-gray-400">Membre</span>'}</td>
+                            <td class="p-3.5 text-right">
+                                <button onclick="adminAddBalance('${uid}')" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 px-3 py-1.5 rounded-xl text-[11px] font-bold transition border border-emerald-500/30">+10 €</button>
                             </td>
                         `;
                         tbody.appendChild(tr);
