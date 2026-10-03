@@ -2792,7 +2792,96 @@
                 }
             }
         };
+<div class="admin-panel">
+  <div class="admin-tabs">
+    <button class="tab-btn active" onclick="openTab('joueurs')">Joueurs</button>
+    <button class="tab-btn" onclick="openTab('messages')">Messages</button>
+    <button class="tab-btn" onclick="openTab('evenements')">Événements</button>
+  </div>
 
+  <div id="joueurs" class="tab-content active">
+    <h2>Tableau de bord des Joueurs</h2>
+    <!-- Liste des joueurs avec stats -->
+  </div>
+
+  <div id="messages" class="tab-content">
+    <h2>Modération des Défis</h2>
+    <!-- Validation des photos -->
+  </div>
+
+  <div id="evenements" class="tab-content">
+    <h2>Centre de Lancement d'Événements</h2>
+    <!-- Paramétrage Jackpot 5€ -->
+  </div>
+</div>
+
+<style>
+.admin-panel {
+  background: rgba(30, 30, 45, 0.95);
+  border-radius: 15px;
+  padding: 20px;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  max-width: 900px;
+  margin: 20px auto;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 10px;
+  border-bottom: 2px solid #565660;
+  padding-bottom: 10px;
+}
+
+.tab-btn {
+  background: #2b2b36;
+  border: none;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.tab-btn:hover {
+  background: #3a3a48;
+}
+
+.tab-btn.active {
+  background: #00acc1;
+  color: #fff;
+}
+
+.tab-content {
+  display: none;
+  padding-top: 20px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+h2 {
+  color: #00acc1;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+</style>
+
+<script>
+function openTab(tabId) {
+  const contents = document.querySelectorAll('.tab-content');
+  const buttons = document.querySelectorAll('.tab-btn');
+
+  contents.forEach(content => content.classList.remove('active'));
+  buttons.forEach(button => button.classList.remove('active'));
+
+  document.getElementById(tabId).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+</script>
         window.onload = () => { app.init(); };
     </script>
 </body>
